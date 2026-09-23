@@ -1,0 +1,48 @@
+---
+/**
+ * Layout para páginas internas: encabezado de página con migas de pan
+ * (y su JSON-LD BreadcrumbList) sobre el BaseLayout.
+ */
+import BaseLayout, { type Props as BaseProps } from './BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { jsonLdMigas, type Miga } from '@/lib/seo';
+
+interface Props extends BaseProps {
+  title: string;
+  /** Título visible (h1). Por defecto, `title`. */
+  encabezado?: string;
+  eyebrow?: string;
+  lead?: string;
+}
+
+const { title, encabezado = title, eyebrow, lead, jsonLd = [], ...resto } = Astro.props;
+const migas: Miga[] = [
+  { nombre: 'Inicio', href: '/' },
+  { nombre: title, href: Astro.url.pathname },
+];
+---
+
+<BaseLayout title={title} jsonLd={[jsonLdMigas(migas), ...jsonLd]} {...resto}>
+  <section class="on-dark relative isolate overflow-hidden bg-navy text-white">
+    <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+      <div class="absolute inset-0 bg-[radial-gradient(90%_120%_at_85%_0%,#0051A3_0%,transparent_60%)]"></div>
+      <div class="bg-grid absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent)]"></div>
+      <div class="parallax-slow absolute -right-16 -bottom-40 size-80 rounded-full bg-yellow/15 blur-3xl"></div>
+    </div>
+    <div class="container-page pt-10 pb-14 sm:pt-12 sm:pb-20">
+      <Breadcrumbs migas={migas} />
+      {eyebrow && <p class="animate-fade-up mt-8 text-sm font-semibold tracking-[0.16em] text-yellow uppercase">{eyebrow}</p>}
+      <h1
+        class:list={[
+          'animate-fade-up max-w-3xl text-4xl leading-tight font-bold text-white [animation-delay:60ms] sm:text-5xl lg:text-[3.4rem]',
+          eyebrow ? 'mt-3' : 'mt-8',
+        ]}
+      >
+        {encabezado}
+      </h1>
+      {lead && <p class="animate-fade-up mt-5 max-w-2xl text-lg leading-relaxed text-white/80 [animation-delay:120ms] sm:text-xl">{lead}</p>}
+      <slot name="hero" />
+    </div>
+  </section>
+  <slot />
+</BaseLayout>

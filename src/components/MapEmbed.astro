@@ -1,0 +1,37 @@
+---
+/**
+ * Mapa de Google embebido (sin API key). Se carga en diferido y el
+ * contenedor reserva su espacio para no provocar saltos (CLS).
+ */
+import Icon from './Icon.astro';
+import { negocio } from '@/lib/negocio';
+import { cx, urlMapaEmbebido } from '@/lib/utils';
+
+interface Props {
+  class?: string;
+}
+const { class: clase } = Astro.props;
+---
+
+<div
+  class={cx(
+    'relative overflow-hidden rounded-3xl border border-gray-200 bg-gray-100 shadow-soft',
+    'aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[28rem]',
+    clase,
+  )}
+>
+  <!-- Fondo mientras carga el iframe -->
+  <div class="bg-grid-light absolute inset-0 grid place-items-center text-gray-500" aria-hidden="true">
+    <span class="flex flex-col items-center gap-2 text-sm font-medium">
+      <Icon name="map-pin" size={32} class="text-primary" />
+      Cargando mapa…
+    </span>
+  </div>
+  <iframe
+    src={urlMapaEmbebido()}
+    title={`Mapa: ubicación de ${negocio.nombre} en ${negocio.ubicacion.calle}, ${negocio.ubicacion.ciudad}`}
+    class="absolute inset-0 size-full border-0"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen></iframe>
+</div>

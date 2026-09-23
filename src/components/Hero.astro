@@ -1,0 +1,161 @@
+---
+/**
+ * Hero de la página de inicio.
+ * Foto de fachada: coloca `fachada.jpg` (o .png/.webp) en `src/assets/images/`
+ * y se mostrará automáticamente, optimizada en WebP con respaldo.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from './Icon.astro';
+import OpenStatus from './OpenStatus.astro';
+import { negocio } from '@/lib/negocio';
+import { formatearPrecio, promocionesActivas, textoPrecio, urlWhatsApp } from '@/lib/utils';
+
+const imagenes = import.meta.glob<{ default: ImageMetadata }>('../assets/images/fachada.{jpg,jpeg,png,webp}', {
+  eager: true,
+});
+// TODO(Foto): agregar src/assets/images/fachada.jpg (mín. 1600 px de ancho).
+const fachada = Object.values(imagenes)[0]?.default;
+
+const copias = negocio.servicios.find((s) => s.id === 'fotocopias');
+const precios = negocio.servicios.filter((s) => s.destacado && s.precio.monto !== null).slice(0, 4);
+const promo = promocionesActivas()[0];
+---
+
+<section data-hero class="on-dark relative isolate overflow-hidden bg-navy text-white">
+  <!-- Fondo: degradado + cuadrícula + luces con parallax ligero -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="absolute inset-0 bg-[radial-gradient(120%_80%_at_80%_0%,#0051A3_0%,transparent_60%)]"></div>
+    <div class="bg-grid absolute inset-0 [mask-image:radial-gradient(70%_70%_at_50%_40%,black,transparent)]"></div>
+    <div class="parallax-slow absolute -top-24 -left-24 size-[28rem] rounded-full bg-primary/40 blur-3xl"></div>
+    <div class="parallax-fast absolute top-1/3 right-[-6rem] size-72 rounded-full bg-yellow/20 blur-3xl"></div>
+    <div class="parallax-slow absolute bottom-[-8rem] left-1/3 size-80 rounded-full bg-green/15 blur-3xl"></div>
+  </div>
+
+  <div class="container-page grid items-center gap-14 pt-14 pb-20 sm:pt-20 lg:grid-cols-12 lg:gap-10 lg:pt-24 lg:pb-28">
+    <div class="lg:col-span-7">
+      <p
+        class="animate-fade-up inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/90 ring-1 ring-white/15"
+      >
+        <Icon name="map-pin" size={16} class="text-yellow" />
+        {negocio.ubicacion.ciudad}, {negocio.ubicacion.estado} · Más de {negocio.experiencia.anios} años
+      </p>
+
+      <h1
+        class="animate-fade-up mt-6 text-[2.6rem] leading-[1.04] font-bold tracking-tight text-white [animation-delay:80ms] sm:text-6xl lg:text-[4.1rem]"
+      >
+        Tu papelería de confianza
+        <span class="relative text-yellow sm:whitespace-nowrap">
+          en San Luis Potosí
+          <svg
+            class="absolute -bottom-2 left-0 h-3 w-full text-yellow/70"
+            viewBox="0 0 300 12"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path d="M2 9c60-6 180-8 296-3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+            ></path>
+          </svg>
+        </span>
+      </h1>
+
+      <p
+        class="animate-fade-up mt-7 max-w-xl text-lg leading-relaxed text-white/80 [animation-delay:160ms] sm:text-xl"
+      >
+        {copias?.precio.monto ? `Fotocopias desde ${formatearPrecio(copias.precio.monto)}, ` : 'Fotocopias, '}
+        impresión, engargolado, enmicado, pago de servicios y recargas. Rápido, bien hecho y a precio justo.
+      </p>
+
+      <div class="animate-fade-up mt-9 flex flex-col gap-3 [animation-delay:240ms] sm:flex-row">
+        <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-primary h-14 px-7 text-base">
+          <Icon name="whatsapp" size={20} />
+          Cotiza por WhatsApp
+        </a>
+        <a href="/servicios" class="btn btn-outline-light h-14 px-7 text-base">
+          Explorar servicios
+          <Icon name="arrow-right" size={18} class="icon-nudge" />
+        </a>
+      </div>
+
+      <div class="animate-fade-up mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 [animation-delay:320ms]">
+        <OpenStatus variante="pill-dark" />
+        <p class="flex items-center gap-2 text-sm text-white/70">
+          <Icon name="credit-card" size={16} class="text-yellow" />
+          {negocio.pagos.metodos.map((m) => m.nombre.split(' ')[0]).join(' · ')}
+        </p>
+      </div>
+    </div>
+
+    <!-- Visual: foto de fachada si existe; si no, tarjeta de precios de marca -->
+    <div class="relative lg:col-span-5">
+      <div class="parallax-slow relative mx-auto max-w-md [--parallax-distance:-40px] lg:max-w-none">
+        {
+          fachada ? (
+            <Picture
+              src={fachada}
+              formats={['webp']}
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              alt={`Fachada de ${negocio.nombre} en ${negocio.ubicacion.calle}, ${negocio.ubicacion.ciudad}`}
+              loading="eager"
+              fetchpriority="high"
+              class="aspect-[4/5] w-full rounded-[2rem] object-cover shadow-2xl ring-1 ring-white/20"
+            />
+          ) : (
+            <div class="animate-fade-up rounded-[2rem] bg-white p-6 text-gray-700 shadow-[0_40px_80px_-20px_rgb(1_26_49/0.7)] ring-1 ring-white/20 [animation-delay:200ms] sm:p-8">
+              <p class="eyebrow">Precios base</p>
+              <ul class="mt-5 divide-y divide-gray-100">
+                {precios.map((s) => (
+                  <li class="flex items-center gap-4 py-3.5">
+                    <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-navy/5 text-primary">
+                      <Icon name={s.icono} size={22} />
+                    </span>
+                    <span class="min-w-0 flex-1">
+                      <span class="block font-semibold text-navy">{s.alias ?? s.nombre}</span>
+                      {s.precio.unidad && <span class="block text-sm text-gray-500">{s.precio.unidad}</span>}
+                    </span>
+                    <span class="font-display text-lg font-bold whitespace-nowrap text-navy">
+                      {textoPrecio(s.precio)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="/servicios"
+                class="group mt-4 flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-3 text-sm font-semibold text-primary transition-colors hover:bg-gray-100"
+              >
+                Ver todos los servicios
+                <Icon name="arrow-right" size={16} class="transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
+          )
+        }
+
+        {
+          promo && (
+            <a
+              href="/servicios#listas-escolares"
+              class="animate-fade-up absolute -top-5 -right-2 flex rotate-3 items-center gap-2 rounded-2xl bg-yellow px-4 py-3 text-navy shadow-glow transition-transform [animation-delay:420ms] hover:rotate-0 sm:-right-6"
+            >
+              <Icon name="graduation-cap" size={22} />
+              <span class="leading-tight">
+                <strong class="block font-display text-lg">{promo.descuento}% OFF</strong>
+                <span class="block text-xs font-semibold">Listas escolares</span>
+              </span>
+            </a>
+          )
+        }
+
+        <div class="animate-fade-up absolute -bottom-6 -left-2 hidden items-center gap-3 rounded-2xl bg-navy-900 px-4 py-3 text-white shadow-2xl ring-1 ring-white/15 [animation-delay:520ms] sm:-left-8 sm:flex">
+          <span class="grid size-10 place-items-center rounded-full bg-green/20 text-green">
+            <Icon name="heart" size={20} />
+          </span>
+          <span class="leading-tight">
+            <strong class="block font-display text-lg">+{negocio.experiencia.anios} años</strong>
+            <span class="block text-xs text-white/70">sirviendo a SLP</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

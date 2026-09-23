@@ -1,0 +1,156 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { negocio } from '@/lib/negocio';
+
+// TODO(Foto): agregar src/assets/images/equipo.jpg (foto del equipo, mín. 1200 px de ancho).
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/images/equipo.{jpg,jpeg,png,webp}', { eager: true });
+const equipo = Object.values(fotos)[0]?.default;
+
+const { anios, anioFundacion } = negocio.experiencia;
+const diasAbiertos = negocio.horarios.filter((h) => h.turnos.length > 0).length;
+const cifras = [
+  { valor: `+${anios}`, etiqueta: 'años en San Luis Potosí' },
+  { valor: String(negocio.servicios.length), etiqueta: 'servicios en un solo lugar' },
+  { valor: String(diasAbiertos), etiqueta: 'días a la semana abiertos' },
+];
+---
+
+<PageLayout
+  title="Nosotros"
+  eyebrow="Nuestra historia"
+  encabezado={`Más de ${anios} años acompañando a San Luis Potosí`}
+  lead="Somos una papelería familiar que creció junto con su colonia: de las primeras copias a todo lo que hoy necesitas para la escuela, la oficina y tus trámites."
+  description={`Conoce a ${negocio.nombre}: más de ${anios} años de servicio en San Luis Potosí, S.L.P. Atención cercana, rapidez y precios justos.`}
+>
+  <!-- Historia -->
+  <section class="py-16 sm:py-24" aria-labelledby="historia-titulo">
+    <div class="container-page grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div data-reveal class="relative">
+        {
+          equipo ? (
+            <Picture
+              src={equipo}
+              formats={['webp']}
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              alt={`Equipo de ${negocio.nombre}`}
+              class="aspect-[4/3] w-full rounded-[2rem] object-cover shadow-lift"
+            />
+          ) : (
+            <div
+              class="relative grid aspect-[4/3] place-items-center overflow-hidden rounded-[2rem] bg-navy text-center shadow-lift"
+              role="img"
+              aria-label={`Ilustración de ${negocio.nombre}`}
+            >
+              <div class="bg-grid absolute inset-0" aria-hidden="true" />
+              <div class="absolute -top-10 -right-10 size-56 rounded-full bg-yellow/25 blur-3xl" aria-hidden="true" />
+              <div class="absolute -bottom-16 -left-10 size-64 rounded-full bg-primary/60 blur-3xl" aria-hidden="true" />
+              <div class="relative px-8" aria-hidden="true">
+                <span class="mx-auto grid size-20 place-items-center rounded-3xl bg-yellow text-navy shadow-glow">
+                  <Icon name="store" size={40} />
+                </span>
+                <p class="mt-6 font-display text-2xl font-bold text-white">{negocio.nombre}</p>
+                <p class="mt-1 text-white/70">{negocio.ubicacion.calle} · {negocio.ubicacion.ciudad}</p>
+              </div>
+            </div>
+          )
+        }
+        <div class="absolute -right-3 -bottom-6 rounded-2xl bg-yellow px-5 py-4 text-navy shadow-glow sm:-right-6">
+          <p class="font-display text-3xl leading-none font-bold">+{anios}</p>
+          <p class="text-sm font-semibold">años de servicio</p>
+        </div>
+      </div>
+
+      <div>
+        <SectionHeading
+          id="historia-titulo"
+          alineacion="left"
+          eyebrow="Quiénes somos"
+          titulo="Una papelería de barrio, con estándares de primera"
+        />
+        {/* TODO(Datos): reemplazar con la historia real del negocio (fundadores, anécdotas, hitos). */}
+        <div class="mt-6 space-y-4 text-lg leading-relaxed text-gray-600" data-reveal>
+          <p>
+            {anioFundacion ? `Desde ${anioFundacion}` : `Desde hace más de ${anios} años`}, {negocio.nombre} abre sus puertas en
+            {negocio.ubicacion.calle}, {negocio.ubicacion.colonia}. Empezamos con lo esencial y, cliente a cliente, fuimos
+            sumando los servicios que nuestros vecinos nos pedían.
+          </p>
+          <p>
+            Hoy atendemos a estudiantes, maestros, familias, oficinas y pequeños negocios de {negocio.ubicacion.ciudad} con
+            el mismo trato de siempre: escuchar lo que necesitas, resolverlo rápido y cobrarte lo justo.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cifras -->
+  <section class="on-dark bg-navy py-14 text-white" aria-label="Nuestras cifras">
+    <dl class="container-page grid gap-8 text-center sm:grid-cols-3">
+      {
+        cifras.map((c, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 90}ms`} class="flex flex-col">
+            <dt class="order-2 mt-1 text-white/75">{c.etiqueta}</dt>
+            <dd class="font-display text-5xl font-bold text-yellow">{c.valor}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- Valores -->
+  <section class="bg-gray-50 py-16 sm:py-24" aria-labelledby="valores-titulo">
+    <div class="container-page">
+      <SectionHeading
+        id="valores-titulo"
+        eyebrow="Nuestros valores"
+        titulo="Lo que nos hace diferentes"
+        descripcion="No somos una cadena: somos tus vecinos. Y eso se nota en cada detalle."
+      />
+      <ul class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          negocio.valores.map((v, i) => (
+            <li
+              data-reveal
+              style={`--reveal-delay:${i * 80}ms`}
+              class="card group p-7 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-lift"
+            >
+              <span class="grid size-14 place-items-center rounded-2xl bg-navy text-yellow transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-3">
+                <Icon name={v.icono} size={26} />
+              </span>
+              <h3 class="mt-6 text-xl font-semibold">{v.titulo}</h3>
+              <p class="mt-2 leading-relaxed text-gray-600">{v.descripcion}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Compromiso local -->
+  <section class="py-16 sm:py-24" aria-labelledby="compromiso-titulo">
+    <div class="container-page">
+      <div data-reveal class="grid gap-10 rounded-[2rem] border border-gray-200 bg-white p-8 shadow-soft sm:p-12 lg:grid-cols-[auto_1fr] lg:items-center">
+        <span class="grid size-20 place-items-center rounded-3xl bg-green-50 text-green-700">
+          <Icon name="users" size={36} />
+        </span>
+        <div>
+          <h2 id="compromiso-titulo" class="text-3xl font-bold">Comprometidos con {negocio.ubicacion.ciudad}</h2>
+          <p class="mt-4 max-w-3xl text-lg leading-relaxed text-gray-600">
+            Cada temporada escolar surtimos las listas de familias potosinas y ofrecemos descuentos para que el
+            regreso a clases pese menos en el bolsillo. Creemos en el comercio local: cuando compras con nosotros, el
+            beneficio se queda en la colonia.
+          </p>
+          <p class="mt-5 text-sm font-semibold text-primary">{negocio.seo.hashtags.join(' ')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand titulo="¿Listo para tu próximo pedido?" />
+</PageLayout>

@@ -1,0 +1,65 @@
+---
+/** Tabla de horarios. El día de hoy (hora de SLP) se resalta en el navegador. */
+import Icon from './Icon.astro';
+import { negocio } from '@/lib/negocio';
+import { formatearTurno } from '@/lib/utils';
+---
+
+<div class="overflow-hidden rounded-2xl border border-gray-200">
+  <table class="w-full text-left" data-schedule>
+    <caption class="sr-only">Horario de atención de {negocio.nombre}</caption>
+    <thead class="bg-gray-50 text-xs font-semibold tracking-wide text-gray-600 uppercase">
+      <tr>
+        <th scope="col" class="px-4 py-3 sm:px-5">Día</th>
+        <th scope="col" class="px-4 py-3 sm:px-5">Horario</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {
+        negocio.horarios.map((h) => (
+          <tr data-dia={h.dia} class="group transition-colors data-[hoy=true]:bg-yellow-50">
+            <th scope="row" class="px-4 py-3.5 font-semibold text-navy sm:px-5">
+              <span class="flex items-center gap-2">
+                {h.nombre}
+                <span class="hidden rounded-full bg-navy px-2 py-0.5 text-[0.7rem] font-bold tracking-wide text-yellow uppercase group-data-[hoy=true]:inline">
+                  Hoy
+                </span>
+              </span>
+            </th>
+            <td class="px-4 py-3.5 text-gray-700 tabular-nums sm:px-5">
+              {h.turnos.length === 0 ? (
+                <span class="text-gray-500">Cerrado</span>
+              ) : (
+                <span class="flex flex-col gap-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2">
+                  {h.turnos.map((t, i) => (
+                    <>
+                      {i > 0 && (
+                        <span class="hidden text-gray-400 sm:inline" aria-hidden="true">
+                          ·
+                        </span>
+                      )}
+                      <span>{formatearTurno(t)}</span>
+                    </>
+                  ))}
+                </span>
+              )}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<p class="mt-4 flex items-start gap-3 rounded-2xl bg-yellow-50 px-4 py-3 text-sm text-navy ring-1 ring-yellow/40">
+  <Icon name="coffee" size={18} class="mt-0.5 shrink-0" />
+  <span><strong>Aviso de receso:</strong> {negocio.avisoReceso}</span>
+</p>
+
+<script>
+  import { ahoraEnNegocio } from '@/lib/utils';
+  const { dia } = ahoraEnNegocio();
+  document.querySelectorAll<HTMLElement>(`[data-schedule] tr[data-dia="${dia}"]`).forEach((fila) => {
+    fila.dataset.hoy = 'true';
+  });
+</script>

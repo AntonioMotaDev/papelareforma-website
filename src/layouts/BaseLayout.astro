@@ -1,0 +1,123 @@
+---
+/**
+ * Layout raíz: <head> con SEO/Open Graph/JSON-LD, fuentes, header, footer y
+ * el botón flotante de WhatsApp. Todos los metadatos salen de negocio.ts.
+ */
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/geist/wght.css';
+import '@/styles/global.css';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import WhatsAppFloat from '@/components/WhatsAppFloat.astro';
+import { negocio } from '@/lib/negocio';
+import { jsonLdNegocio } from '@/lib/seo';
+import { urlAbsoluta } from '@/lib/utils';
+
+export interface Props {
+  /** Título de la página (se agrega " | Papelería La Reforma"). Omitir en inicio. */
+  title?: string;
+  description?: string;
+  /** Ruta de la imagen OG (en /public). */
+  image?: string;
+  noindex?: boolean;
+  /** JSON-LD adicional de la página (p. ej. migas de pan). */
+  jsonLd?: Record<string, unknown>[];
+  /** Oculta el botón flotante de WhatsApp (p. ej. en contacto). */
+  sinWhatsAppFlotante?: boolean;
+}
+
+const {
+  title,
+  description = negocio.seo.descripcionPorDefecto,
+  image = negocio.seo.imagenOg,
+  noindex = false,
+  jsonLd = [],
+  sinWhatsAppFlotante = false,
+} = Astro.props;
+
+const tituloCompleto = title ? `${title} | ${negocio.nombre}` : negocio.seo.tituloPorDefecto;
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site ?? negocio.sitio.url).toString();
+const imagenOg = urlAbsoluta(image);
+const esquemas = [jsonLdNegocio(), ...jsonLd];
+---
+
+<!doctype html>
+<html lang={negocio.sitio.idioma}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content={negocio.sitio.colorTema} />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="geo.region" content="MX-SLP" />
+    <meta name="geo.placename" content={`${negocio.ubicacion.ciudad}, ${negocio.ubicacion.estado}`} />
+
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / redes sociales -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={negocio.nombre} />
+    <meta property="og:locale" content={negocio.sitio.locale} />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagenOg} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${negocio.nombre} — ${negocio.ubicacion.ciudad}, ${negocio.ubicacion.estado}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={tituloCompleto} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imagenOg} />
+
+    {esquemas.map((esquema) => <script type="application/ld+json" set:html={JSON.stringify(esquema).replace(/</g, "\\u003c")} />)}
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#contenido"
+      class="on-dark sr-only z-[100] rounded-full bg-yellow px-5 py-3 font-semibold text-navy focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+    >
+      Saltar al contenido
+    </a>
+    <Header />
+    <main id="contenido" tabindex="-1" class="flex-1 outline-none">
+      <slot />
+    </main>
+    <Footer />
+    {!sinWhatsAppFlotante && <WhatsAppFloat />}
+
+    <script>
+      // Revela elementos [data-reveal] al entrar al viewport (ver global.css).
+      const elementos = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const observador = new IntersectionObserver(
+          (entradas) => {
+            for (const entrada of entradas) {
+              if (entrada.isIntersecting) {
+                entrada.target.classList.add('is-visible');
+                observador.unobserve(entrada.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+        );
+        elementos.forEach((el) => observador.observe(el));
+      } else {
+        elementos.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+---
+/**
+ * Widget "¿Abierto ahora?". Se calcula en el navegador con la hora de
+ * San Luis Potosí (no la del visitante) usando `estadoApertura()` de utils.ts,
+ * y se actualiza cada minuto. Sin JS muestra un enlace a los horarios.
+ */
+import { cx } from '@/lib/utils';
+
+interface Props {
+  variante?: 'pill-dark' | 'pill-light' | 'card';
+  class?: string;
+}
+const { variante = 'pill-light', class: clase } = Astro.props;
+const esPill = variante !== 'card';
+---
+
+<div
+  data-open-status
+  data-variante={variante}
+  data-state="cargando"
+  role="status"
+  class={cx(
+    'group/estado',
+    esPill
+      ? 'inline-flex min-h-10 items-center gap-2.5 rounded-full px-4 py-2 text-sm'
+      : 'flex items-center gap-4 rounded-2xl p-4',
+    variante === 'pill-dark' && 'bg-white/10 text-white ring-1 ring-white/15',
+    variante === 'pill-light' && 'bg-white text-gray-700 ring-1 ring-gray-200',
+    variante === 'card' && 'bg-gray-50 ring-1 ring-gray-200',
+    clase,
+  )}
+>
+  <span
+    data-status-dot
+    aria-hidden="true"
+    class={cx(
+      'relative inline-block shrink-0 rounded-full bg-gray-400',
+      esPill ? 'size-2.5' : 'size-3.5',
+      'group-data-[state=abierto]/estado:animate-pulse-dot group-data-[state=abierto]/estado:bg-green group-data-[state=abierto]/estado:text-green',
+      'group-data-[state=cierra-pronto]/estado:bg-yellow group-data-[state=receso]/estado:bg-yellow',
+      'group-data-[state=cerrado]/estado:bg-red-500',
+    )}></span>
+  <span class={cx('leading-tight', esPill ? 'flex flex-wrap items-baseline gap-x-1.5' : 'flex flex-col gap-0.5')}>
+    <strong data-status-title class={cx('font-semibold', variante === 'card' && 'font-display text-lg text-navy')}>
+      Horario de hoy
+    </strong>
+    <span
+      data-status-detail
+      class={cx(
+        variante === 'pill-dark' && 'text-white/75',
+        variante === 'pill-light' && 'text-gray-500',
+        variante === 'card' && 'text-sm text-gray-600',
+      )}
+    >
+      <a href="/ubicacion#horarios" class="underline underline-offset-2">Ver horarios</a>
+    </span>
+  </span>
+</div>
+
+<script>
+  import { estadoApertura } from '@/lib/utils';
+
+  function actualizar() {
+    const estado = estadoApertura();
+    document.querySelectorAll<HTMLElement>('[data-open-status]').forEach((el) => {
+      el.dataset.state = estado.estado;
+      el.querySelector('[data-status-title]')!.textContent = estado.titulo;
+      el.querySelector('[data-status-detail]')!.textContent = `· ${estado.detalle}`;
+      if (el.dataset.variante === 'card') {
+        el.querySelector('[data-status-detail]')!.textContent = estado.detalle;
+      }
+    });
+  }
+
+  actualizar();
+  setInterval(actualizar, 60_000);
+  document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && actualizar());
+</script>

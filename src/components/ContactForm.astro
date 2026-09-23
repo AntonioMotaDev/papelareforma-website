@@ -1,0 +1,279 @@
+---
+/**
+ * Formulario de contacto.
+ * - Envía a la Cloudflare Pages Function `functions/api/contacto.ts`.
+ * - Validación accesible en el cliente (mensajes en español, aria-invalid).
+ * - Sin JS funciona como formulario HTML normal (la función responde con HTML).
+ * - Si el envío por correo no está disponible, ofrece WhatsApp con el mensaje ya escrito.
+ */
+import Icon from './Icon.astro';
+import { negocio } from '@/lib/negocio';
+import { urlWhatsApp } from '@/lib/utils';
+---
+
+<div class="relative" data-contacto>
+  <form
+    action="/api/contacto"
+    method="post"
+    novalidate
+    class="grid gap-5"
+    data-formulario
+    aria-describedby="form-nota"
+  >
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="nombre" class="field-label">Nombre <span class="text-red-700" aria-hidden="true">*</span></label>
+        <input
+          id="nombre"
+          name="nombre"
+          type="text"
+          autocomplete="name"
+          required
+          minlength="2"
+          maxlength="80"
+          class="field-input"
+          aria-describedby="nombre-error"
+          placeholder="¿Cómo te llamas?"
+        />
+        <p id="nombre-error" class="mt-1.5 hidden text-sm font-medium text-red-700" data-error></p>
+      </div>
+      <div>
+        <label for="telefono" class="field-label">Teléfono <span class="font-normal text-gray-500">(opcional)</span></label>
+        <input
+          id="telefono"
+          name="telefono"
+          type="tel"
+          autocomplete="tel"
+          inputmode="tel"
+          maxlength="20"
+          pattern="[0-9+\(\)\s\-]{10,20}"
+          class="field-input"
+          aria-describedby="telefono-error"
+          placeholder="444 123 4567"
+        />
+        <p id="telefono-error" class="mt-1.5 hidden text-sm font-medium text-red-700" data-error></p>
+      </div>
+    </div>
+
+    <div>
+      <label for="correo" class="field-label">Correo electrónico <span class="text-red-700" aria-hidden="true">*</span></label>
+      <input
+        id="correo"
+        name="correo"
+        type="email"
+        autocomplete="email"
+        required
+        maxlength="120"
+        class="field-input"
+        aria-describedby="correo-error"
+        placeholder="tucorreo@ejemplo.com"
+      />
+      <p id="correo-error" class="mt-1.5 hidden text-sm font-medium text-red-700" data-error></p>
+    </div>
+
+    <div>
+      <label for="mensaje" class="field-label">Mensaje <span class="text-red-700" aria-hidden="true">*</span></label>
+      <textarea
+        id="mensaje"
+        name="mensaje"
+        rows="5"
+        required
+        minlength="10"
+        maxlength="2000"
+        class="field-input min-h-36 resize-y"
+        aria-describedby="mensaje-error mensaje-contador"
+        placeholder="Cuéntanos qué necesitas: número de copias, tipo de engargolado, tu lista escolar…"
+      ></textarea>
+      <div class="mt-1.5 flex justify-between gap-4">
+        <p id="mensaje-error" class="hidden text-sm font-medium text-red-700" data-error></p>
+        <p id="mensaje-contador" class="ml-auto text-xs text-gray-500 tabular-nums" data-contador>0 / 2000</p>
+      </div>
+    </div>
+
+    <!-- Trampa anti-spam: invisible para personas, los bots la llenan. -->
+    <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+      <label for="empresa">No llenar este campo</label>
+      <input id="empresa" name="empresa" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div
+      role="alert"
+      class="hidden items-start gap-3 rounded-2xl bg-red-50 p-4 text-sm text-red-800 ring-1 ring-red-200"
+      data-alerta
+    >
+      <Icon name="alert-circle" size={20} class="mt-0.5 shrink-0" />
+      <div>
+        <p class="font-semibold" data-alerta-texto>No pudimos enviar tu mensaje.</p>
+        <p class="mt-1">
+          Escríbenos directo por
+          <a href={urlWhatsApp()} target="_blank" rel="noopener" class="font-semibold underline" data-whatsapp-respaldo
+            >WhatsApp</a
+          >
+          o llámanos al <a href={`tel:${negocio.contacto.telefonoE164}`} class="font-semibold underline">{negocio.contacto.telefono}</a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <p id="form-nota" class="text-sm text-gray-500">
+        <span aria-hidden="true">*</span> Campos obligatorios. Respondemos en horario de atención.
+      </p>
+      <button type="submit" class="btn btn-navy group min-w-44 disabled:cursor-wait disabled:opacity-80" data-enviar>
+        <span data-enviar-texto>Enviar mensaje</span>
+        <Icon name="send" size={18} class="icon-nudge" data-enviar-icono />
+        <Icon name="loader" size={18} class="hidden animate-spin" data-enviar-cargando />
+      </button>
+    </div>
+  </form>
+
+  <!-- Confirmación de envío -->
+  <div
+    class="hidden flex-col items-center py-10 text-center"
+    data-exito
+    tabindex="-1"
+    aria-labelledby="exito-titulo"
+    role="region"
+  >
+    <span class="grid size-20 place-items-center rounded-full bg-green-50 text-green-700 ring-8 ring-green-50/50">
+      <svg viewBox="0 0 24 24" class="size-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5" class="exito-check"></path>
+      </svg>
+    </span>
+    <h3 id="exito-titulo" class="mt-6 text-2xl font-bold">¡Mensaje enviado!</h3>
+    <p class="mt-3 max-w-md text-gray-600">
+      Gracias por escribirnos, <span data-exito-nombre></span>. Te responderemos lo antes posible en horario de atención.
+    </p>
+    <button type="button" class="link mt-6" data-otro>Enviar otro mensaje</button>
+  </div>
+</div>
+
+<style>
+  .exito-check {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+  }
+  [data-exito]:not(.hidden) .exito-check {
+    animation: dibujar 0.6s 0.15s var(--ease-out-soft) forwards;
+  }
+  @keyframes dibujar {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .exito-check {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
+<script>
+  import { urlWhatsApp } from '@/lib/utils';
+
+  const raiz = document.querySelector<HTMLElement>('[data-contacto]');
+  if (raiz) {
+    const form = raiz.querySelector<HTMLFormElement>('[data-formulario]')!;
+    const alerta = raiz.querySelector<HTMLElement>('[data-alerta]')!;
+    const alertaTexto = raiz.querySelector<HTMLElement>('[data-alerta-texto]')!;
+    const respaldo = raiz.querySelector<HTMLAnchorElement>('[data-whatsapp-respaldo]')!;
+    const exito = raiz.querySelector<HTMLElement>('[data-exito]')!;
+    const boton = raiz.querySelector<HTMLButtonElement>('[data-enviar]')!;
+    const mensaje = form.elements.namedItem('mensaje') as HTMLTextAreaElement;
+    const contador = raiz.querySelector<HTMLElement>('[data-contador]')!;
+
+    const mensajes: Record<string, (c: HTMLInputElement | HTMLTextAreaElement) => string> = {
+      valueMissing: (c) => (c.name === 'correo' ? 'Escribe tu correo electrónico.' : c.name === 'mensaje' ? 'Escribe tu mensaje.' : 'Escribe tu nombre.'),
+      typeMismatch: () => 'Revisa tu correo, parece incompleto (ej. nombre@correo.com).',
+      tooShort: (c) => `Escribe al menos ${c.minLength} caracteres.`,
+      patternMismatch: () => 'Escribe un teléfono de 10 dígitos.',
+    };
+
+    const campos = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[id]:not([name=empresa]), textarea')];
+
+    function validar(campo: HTMLInputElement | HTMLTextAreaElement): boolean {
+      const error = document.getElementById(`${campo.id}-error`)!;
+      if (campo.validity.valid) {
+        campo.removeAttribute('aria-invalid');
+        error.classList.add('hidden');
+        error.textContent = '';
+        return true;
+      }
+      const tipo = Object.keys(mensajes).find((k) => campo.validity[k as keyof ValidityState]);
+      error.textContent = tipo ? mensajes[tipo]!(campo) : 'Revisa este campo.';
+      error.classList.remove('hidden');
+      campo.setAttribute('aria-invalid', 'true');
+      return false;
+    }
+
+    campos.forEach((c) => {
+      c.addEventListener('blur', () => c.value && validar(c));
+      c.addEventListener('input', () => c.getAttribute('aria-invalid') && validar(c));
+    });
+
+    mensaje.addEventListener('input', () => {
+      contador.textContent = `${mensaje.value.length} / ${mensaje.maxLength}`;
+    });
+
+    function cargando(activo: boolean) {
+      boton.disabled = activo;
+      boton.querySelector('[data-enviar-texto]')!.textContent = activo ? 'Enviando…' : 'Enviar mensaje';
+      boton.querySelector('[data-enviar-icono]')!.classList.toggle('hidden', activo);
+      boton.querySelector('[data-enviar-cargando]')!.classList.toggle('hidden', !activo);
+    }
+
+    function mostrarError(texto: string, datos: Record<string, string>) {
+      alertaTexto.textContent = texto;
+      respaldo.href = urlWhatsApp(
+        `Hola, soy ${datos.nombre ?? ''}. ${datos.mensaje ?? ''}`.trim(),
+      );
+      alerta.classList.replace('hidden', 'flex');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alerta.classList.replace('flex', 'hidden');
+
+      const invalidos = campos.filter((c) => !validar(c));
+      if (invalidos.length > 0) {
+        invalidos[0]!.focus();
+        return;
+      }
+
+      const datos = Object.fromEntries(new FormData(form)) as Record<string, string>;
+      cargando(true);
+      try {
+        const r = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(datos),
+        });
+        const cuerpo = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+        if (!r.ok || !cuerpo.ok) {
+          mostrarError(
+            r.status === 503
+              ? 'El envío por correo no está disponible en este momento.'
+              : cuerpo.error ?? 'No pudimos enviar tu mensaje.',
+            datos,
+          );
+          return;
+        }
+        raiz.querySelector('[data-exito-nombre]')!.textContent = datos.nombre?.split(' ')[0] ?? '';
+        form.classList.add('hidden');
+        exito.classList.replace('hidden', 'flex');
+        exito.focus();
+        form.reset();
+        contador.textContent = `0 / ${mensaje.maxLength}`;
+      } catch {
+        mostrarError('Parece que no hay conexión. Intenta de nuevo.', datos);
+      } finally {
+        cargando(false);
+      }
+    });
+
+    raiz.querySelector('[data-otro]')!.addEventListener('click', () => {
+      exito.classList.replace('flex', 'hidden');
+      form.classList.remove('hidden');
+      (form.elements.namedItem('nombre') as HTMLInputElement).focus();
+    });
+  }
+</script>

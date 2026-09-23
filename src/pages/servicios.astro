@@ -1,0 +1,135 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import PromoBanner from '@/components/PromoBanner.astro';
+import PaymentMethods from '@/components/PaymentMethods.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { negocio } from '@/lib/negocio';
+import { obtenerPromociones, obtenerServicios } from '@/lib/api';
+import { formatearPrecio, textoPrecio } from '@/lib/utils';
+
+// Hoy vienen de negocio.ts; cuando exista la API, de ahí (ver src/lib/api.ts).
+const servicios = await obtenerServicios();
+const promociones = await obtenerPromociones();
+const tarjeta = negocio.pagos.metodos.find((m) => m.id === 'tarjeta');
+
+const jsonLdServicios = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `Servicios de ${negocio.nombre}`,
+  itemListElement: servicios.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Service',
+      name: s.nombre,
+      description: s.descripcion,
+      provider: { '@id': `${negocio.sitio.url}/#negocio` },
+      areaServed: `${negocio.ubicacion.ciudad}, ${negocio.ubicacion.estado}`,
+    },
+  })),
+};
+---
+
+<PageLayout
+  title="Servicios y precios"
+  eyebrow="Servicios"
+  encabezado="Servicios y precios base"
+  lead={`Fotocopias, impresión, engargolado, enmicado y más en ${negocio.ubicacion.ciudad}. Precios claros, trabajo al momento.`}
+  description={`Servicios de ${negocio.nombre} en San Luis Potosí: fotocopias, impresión digital, engargolado, enmicado, pago de servicios, envoltura de regalos y recargas. Consulta precios.`}
+  jsonLd={[jsonLdServicios]}
+>
+  <section class="py-16 sm:py-24" aria-labelledby="lista-servicios">
+    <h2 id="lista-servicios" class="sr-only">Todos los servicios</h2>
+    <div class="container-page">
+      <!-- TODO(Carrito): Integración future con API — filtros por categoría y "Agregar a cotización" -->
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {servicios.map((s, i) => <ServiceCard servicio={s} retraso={(i % 3) * 80} />)}
+      </div>
+      <p class="mt-8 flex items-start gap-2 text-sm text-gray-500" data-reveal>
+        <Icon name="alert-circle" size={16} class="mt-0.5 shrink-0" />
+        Precios base en pesos mexicanos (MXN), sujetos a cambio sin previo aviso. El precio final depende del tamaño,
+        tipo de papel y cantidad.
+      </p>
+    </div>
+  </section>
+
+  {
+    promociones.length > 0 && (
+      <div class="container-page grid gap-8 pb-16 sm:pb-24">
+        {promociones.map((p) => (
+          <PromoBanner promo={p} />
+        ))}
+      </div>
+    )
+  }
+
+  <!-- Tabla resumen de precios -->
+  <section class="bg-gray-50 py-16 sm:py-24" aria-labelledby="precios-titulo">
+    <div class="container-page grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <SectionHeading
+          id="precios-titulo"
+          alineacion="left"
+          eyebrow="Lista de precios"
+          titulo="Precios base de un vistazo"
+          descripcion="Para trabajos grandes o especiales, pídenos una cotización sin compromiso."
+        />
+      </div>
+      <div class="lg:col-span-7" data-reveal>
+        <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-soft">
+          <table class="w-full text-left">
+            <caption class="sr-only">Precios base de los servicios</caption>
+            <thead class="bg-navy text-sm text-white">
+              <tr>
+                <th scope="col" class="px-5 py-4 font-semibold">Servicio</th>
+                <th scope="col" class="px-5 py-4 text-right font-semibold">Precio base</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              {
+                servicios.map((s) => (
+                  <tr class="transition-colors hover:bg-gray-50">
+                    <th scope="row" class="px-5 py-4 font-medium text-navy">
+                      <a href={`#${s.id}`} class="hover:text-primary">
+                        {s.nombre}
+                        {s.alias && <span class="font-normal text-gray-500"> ({s.alias.toLowerCase()})</span>}
+                      </a>
+                      {s.precio.unidad && <span class="block text-sm font-normal text-gray-500">{s.precio.unidad}</span>}
+                    </th>
+                    <td class="px-5 py-4 text-right font-semibold whitespace-nowrap text-navy tabular-nums">
+                      {textoPrecio(s.precio)}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-24" aria-labelledby="pagos-titulo">
+    <div class="container-page">
+      <SectionHeading
+        id="pagos-titulo"
+        eyebrow="Formas de pago"
+        titulo="Paga como prefieras"
+        descripcion={tarjeta?.minimo
+          ? `Con tarjeta la compra mínima es de ${formatearPrecio(tarjeta.minimo)}. En efectivo y transferencia no hay mínimo.`
+          : undefined}
+      />
+      <div class="mx-auto mt-12 max-w-4xl">
+        <PaymentMethods />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    titulo="¿Tienes un trabajo especial?"
+    descripcion="Tesis, impresiones en volumen o listas escolares completas: cuéntanos y te cotizamos al momento."
+  />
+</PageLayout>

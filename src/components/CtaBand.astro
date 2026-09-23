@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+import { negocio } from '@/lib/negocio';
+import { urlTelefono, urlWhatsApp } from '@/lib/utils';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+}
+const {
+  titulo = '¿Necesitas una cotización rápida?',
+  descripcion = 'Mándanos tu archivo o tu lista por WhatsApp y te respondemos con precio y tiempo de entrega.',
+} = Astro.props;
+---
+
+<section class="container-page py-16 sm:py-24" aria-labelledby="cta-titulo">
+  <div
+    data-reveal
+    class="relative isolate overflow-hidden rounded-[2rem] bg-yellow px-6 py-12 text-center sm:px-12 sm:py-16"
+  >
+    <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+      <div class="bg-grid-light absolute inset-0"></div>
+      <div class="absolute -top-24 left-1/2 size-96 -translate-x-1/2 rounded-full bg-white/40 blur-3xl"></div>
+    </div>
+    <h2 id="cta-titulo" class="mx-auto max-w-2xl text-3xl font-bold sm:text-4xl">{titulo}</h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-navy/80">{descripcion}</p>
+    <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+      <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-navy h-14 px-7 text-base">
+        <Icon name="whatsapp" size={20} />
+        Escribir por WhatsApp
+      </a>
+      <a href={urlTelefono()} class="btn h-14 border border-navy/20 bg-white/50 px-7 text-base text-navy hover:bg-white">
+        <Icon name="phone" size={18} />
+        {negocio.contacto.telefono}
+      </a>
+    </div>
+  </div>
+</section>

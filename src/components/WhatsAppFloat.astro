@@ -1,0 +1,46 @@
+---
+/**
+ * Botón flotante de WhatsApp: discreto (solo ícono), aparece tras hacer un poco
+ * de scroll para no competir con el CTA principal del hero.
+ */
+import Icon from './Icon.astro';
+import { urlWhatsApp } from '@/lib/utils';
+---
+
+<aside aria-label="Contacto rápido por WhatsApp">
+<a
+  id="whatsapp-flotante"
+  href={urlWhatsApp()}
+  target="_blank"
+  rel="noopener"
+  aria-label="Escríbenos por WhatsApp"
+  data-visible="true"
+  class="group fixed right-4 bottom-4 z-40 inline-flex size-14 items-center justify-center rounded-full bg-green-700 text-white shadow-[0_12px_30px_-8px_rgb(63_122_28/0.65)] ring-4 ring-white transition-[transform,opacity,background-color] duration-300 ease-out hover:scale-105 hover:bg-[#356817] data-[visible=false]:pointer-events-none data-[visible=false]:translate-y-4 data-[visible=false]:opacity-0 sm:right-6 sm:bottom-6"
+>
+  <Icon name="whatsapp" size={28} />
+  <span
+    class="pointer-events-none absolute right-full mr-3 hidden rounded-full bg-navy px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 sm:block"
+    aria-hidden="true"
+  >
+    ¿Dudas? Escríbenos
+  </span>
+</a>
+</aside>
+
+<script>
+  const boton = document.getElementById('whatsapp-flotante');
+  if (boton) {
+    // Se oculta mientras el hero (con su propio CTA) está visible.
+    const hero = document.querySelector('[data-hero]');
+    if (hero) {
+      const mostrar = (visible: boolean) => {
+        boton.dataset.visible = String(visible);
+        // Oculto = fuera del orden de tabulación y del árbol de accesibilidad.
+        boton.tabIndex = visible ? 0 : -1;
+        boton.setAttribute('aria-hidden', String(!visible));
+      };
+      mostrar(false);
+      new IntersectionObserver(([e]) => mostrar(!e!.isIntersecting), { threshold: 0.35 }).observe(hero);
+    }
+  }
+</script>

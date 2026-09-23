@@ -1,0 +1,70 @@
+---
+import Icon from './Icon.astro';
+import type { Promocion } from '@/lib/negocio';
+import { urlWhatsApp } from '@/lib/utils';
+
+interface Props {
+  promo: Promocion;
+}
+const { promo } = Astro.props;
+---
+
+<section
+  id={promo.id}
+  aria-labelledby={`${promo.id}-titulo`}
+  data-reveal
+  class="on-dark relative isolate scroll-mt-28 overflow-hidden rounded-[2rem] bg-navy px-6 py-10 text-white sm:px-10 sm:py-14 lg:px-14"
+>
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="bg-grid absolute inset-0 opacity-70"></div>
+    <div class="absolute -top-20 -right-20 size-80 rounded-full bg-yellow/25 blur-3xl"></div>
+    <div class="absolute -bottom-24 -left-10 size-72 rounded-full bg-primary/50 blur-3xl"></div>
+  </div>
+
+  <div class="grid items-center gap-10 lg:grid-cols-[1fr_auto]">
+    <div>
+      <p
+        class="inline-flex items-center gap-2 rounded-full bg-yellow/15 px-3.5 py-1.5 text-sm font-semibold text-yellow ring-1 ring-yellow/30"
+      >
+        <Icon name="sparkles" size={16} />
+        {promo.vigencia}
+      </p>
+      <h2 id={`${promo.id}-titulo`} class="mt-5 text-3xl font-bold text-white sm:text-4xl">
+        {promo.titulo}: <span class="text-yellow">{promo.descuento}% de descuento</span>
+      </h2>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-white/80">{promo.descripcion}</p>
+      <ul class="mt-6 space-y-2">
+        {
+          promo.condiciones.map((c) => (
+            <li class="flex gap-2.5 text-white/75">
+              <Icon name="check" size={18} class="mt-0.5 shrink-0 text-green" />
+              {c}
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href={urlWhatsApp(promo.mensajeWhatsApp)} target="_blank" rel="noopener" class="btn btn-primary">
+          <Icon name="whatsapp" size={18} />
+          Envíanos tu lista
+        </a>
+        <a href="/ubicacion" class="btn btn-outline-light">
+          <Icon name="map-pin" size={18} />
+          Visítanos
+        </a>
+      </div>
+    </div>
+
+    <!-- Sello de descuento -->
+    <div class="relative mx-auto grid size-48 place-items-center sm:size-56" aria-hidden="true">
+      <div class="absolute inset-0 rotate-6 rounded-[2.5rem] bg-yellow shadow-glow transition-transform duration-500 hover:rotate-0"></div>
+      <div class="relative text-center text-navy">
+        <Icon name="clipboard-list" size={34} class="mx-auto" />
+        <p class="font-display text-6xl leading-none font-bold sm:text-7xl">
+          {promo.descuento}<span class="text-4xl">%</span>
+        </p>
+        <p class="mt-1 text-sm font-bold tracking-[0.2em] uppercase">de descuento</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,38 @@
+---
+import { cx } from '@/lib/utils';
+
+interface Props {
+  eyebrow?: string;
+  titulo: string;
+  descripcion?: string;
+  alineacion?: 'center' | 'left';
+  id?: string;
+  /** Sobre fondo oscuro. */
+  oscuro?: boolean;
+  as?: 'h1' | 'h2';
+}
+const { eyebrow, titulo, descripcion, alineacion = 'center', id, oscuro = false, as: Titulo = 'h2' } = Astro.props;
+---
+
+<div data-reveal class={cx('max-w-2xl', alineacion === 'center' && 'mx-auto text-center')}>
+  {
+    eyebrow && (
+      <p class={cx('eyebrow', oscuro && 'text-yellow', alineacion === 'center' && 'justify-center')}>
+        <span class={cx('h-px w-6', oscuro ? 'bg-yellow' : 'bg-primary')} aria-hidden="true" />
+        {eyebrow}
+      </p>
+    )
+  }
+  <Titulo
+    id={id}
+    class={cx('mt-3 text-3xl leading-tight font-bold sm:text-4xl lg:text-[2.75rem]', oscuro && 'text-white')}
+  >
+    {titulo}
+  </Titulo>
+  {
+    descripcion && (
+      <p class={cx('mt-4 text-lg leading-relaxed', oscuro ? 'text-white/75' : 'text-gray-600')}>{descripcion}</p>
+    )
+  }
+  <slot />
+</div>

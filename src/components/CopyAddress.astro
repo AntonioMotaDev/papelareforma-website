@@ -1,0 +1,55 @@
+---
+/** Dirección con botón "Copiar" (Clipboard API) y confirmación accesible. */
+import Icon from './Icon.astro';
+import { direccionCompleta } from '@/lib/utils';
+
+const direccion = direccionCompleta();
+---
+
+<div class="flex flex-col gap-3 rounded-2xl border border-gray-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+  <address class="flex gap-3 not-italic text-gray-700">
+    <Icon name="map-pin" size={20} class="mt-0.5 shrink-0 text-primary" />
+    <span data-direccion>{direccion}</span>
+  </address>
+  <button
+    type="button"
+    data-copiar-direccion
+    class="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-navy transition-[background-color,border-color,transform] hover:border-navy/30 hover:bg-gray-50 active:scale-95 data-[copiado=true]:border-green-700/30 data-[copiado=true]:bg-green-50 data-[copiado=true]:text-green-700"
+  >
+    <Icon name="copy" size={16} />
+    <span data-etiqueta>Copiar dirección</span>
+  </button>
+  <span class="sr-only" aria-live="polite" data-anuncio></span>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copiar-direccion]').forEach((boton) => {
+    const contenedor = boton.parentElement!;
+    const texto = contenedor.querySelector('[data-direccion]')!.textContent ?? '';
+    const etiqueta = boton.querySelector('[data-etiqueta]')!;
+    const anuncio = contenedor.querySelector('[data-anuncio]')!;
+    let temporizador: number | undefined;
+
+    boton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(texto.trim());
+        boton.dataset.copiado = 'true';
+        etiqueta.textContent = '¡Dirección copiada!';
+        anuncio.textContent = 'Dirección copiada al portapapeles';
+      } catch {
+        // Respaldo: seleccionar el texto para copiarlo manualmente.
+        const rango = document.createRange();
+        rango.selectNodeContents(contenedor.querySelector('[data-direccion]')!);
+        getSelection()?.removeAllRanges();
+        getSelection()?.addRange(rango);
+        etiqueta.textContent = 'Presiona Ctrl+C para copiar';
+      }
+      clearTimeout(temporizador);
+      temporizador = window.setTimeout(() => {
+        boton.dataset.copiado = 'false';
+        etiqueta.textContent = 'Copiar dirección';
+        anuncio.textContent = '';
+      }, 2500);
+    });
+  });
+</script>

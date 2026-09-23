@@ -1,0 +1,27 @@
+---
+import Icon from './Icon.astro';
+import { negocio } from '@/lib/negocio';
+import { formatearPrecio } from '@/lib/utils';
+---
+
+<ul class="grid gap-4 sm:grid-cols-3">
+  {
+    negocio.pagos.metodos.map((m, i) => (
+      <li
+        data-reveal
+        style={`--reveal-delay:${i * 80}ms`}
+        class="flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-5 transition-shadow hover:shadow-soft"
+      >
+        <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-green-50 text-green-700">
+          <Icon name={m.icono} size={24} />
+        </span>
+        <span>
+          <span class="block font-semibold text-navy">{m.nombre}</span>
+          <span class="block text-sm text-gray-500">
+            {m.minimo === null ? 'Sin monto mínimo' : `Compra mínima ${formatearPrecio(m.minimo)} ${negocio.pagos.moneda}`}
+          </span>
+        </span>
+      </li>
+    ))
+  }
+</ul>

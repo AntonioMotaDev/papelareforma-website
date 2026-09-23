@@ -1,0 +1,131 @@
+---
+import Logo from './Logo.astro';
+import Icon, { type NombreIcono } from './Icon.astro';
+import { negocio } from '@/lib/negocio';
+import {
+  agruparHorarios,
+  direccionCompleta,
+  formatearTurnos,
+  urlCorreo,
+  urlGoogleMaps,
+  urlTelefono,
+  urlWhatsApp,
+} from '@/lib/utils';
+
+const grupos = agruparHorarios();
+const anio = new Date().getFullYear();
+const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram: 'instagram', TikTok: 'tiktok' };
+---
+
+<footer class="on-dark relative overflow-hidden bg-navy-950 text-white/75">
+  <div class="bg-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute -top-32 -right-24 size-80 rounded-full bg-primary/30 blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container-page relative grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:py-20">
+    <div class="lg:col-span-4">
+      <a href="/" class="inline-block rounded-lg" aria-label={`${negocio.nombre} — Inicio`}>
+        <Logo fondo="dark" alto={44} />
+      </a>
+      <p class="mt-5 max-w-sm text-[0.95rem] leading-relaxed">
+        {negocio.eslogan}. Más de {negocio.experiencia.anios} años atendiendo a familias, estudiantes y
+        negocios de {negocio.ubicacion.ciudad}.
+      </p>
+      {
+        negocio.redes.length > 0 && (
+          <ul class="mt-6 flex gap-2" aria-label="Redes sociales">
+            {negocio.redes.map((red) => (
+              <li>
+                <a
+                  href={red.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:-translate-y-0.5 hover:bg-yellow hover:text-navy"
+                  aria-label={`${red.nombre} (${red.usuario})`}
+                >
+                  <Icon name={iconoRed[red.nombre] ?? 'external-link'} size={20} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+      <p class="mt-6 text-sm text-white/60">{negocio.seo.hashtags.join(' ')}</p>
+    </div>
+
+    <nav aria-label="Pie de página" class="lg:col-span-2">
+      <h2 class="font-display text-sm font-semibold tracking-[0.14em] text-white uppercase">Explora</h2>
+      <ul class="mt-5 space-y-3 text-[0.95rem]">
+        {
+          negocio.sitio.navegacion.map((item) => (
+            <li>
+              <a href={item.href} class="transition-colors hover:text-yellow">
+                {item.etiqueta}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="lg:col-span-3">
+      <h2 class="font-display text-sm font-semibold tracking-[0.14em] text-white uppercase">Contacto</h2>
+      <ul class="mt-5 space-y-4 text-[0.95rem]">
+        <li>
+          <a href={urlGoogleMaps()} target="_blank" rel="noopener" class="group flex gap-3 hover:text-yellow">
+            <Icon name="map-pin" size={18} class="mt-0.5 shrink-0 text-yellow" />
+            <address class="not-italic">{direccionCompleta()}</address>
+          </a>
+        </li>
+        <li>
+          <a href={urlTelefono()} class="flex gap-3 hover:text-yellow">
+            <Icon name="phone" size={18} class="mt-0.5 shrink-0 text-yellow" />
+            {negocio.contacto.telefono}
+          </a>
+        </li>
+        <li>
+          <a href={urlWhatsApp()} target="_blank" rel="noopener" class="flex gap-3 hover:text-yellow">
+            <Icon name="whatsapp" size={18} class="mt-0.5 shrink-0 text-yellow" />
+            WhatsApp
+          </a>
+        </li>
+        <li>
+          <a href={urlCorreo()} class="flex gap-3 break-all hover:text-yellow">
+            <Icon name="mail" size={18} class="mt-0.5 shrink-0 text-yellow" />
+            {negocio.contacto.correo}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-3">
+      <h2 class="font-display text-sm font-semibold tracking-[0.14em] text-white uppercase">Horario</h2>
+      <dl class="mt-5 space-y-4 text-[0.95rem]">
+        {
+          grupos.map((g) => (
+            <div>
+              <dt class="font-semibold text-white">{g.etiqueta}</dt>
+              <dd>{formatearTurnos(g.turnos)}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-4 flex gap-2 text-sm text-white/60">
+        <Icon name="coffee" size={16} class="mt-0.5 shrink-0" />
+        {negocio.avisoReceso}
+      </p>
+    </div>
+  </div>
+
+  <div class="relative border-t border-white/10">
+    <div
+      class="container-page flex flex-col gap-2 py-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {anio} {negocio.nombre}. Todos los derechos reservados.</p>
+      <p>Hecho con orgullo en {negocio.ubicacion.ciudad}, {negocio.ubicacion.estado}</p>
+    </div>
+  </div>
+</footer>

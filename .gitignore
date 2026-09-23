@@ -1,0 +1,25 @@
+# build
+dist/
+.astro/
+
+# dependencias
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# entorno
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# cloudflare / wrangler
+.wrangler/
+
+# sistema
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
