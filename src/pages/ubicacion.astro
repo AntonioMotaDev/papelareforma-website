@@ -6,7 +6,7 @@ import CopyAddress from '@/components/CopyAddress.astro';
 import OpenStatus from '@/components/OpenStatus.astro';
 import Icon from '@/components/Icon.astro';
 import { negocio } from '@/lib/negocio';
-import { resumenHorarios, urlComoLlegar, urlGoogleMaps, urlTelefono, urlWhatsApp } from '@/lib/utils';
+import { resumenHorarios, urlComoLlegar, urlGoogleMaps, urlWhatsApp } from '@/lib/utils';
 
 const abreDiario = negocio.horarios.every((h) => h.turnos.length > 0);
 ---
@@ -73,9 +73,9 @@ const abreDiario = negocio.horarios.every((h) => h.turnos.length > 0);
       <h2 id="antes-titulo" class="text-center text-3xl font-bold" data-reveal>Antes de venir</h2>
       <ul class="mx-auto mt-10 grid max-w-5xl gap-5 md:grid-cols-3">
         <li class="card p-6" data-reveal>
-          <Icon name="coffee" size={26} class="text-primary" />
-          <h3 class="mt-4 text-lg font-semibold">Receso de comida</h3>
-          <p class="mt-2 text-gray-600">{negocio.avisoReceso}</p>
+          <Icon name="clock" size={26} class="text-primary" />
+          <h3 class="mt-4 text-lg font-semibold">Horario corrido</h3>
+          <p class="mt-2 text-gray-600">No cerramos a comer. {resumenHorarios()}</p>
         </li>
         <li class="card p-6" data-reveal style="--reveal-delay:80ms">
           <Icon name="whatsapp" size={26} class="text-green-700" />
@@ -87,10 +87,10 @@ const abreDiario = negocio.horarios.every((h) => h.turnos.length > 0);
           </p>
         </li>
         <li class="card p-6" data-reveal style="--reveal-delay:160ms">
-          <Icon name="phone" size={26} class="text-primary" />
-          <h3 class="mt-4 text-lg font-semibold">¿Dudas? Llámanos</h3>
+          <Icon name="whatsapp" size={26} class="text-green-700" />
+          <h3 class="mt-4 text-lg font-semibold">¿Dudas? Escríbenos</h3>
           <p class="mt-2 text-gray-600">
-            Te atendemos al <a href={urlTelefono()} class="link">{negocio.contacto.telefono}</a> en horario de atención.
+            Te atendemos por <a href={urlWhatsApp()} target="_blank" rel="noopener" class="link">WhatsApp</a> al {negocio.contacto.telefono}. No tomamos llamadas.
           </p>
         </li>
       </ul>

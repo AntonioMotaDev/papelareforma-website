@@ -32,7 +32,7 @@ Requiere Node 18.20.8 o superior (el proyecto fija Node 22 en `.node-version`).
 | -------------------------- | ------------------------------------------ |
 | Teléfono / WhatsApp / correo | `contacto`                               |
 | Dirección, C.P., coordenadas | `ubicacion`                              |
-| Horarios y recesos         | `horarios` (varios `turnos` = hay receso) y `avisoReceso` |
+| Horarios                   | `horarios` (varios `turnos` en un día = hay receso) |
 | Servicios y precios        | `servicios` (`precio.monto: null` = "Consulta en tienda") |
 | Promociones                | `promociones` (`activa: false` para ocultarla) |
 | Formas de pago             | `pagos.metodos`                            |
@@ -53,14 +53,21 @@ Busca `TODO(Datos)` en el código:
 - [ ] Código postal
 - [ ] Año de fundación e historia real (página *Nosotros*)
 - [ ] Redes sociales
-- [ ] Dominio definitivo (`sitio.url` en `negocio.ts` y la variable `SITE_URL`)
+- [x] Dominio: `lapapeslp.com` (`sitio.url` en `negocio.ts` y la variable `SITE_URL`)
 
 ### Logos y fotos
 
-Coloca los archivos en `src/assets/` y el sitio los usa automáticamente, optimizados (WebP, `srcset`, lazy loading):
+Los archivos de marca salen de `PAPE/Branding/Oficial/`:
 
-| Archivo                                        | Se usa en                          |
-| ---------------------------------------------- | ---------------------------------- |
+| Archivo | Origen | Se usa en |
+| --- | --- | --- |
+| `src/assets/logos/logo-horizontal-negativo.svg` | `Logotipo-Horizontal-Vector.svg` sin fondo y con los azules en blanco (versión para fondo azul marino del manual) | Header y footer |
+| `public/favicon.svg` | `isotipo_Vector.svg` sin fondo y recortado | Favicon; fuente de `node scripts/generar-iconos.mjs` |
+| `public/og-image.png` | `Logo_Horizontal_Bco_SinFondo.png` sobre blanco, 1200×630 | Imagen al compartir en redes |
+
+Fotos opcionales: `src/assets/images/fachada.jpg` (hero, mín. 1600 px) y `equipo.jpg` (Nosotros, mín. 1200 px). Mientras no existan se muestran composiciones de marca.
+
+---------------------------------------------- | ---------------------------------- |
 | `src/assets/logos/Logo_Horizontal_Bco_SinFondo.png` | Header y footer (fondo navy)  |
 | `src/assets/logos/isotipo.png`                 | Versión compacta del logo          |
 | `src/assets/images/fachada.jpg`                | Hero de inicio (mín. 1600 px)      |
@@ -125,14 +132,14 @@ El verde de marca `#71B637` no alcanza contraste AA como texto sobre blanco, por
 
    | Variable            | Tipo    | Para qué                                                    |
    | ------------------- | ------- | ----------------------------------------------------------- |
-   | `SITE_URL`          | texto   | Dominio público (canonical, sitemap, OG). Ej. `https://papeleriareforma.mx` |
+   | `SITE_URL`          | texto   | Dominio público (canonical, sitemap, OG). Ej. `https://lapapeslp.com` |
    | `RESEND_API_KEY`    | secreto | Envío de correos del formulario ([resend.com](https://resend.com)) |
    | `CONTACTO_DESTINO`  | texto   | Correo(s) que reciben los mensajes (separados por coma)     |
    | `CONTACTO_REMITENTE`| texto   | Remitente verificado en Resend. Ej. `Sitio web <sitio@papeleriareforma.mx>` |
    | `PUBLIC_API_URL`    | texto   | (Futuro) URL del backend del sistema interno                |
 
 4. Guarda y despliega. Cada push a `main` publica producción; cada PR genera una URL de vista previa.
-5. **Dominio propio:** Custom domains → agrega `papeleriareforma.mx` y actualiza `SITE_URL` y `sitio.url`.
+5. **Dominio propio:** Custom domains → agrega `lapapeslp.com` (y `www.lapapeslp.com`).
 
 **Formulario sin configurar:** si falta `RESEND_API_KEY`, `/api/contacto` responde 503 y el sitio ofrece WhatsApp con el mensaje ya escrito, así que nunca se pierde un cliente. Para probarlo en local, copia `.dev.vars.example` a `.dev.vars` y ejecuta `npm run pages:dev`.
 

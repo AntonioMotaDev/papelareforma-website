@@ -1,6 +1,5 @@
 ---
 /** Tabla de horarios. El día de hoy (hora de SLP) se resalta en el navegador. */
-import Icon from './Icon.astro';
 import { negocio } from '@/lib/negocio';
 import { formatearTurno } from '@/lib/utils';
 ---
@@ -50,11 +49,6 @@ import { formatearTurno } from '@/lib/utils';
     </tbody>
   </table>
 </div>
-
-<p class="mt-4 flex items-start gap-3 rounded-2xl bg-yellow-50 px-4 py-3 text-sm text-navy ring-1 ring-yellow/40">
-  <Icon name="coffee" size={18} class="mt-0.5 shrink-0" />
-  <span><strong>Aviso de receso:</strong> {negocio.avisoReceso}</span>
-</p>
 
 <script>
   import { ahoraEnNegocio } from '@/lib/utils';

@@ -15,11 +15,11 @@ const png = (size, pad = 0, fondo = { r: 0, g: 0, b: 0, alpha: 0 }) =>
     .png()
     .toBuffer();
 
-const navy = { r: 2, g: 63, b: 119, alpha: 1 };
-await writeFile('public/apple-touch-icon.png', await png(180, 18, navy));
+const blanco = { r: 255, g: 255, b: 255, alpha: 1 };
+await writeFile('public/apple-touch-icon.png', await png(180, 18, blanco));
 await writeFile('public/icons/icon-192.png', await png(192));
 await writeFile('public/icons/icon-512.png', await png(512));
-await writeFile('public/icons/icon-maskable-512.png', await png(512, 80, navy));
+await writeFile('public/icons/icon-maskable-512.png', await png(512, 80, blanco));
 
 // favicon.ico con una imagen PNG de 32×32 (formato ICO con PNG embebido).
 const ico32 = await png(32);

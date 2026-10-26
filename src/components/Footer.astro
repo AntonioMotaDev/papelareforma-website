@@ -8,7 +8,6 @@ import {
   formatearTurnos,
   urlCorreo,
   urlGoogleMaps,
-  urlTelefono,
   urlWhatsApp,
 } from '@/lib/utils';
 
@@ -28,7 +27,7 @@ const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram:
   <div class="container-page relative grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:py-20">
     <div class="lg:col-span-4">
       <a href="/" class="inline-block rounded-lg" aria-label={`${negocio.nombre} — Inicio`}>
-        <Logo fondo="dark" alto={44} />
+        <Logo alto={48} />
       </a>
       <p class="mt-5 max-w-sm text-[0.95rem] leading-relaxed">
         {negocio.eslogan}. Más de {negocio.experiencia.anios} años atendiendo a familias, estudiantes y
@@ -53,7 +52,6 @@ const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram:
           </ul>
         )
       }
-      <p class="mt-6 text-sm text-white/60">{negocio.seo.hashtags.join(' ')}</p>
     </div>
 
     <nav aria-label="Pie de página" class="lg:col-span-2">
@@ -81,15 +79,9 @@ const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram:
           </a>
         </li>
         <li>
-          <a href={urlTelefono()} class="flex gap-3 hover:text-yellow">
-            <Icon name="phone" size={18} class="mt-0.5 shrink-0 text-yellow" />
-            {negocio.contacto.telefono}
-          </a>
-        </li>
-        <li>
           <a href={urlWhatsApp()} target="_blank" rel="noopener" class="flex gap-3 hover:text-yellow">
             <Icon name="whatsapp" size={18} class="mt-0.5 shrink-0 text-yellow" />
-            WhatsApp
+            WhatsApp {negocio.contacto.telefono}
           </a>
         </li>
         <li>
@@ -113,10 +105,6 @@ const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram:
           ))
         }
       </dl>
-      <p class="mt-4 flex gap-2 text-sm text-white/60">
-        <Icon name="coffee" size={16} class="mt-0.5 shrink-0" />
-        {negocio.avisoReceso}
-      </p>
     </div>
   </div>
 
@@ -125,7 +113,10 @@ const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram:
       class="container-page flex flex-col gap-2 py-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between"
     >
       <p>© {anio} {negocio.nombre}. Todos los derechos reservados.</p>
-      <p>Hecho con orgullo en {negocio.ubicacion.ciudad}, {negocio.ubicacion.estado}</p>
+      <p>
+        Sitio desarrollado por{' '}
+        <a href="https://forma01.net" target="_blank" rel="noopener" class="font-semibold text-white/80 underline-offset-4 hover:text-yellow hover:underline">FORMA/01</a>
+      </p>
     </div>
   </div>
 </footer>

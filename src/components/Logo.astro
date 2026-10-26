@@ -1,88 +1,31 @@
 ---
 /**
- * Logo de Papelería La Reforma.
- *
- * Coloca los archivos oficiales en `src/assets/logos/` y se usarán
- * automáticamente (optimizados por Astro):
- *   - Logo_Horizontal_Bco_SinFondo.png → logo blanco para fondos oscuros (header/footer)
- *   - Logo_Horizontal_SinFondo.png      → (opcional) logo a color para fondos claros
- *   - isotipo.png                       → (opcional) isotipo para la versión compacta
- * Mientras no existan, se muestra un logotipo tipográfico equivalente.
+ * Logotipo horizontal en negativo ("PAPE" y descriptor en blanco), para los
+ * fondos azul marino del header y el footer, como pide el manual de marca.
+ * Se generó de Branding/Oficial/Logotipo-Horizontal-Vector.svg quitando el fondo
+ * y pasando los azules a blanco.
  */
 import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
+import logo from '@/assets/logos/logo-horizontal-negativo.svg';
 import { negocio } from '@/lib/negocio';
 import { cx } from '@/lib/utils';
 
 interface Props {
-  /** `dark` = el logo va sobre fondo oscuro (texto blanco). */
-  fondo?: 'dark' | 'light';
   class?: string;
   /** Altura en px del logo. */
   alto?: number;
   eager?: boolean;
 }
 
-const { fondo = 'dark', class: clase, alto = 40, eager = false } = Astro.props;
-
-const archivos = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{png,jpg,jpeg,webp,svg}', {
-  eager: true,
-});
-const buscar = (nombre: string) =>
-  Object.entries(archivos).find(([ruta]) => ruta.endsWith(`/${nombre}`))?.[1]?.default;
-
-const logo = fondo === 'dark' ? buscar('Logo_Horizontal_Bco_SinFondo.png') : buscar('Logo_Horizontal_SinFondo.png');
-const isotipo = buscar('isotipo.png');
+const { class: clase, alto = 40, eager = false } = Astro.props;
 ---
 
-{
-  logo ? (
-    <Image
-      src={logo}
-      alt={negocio.nombre}
-      height={alto}
-      densities={[1, 2]}
-      loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager ? 'high' : undefined}
-      class={cx('w-auto', clase)}
-      style={`height:${alto}px`}
-    />
-  ) : (
-    <span class={cx('inline-flex items-center gap-2.5', clase)}>
-      {isotipo ? (
-        <Image src={isotipo} alt="" width={alto} height={alto} densities={[1, 2]} class="shrink-0" />
-      ) : (
-        <svg
-          width={alto}
-          height={alto}
-          viewBox="0 0 40 40"
-          aria-hidden="true"
-          class="shrink-0"
-        >
-          <rect width="40" height="40" rx="11" fill="#FEC513" />
-          <path d="M13 9h10l6 6v16a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2V11a2 2 0 0 1 2-2z" fill="#023F77" />
-          <path d="M23 9v4a2 2 0 0 0 2 2h4z" fill="#0A5CB5" />
-          <path d="M15 21h10M15 25.5h6.5" stroke="#71B637" stroke-width="2.4" stroke-linecap="round" />
-        </svg>
-      )}
-      <span class="flex flex-col leading-none">
-        <span
-          class={cx(
-            'text-[0.66rem] font-bold tracking-[0.26em] uppercase',
-            fondo === 'dark' ? 'text-yellow' : 'text-primary',
-          )}
-        >
-          Papelería
-        </span>
-        <span
-          class={cx(
-            'font-display text-[1.28rem] font-bold tracking-tight',
-            fondo === 'dark' ? 'text-white' : 'text-navy',
-          )}
-        >
-          La Reforma
-        </span>
-      </span>
-    </span>
-  )
-}
+<Image
+  src={logo}
+  alt={negocio.nombre}
+  height={alto}
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : undefined}
+  class={cx('w-auto', clase)}
+  style={`height:${alto}px`}
+/>

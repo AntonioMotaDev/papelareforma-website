@@ -45,10 +45,6 @@ export function urlWhatsApp(mensaje: string = negocio.contacto.mensajeWhatsAppGe
   return `https://wa.me/${negocio.contacto.whatsapp}?text=${encodeURIComponent(mensaje)}`;
 }
 
-export function urlTelefono(): string {
-  return `tel:${negocio.contacto.telefonoE164}`;
-}
-
 export function urlCorreo(asunto?: string): string {
   const base = `mailto:${negocio.contacto.correo}`;
   return asunto ? `${base}?subject=${encodeURIComponent(asunto)}` : base;
@@ -126,7 +122,7 @@ export function agruparHorarios(horarios: HorarioDia[] = negocio.horarios): Grup
   });
 }
 
-/** "Lunes a sábado: 9:00 – 16:00 · 17:00 – 21:00. Domingo: 12:00 – 17:00." */
+/** "Lunes a sábado: 9:00 – 21:00. Domingo: 12:00 – 17:00." */
 export function resumenHorarios(horarios: HorarioDia[] = negocio.horarios): string {
   return agruparHorarios(horarios)
     .map((g) => `${g.etiqueta}: ${formatearTurnos(g.turnos)}.`)

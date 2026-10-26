@@ -1,7 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { negocio } from '@/lib/negocio';
-import { urlTelefono, urlWhatsApp } from '@/lib/utils';
+import { urlWhatsApp } from '@/lib/utils';
 
 interface Props {
   titulo?: string;
@@ -28,10 +27,6 @@ const {
       <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-navy h-14 px-7 text-base">
         <Icon name="whatsapp" size={20} />
         Escribir por WhatsApp
-      </a>
-      <a href={urlTelefono()} class="btn h-14 border border-navy/20 bg-white/50 px-7 text-base text-navy hover:bg-white">
-        <Icon name="phone" size={18} />
-        {negocio.contacto.telefono}
       </a>
     </div>
   </div>

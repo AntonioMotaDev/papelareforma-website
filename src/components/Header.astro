@@ -3,7 +3,7 @@ import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import OpenStatus from './OpenStatus.astro';
 import { negocio } from '@/lib/negocio';
-import { cx, urlTelefono, urlWhatsApp } from '@/lib/utils';
+import { cx, urlWhatsApp } from '@/lib/utils';
 
 const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
 const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActual.startsWith(href));
@@ -15,7 +15,7 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
 >
   <div class="container-page flex h-[4.5rem] items-center justify-between gap-6">
     <a href="/" class="shrink-0 rounded-lg" aria-label={`${negocio.nombre} — Inicio`}>
-      <Logo fondo="dark" alto={40} eager />
+      <Logo alto={44} eager />
     </a>
 
     <nav aria-label="Principal" class="hidden lg:block">
@@ -42,14 +42,6 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
     </nav>
 
     <div class="flex items-center gap-2">
-      <a
-        href={urlTelefono()}
-        class="hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:text-white xl:inline-flex"
-      >
-        <Icon name="phone" size={16} />
-        {negocio.contacto.telefono}
-      </a>
-
       <!-- TODO(Carrito): Integración future con API -->
       {/* TODO(Carrito): botón de carrito. Ver src/lib/carrito.ts
       <a href="/carrito" class="relative inline-flex size-11 items-center justify-center rounded-full hover:bg-white/10" aria-label="Carrito (0 artículos)">
@@ -114,10 +106,6 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
           <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-primary w-full">
             <Icon name="whatsapp" size={18} />
             Cotiza por WhatsApp
-          </a>
-          <a href={urlTelefono()} class="btn btn-outline-light w-full">
-            <Icon name="phone" size={18} />
-            Llamar al {negocio.contacto.telefono}
           </a>
         </div>
       </nav>

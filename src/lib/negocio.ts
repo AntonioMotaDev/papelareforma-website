@@ -96,8 +96,7 @@ export interface RedSocial {
 
 // ─── Datos ───────────────────────────────────────────────────────────────────
 
-const turnoCompletoManana: Turno = { abre: '09:00', cierra: '16:00' };
-const turnoCompletoTarde: Turno = { abre: '17:00', cierra: '21:00' };
+const turnoCorrido: Turno = { abre: '09:00', cierra: '21:00' };
 
 export const negocio = {
   nombre: 'Papelería La Reforma',
@@ -144,17 +143,14 @@ export const negocio = {
   },
 
   horarios: [
-    { dia: 1, nombre: 'Lunes', turnos: [turnoCompletoManana, turnoCompletoTarde] },
-    { dia: 2, nombre: 'Martes', turnos: [turnoCompletoManana, turnoCompletoTarde] },
-    { dia: 3, nombre: 'Miércoles', turnos: [turnoCompletoManana, turnoCompletoTarde] },
-    { dia: 4, nombre: 'Jueves', turnos: [turnoCompletoManana, turnoCompletoTarde] },
-    { dia: 5, nombre: 'Viernes', turnos: [turnoCompletoManana, turnoCompletoTarde] },
-    { dia: 6, nombre: 'Sábado', turnos: [turnoCompletoManana, turnoCompletoTarde] },
+    { dia: 1, nombre: 'Lunes', turnos: [turnoCorrido] },
+    { dia: 2, nombre: 'Martes', turnos: [turnoCorrido] },
+    { dia: 3, nombre: 'Miércoles', turnos: [turnoCorrido] },
+    { dia: 4, nombre: 'Jueves', turnos: [turnoCorrido] },
+    { dia: 5, nombre: 'Viernes', turnos: [turnoCorrido] },
+    { dia: 6, nombre: 'Sábado', turnos: [turnoCorrido] },
     { dia: 0, nombre: 'Domingo', turnos: [{ abre: '12:00', cierra: '17:00' }] },
   ] satisfies HorarioDia[] as HorarioDia[],
-
-  /** Texto del aviso de receso (lunes a sábado). */
-  avisoReceso: 'De lunes a sábado cerramos de 16:00 a 17:00 para comer.',
 
   servicios: [
     {
@@ -279,8 +275,7 @@ export const negocio = {
   ] as const,
 
   sitio: {
-    // TODO(Datos): actualizar al dominio definitivo (también en astro.config.mjs vía SITE_URL).
-    url: 'https://papeleriareforma.mx',
+    url: 'https://lapapeslp.com',
     idioma: 'es-MX',
     locale: 'es_MX',
     colorTema: '#023F77',

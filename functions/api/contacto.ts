@@ -147,7 +147,7 @@ function responder(json: boolean, status: number, ok: boolean, error?: string): 
   const titulo = ok ? '¡Mensaje enviado!' : 'No pudimos enviar tu mensaje';
   const cuerpo = ok
     ? 'Gracias por escribirnos. Te responderemos lo antes posible en horario de atención.'
-    : `${escapar(error ?? '')} Puedes escribirnos por WhatsApp o llamarnos.`;
+    : `${escapar(error ?? '')} Puedes escribirnos por WhatsApp.`;
   const html = `<!doctype html><html lang="es-MX"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${titulo} | Papelería La Reforma</title></head>
 <body style="font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#F3F4F6;color:#374151">
 <main style="max-width:28rem;padding:2.5rem;background:#fff;border-radius:1.5rem;text-align:center">

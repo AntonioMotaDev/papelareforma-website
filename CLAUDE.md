@@ -42,8 +42,10 @@ Despliegue: push a `main` → Cloudflare Pages publica solo. Node 22 (`.node-ver
 - **Layouts**: `BaseLayout` (meta, OG, JSON-LD) → `PageLayout` (páginas internas + migas).
 - **Tailwind v4 sin `tailwind.config.js`**: tema (colores, fuentes, breakpoints) en `@theme` de
   `src/styles/global.css`. Alias `@/*` → `src/*`.
-- **Imágenes**: Astro optimiza lo que esté en `src/assets/`; si faltan logo/fotos, los componentes
-  muestran un fallback tipográfico.
+- **Logos**: `Logo.astro` usa `src/assets/logos/logo-horizontal-negativo.svg` (header y footer son
+  azul marino). Origen y regeneración de favicon/OG: sección "Logos y fotos" del README.
+- **Contacto solo por WhatsApp**: el negocio no toma llamadas; no agregues enlaces `tel:` ni
+  botones de llamar. El número se muestra como WhatsApp.
 
 ## Cosas fáciles de romper
 
@@ -63,6 +65,6 @@ El manual (`../../Branding/BRANDING-GUIDELINES.md`) define azul marino `#023F77`
 acento `#0A5CB5` (`primary`) y tipografía única **Nunito** (aplicados el 2026-10-26;
 `font-display` es solo un alias de `font-sans`). Al cambiar un color de marca, revisa también los
 hex sueltos en `Hero.astro`, `PageLayout.astro`, `Logo.astro`, `favicon.svg`, `site.webmanifest`,
-`negocio.ts` (`colorTema`) y `scripts/generar-iconos.mjs`, y regenera los íconos.
+y `negocio.ts` (`colorTema`), y regenera los íconos.
 Pendiente: el nombre en texto debe ser **"La Reforma"** (hoy "Papelería La Reforma" en
 `negocio.ts`) y las redes @PapeLaReforma siguen vacías. Datos de referencia: `../../Datos-Negocio.md`.

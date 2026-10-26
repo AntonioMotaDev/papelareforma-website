@@ -4,7 +4,7 @@ import ContactForm from '@/components/ContactForm.astro';
 import OpenStatus from '@/components/OpenStatus.astro';
 import Icon, { type NombreIcono } from '@/components/Icon.astro';
 import { negocio } from '@/lib/negocio';
-import { direccionCompleta, urlCorreo, urlGoogleMaps, urlTelefono, urlWhatsApp } from '@/lib/utils';
+import { direccionCompleta, urlCorreo, urlGoogleMaps, urlWhatsApp } from '@/lib/utils';
 
 const canales: { icono: NombreIcono; titulo: string; valor: string; href: string; nota: string; externo?: boolean; destacado?: boolean }[] = [
   {
@@ -15,13 +15,6 @@ const canales: { icono: NombreIcono; titulo: string; valor: string; href: string
     nota: 'La forma más rápida: envía archivos y listas.',
     externo: true,
     destacado: true,
-  },
-  {
-    icono: 'phone',
-    titulo: 'Teléfono',
-    valor: negocio.contacto.telefono,
-    href: urlTelefono(),
-    nota: 'Llámanos en horario de atención.',
   },
   {
     icono: 'mail',
@@ -45,8 +38,8 @@ const canales: { icono: NombreIcono; titulo: string; valor: string; href: string
   title="Contacto"
   eyebrow="Contacto"
   encabezado="Hablemos"
-  lead="Escríbenos por WhatsApp, llámanos o déjanos un mensaje. Te respondemos en horario de atención."
-  description={`Contacta a ${negocio.nombre} en San Luis Potosí: WhatsApp y teléfono ${negocio.contacto.telefono}, correo ${negocio.contacto.correo} o formulario en línea.`}
+  lead="Escríbenos por WhatsApp o déjanos un mensaje. Te respondemos en horario de atención."
+  description={`Contacta a ${negocio.nombre} en San Luis Potosí: WhatsApp ${negocio.contacto.telefono}, correo ${negocio.contacto.correo} o formulario en línea.`}
   sinWhatsAppFlotante
 >
   <section class="py-16 sm:py-24">

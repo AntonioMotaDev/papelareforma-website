@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // Dominio público. Cámbialo en Cloudflare Pages con la variable SITE_URL
 // (o aquí) cuando el dominio definitivo esté listo.
-const SITE_URL = process.env.SITE_URL ?? 'https://papeleriareforma.mx';
+const SITE_URL = process.env.SITE_URL ?? 'https://lapapeslp.com';
 
 export default defineConfig({
   site: SITE_URL,
