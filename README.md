@@ -61,7 +61,7 @@ Los archivos de marca salen de `PAPE/Branding/Oficial/`:
 
 | Archivo | Origen | Se usa en |
 | --- | --- | --- |
-| `src/assets/logos/logo-horizontal-negativo.svg` | `Logotipo-Horizontal-Vector.svg` sin fondo y con los azules en blanco (versión para fondo azul marino del manual) | Header y footer |
+| `src/assets/logos/logo-horizontal.png` | `Logo_Horizontal_Bco_SinFondo.png` recortado, a color, tal cual | Header (blanco) y footer (sobre recuadro blanco) |
 | `public/favicon.svg` | `isotipo_Vector.svg` sin fondo y recortado | Favicon; fuente de `node scripts/generar-iconos.mjs` |
 | `public/og-image.png` | `Logo_Horizontal_Bco_SinFondo.png` sobre blanco, 1200×630 | Imagen al compartir en redes |
 

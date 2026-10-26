@@ -1,12 +1,10 @@
 ---
 /**
- * Logotipo horizontal en negativo ("PAPE" y descriptor en blanco), para los
- * fondos azul marino del header y el footer, como pide el manual de marca.
- * Se generó de Branding/Oficial/Logotipo-Horizontal-Vector.svg quitando el fondo
- * y pasando los azules a blanco.
+ * Logotipo horizontal oficial a color (Branding/Oficial/Logo_Horizontal_Bco_SinFondo.png,
+ * recortado). Va siempre sobre blanco: el manual pide logo a color en fondo blanco.
  */
 import { Image } from 'astro:assets';
-import logo from '@/assets/logos/logo-horizontal-negativo.svg';
+import logo from '@/assets/logos/logo-horizontal.png';
 import { negocio } from '@/lib/negocio';
 import { cx } from '@/lib/utils';
 
@@ -24,6 +22,7 @@ const { class: clase, alto = 40, eager = false } = Astro.props;
   src={logo}
   alt={negocio.nombre}
   height={alto}
+  densities={[1, 2]}
   loading={eager ? 'eager' : 'lazy'}
   fetchpriority={eager ? 'high' : undefined}
   class={cx('w-auto', clase)}

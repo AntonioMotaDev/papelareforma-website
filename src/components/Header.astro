@@ -11,11 +11,11 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
 
 <header
   id="encabezado"
-  class="on-dark sticky top-0 z-50 border-b border-white/10 bg-navy text-white transition-shadow duration-300 data-[scrolled=true]:shadow-[0_10px_30px_-12px_rgb(1_26_49/0.6)]"
+  class="sticky top-0 z-50 border-b border-gray-200 bg-white text-navy transition-shadow duration-300 data-[scrolled=true]:shadow-soft"
 >
   <div class="container-page flex h-[4.5rem] items-center justify-between gap-6">
     <a href="/" class="shrink-0 rounded-lg" aria-label={`${negocio.nombre} — Inicio`}>
-      <Logo alto={44} eager />
+      <Logo alto={52} eager />
     </a>
 
     <nav aria-label="Principal" class="hidden lg:block">
@@ -29,8 +29,8 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
                 class={cx(
                   'relative rounded-full px-3.5 py-2 text-[0.93rem] font-medium transition-colors',
                   'after:absolute after:inset-x-3.5 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-yellow after:transition-transform after:duration-300',
-                  'hover:text-white hover:after:scale-x-100',
-                  esActiva(item.href) ? 'text-white after:scale-x-100' : 'text-white/75',
+                  'hover:text-navy hover:after:scale-x-100',
+                  esActiva(item.href) ? 'text-navy after:scale-x-100' : 'text-gray-600',
                 )}
               >
                 {item.etiqueta}
@@ -44,7 +44,7 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
     <div class="flex items-center gap-2">
       <!-- TODO(Carrito): Integración future con API -->
       {/* TODO(Carrito): botón de carrito. Ver src/lib/carrito.ts
-      <a href="/carrito" class="relative inline-flex size-11 items-center justify-center rounded-full hover:bg-white/10" aria-label="Carrito (0 artículos)">
+      <a href="/carrito" class="relative inline-flex size-11 items-center justify-center rounded-full hover:bg-gray-100" aria-label="Carrito (0 artículos)">
         <Icon name="shopping-cart" size={20} />
         <span data-cart-count class="absolute -top-0.5 -right-0.5 grid size-5 place-items-center rounded-full bg-yellow text-[0.7rem] font-bold text-navy">0</span>
       </a>
@@ -63,7 +63,7 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
       <button
         type="button"
         id="menu-boton"
-        class="inline-flex size-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 lg:hidden"
+        class="inline-flex size-11 items-center justify-center rounded-full text-navy transition-colors hover:bg-gray-100 lg:hidden"
         aria-expanded="false"
         aria-controls="menu-movil"
         aria-label="Abrir menú"
@@ -77,7 +77,7 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
   <!-- Menú móvil -->
   <div
     id="menu-movil"
-    class="grid grid-rows-[0fr] border-white/10 transition-[grid-template-rows] duration-300 ease-out data-[open=true]:grid-rows-[1fr] data-[open=true]:border-t lg:hidden"
+    class="grid grid-rows-[0fr] border-gray-200 transition-[grid-template-rows] duration-300 ease-out data-[open=true]:grid-rows-[1fr] data-[open=true]:border-t lg:hidden"
     data-open="false"
   >
     <div class="overflow-hidden">
@@ -90,19 +90,19 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
                   href={item.href}
                   aria-current={esActiva(item.href) ? 'page' : undefined}
                   class={cx(
-                    'flex items-center justify-between rounded-xl px-3 py-3.5 text-lg font-medium transition-colors hover:bg-white/10',
-                    esActiva(item.href) ? 'text-yellow' : 'text-white',
+                    'flex items-center justify-between rounded-xl px-3 py-3.5 text-lg font-medium transition-colors hover:bg-gray-100',
+                    esActiva(item.href) ? 'text-primary' : 'text-navy',
                   )}
                 >
                   {item.etiqueta}
-                  <Icon name="chevron-right" size={18} class="text-white/40" />
+                  <Icon name="chevron-right" size={18} class="text-gray-400" />
                 </a>
               </li>
             ))
           }
         </ul>
-        <div class="mt-4 grid gap-3 border-t border-white/10 pt-5">
-          <OpenStatus variante="pill-dark" />
+        <div class="mt-4 grid gap-3 border-t border-gray-200 pt-5">
+          <OpenStatus variante="pill-light" />
           <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-primary w-full">
             <Icon name="whatsapp" size={18} />
             Cotiza por WhatsApp

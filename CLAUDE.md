@@ -42,8 +42,9 @@ Despliegue: push a `main` → Cloudflare Pages publica solo. Node 22 (`.node-ver
 - **Layouts**: `BaseLayout` (meta, OG, JSON-LD) → `PageLayout` (páginas internas + migas).
 - **Tailwind v4 sin `tailwind.config.js`**: tema (colores, fuentes, breakpoints) en `@theme` de
   `src/styles/global.css`. Alias `@/*` → `src/*`.
-- **Logos**: `Logo.astro` usa `src/assets/logos/logo-horizontal-negativo.svg` (header y footer son
-  azul marino). Origen y regeneración de favicon/OG: sección "Logos y fotos" del README.
+- **Logos**: `Logo.astro` usa el logo oficial a color tal cual (`src/assets/logos/logo-horizontal.png`),
+  siempre sobre blanco: el header es blanco y en el footer (azul marino) va en un recuadro blanco.
+  No recolorear ni generar variantes del logo. Origen y regeneración de favicon/OG: sección "Logos y fotos" del README.
 - **Contacto solo por WhatsApp**: el negocio no toma llamadas; no agregues enlaces `tel:` ni
   botones de llamar. El número se muestra como WhatsApp.
 
