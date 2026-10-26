@@ -2,17 +2,16 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Sitio público de Papelería La Reforma (San Luis Potosí). Astro 5 estático + Tailwind v4 + una
-Cloudflare Pages Function. Código, comentarios y textos en español; mantén ese idioma.
+Sitio público de Papelería La Reforma (San Luis Potosí). Astro 5 estático + Tailwind v4. Código, comentarios y textos en español; mantén ese idioma.
 El README es la referencia completa (despliegue, variables, calidad); aquí solo lo esencial.
 
 ## Comandos
 
 ```bash
-npm run dev        # http://localhost:4321 (sin /api/contacto ni _headers)
+npm run dev        # http://localhost:4321 (sin _headers)
 npm run build      # genera dist/
-npm run check      # astro check + tsc de functions/ — es lo que corre CI
-npm run pages:dev  # build + wrangler en :8788: único modo que ejecuta /api/contacto y aplica _headers
+npm run check      # astro check — es lo que corre CI
+npm run pages:dev  # build + wrangler en :8788: único modo que aplica _headers
 node scripts/generar-iconos.mjs   # regenera favicons/PWA desde src/assets/logos/isotipo.png (o favicon.svg)
 ```
 
@@ -35,10 +34,10 @@ Despliegue: push a `main` → Cloudflare Pages publica solo. Node 22 (`.node-ver
 - **`src/lib/carrito.ts`** y `crearCotizacion`/`consultarCredito`: solo scaffolding. Busca
   `TODO(Carrito)`, `TODO(API)`, `TODO(Crédito)`, `TODO(Datos)`. Rutas dinámicas futuras
   requerirían `@astrojs/cloudflare` + `prerender = false` solo en esas rutas.
-- **`functions/api/contacto.ts`**: POST del formulario → correo vía Resend. Sin `RESEND_API_KEY`
-  responde 503 y el front ofrece WhatsApp con el mensaje prellenado. Responde JSON a `fetch` y
-  HTML a envíos sin JS; tiene honeypot (`empresa`) y chequeo de `Origin`. Tiene su propio
-  `functions/tsconfig.json` (workers-types) y está excluida del tsconfig principal.
+- **Sin formularios ni backend**: el sitio es 100 % estático y todo el contacto es por WhatsApp
+  (`urlWhatsApp()` con mensaje prellenado). Se quitó el formulario de contacto a propósito; el
+  correo (`pape.lareforma1@gmail.com`) solo se muestra en `/contacto`. El futuro carrito debe
+  terminar armando un mensaje de WhatsApp.
 - **Layouts**: `BaseLayout` (meta, OG, JSON-LD) → `PageLayout` (páginas internas + migas).
 - **Tailwind v4 sin `tailwind.config.js`**: tema (colores, fuentes, breakpoints) en `@theme` de
   `src/styles/global.css`. Alias `@/*` → `src/*`.
@@ -75,4 +74,4 @@ acento `#0A5CB5` (`primary`) y tipografía única **Nunito** (aplicados el 2026-
 hex sueltos en `Hero.astro`, `PageLayout.astro`, `Logo.astro`, `favicon.svg`, `site.webmanifest`,
 y `negocio.ts` (`colorTema`), y regenera los íconos.
 Pendiente: el nombre en texto debe ser **"La Reforma"** (hoy "Papelería La Reforma" en
-`negocio.ts`) y las redes @PapeLaReforma siguen vacías. Datos de referencia: `../../Datos-Negocio.md`.
+`negocio.ts`). Redes: Facebook y el Instagram @papelareforma ya están en `negocio.redes`. Datos de referencia: `../../Datos-Negocio.md`.

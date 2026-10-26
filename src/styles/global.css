@@ -243,25 +243,6 @@
       linear-gradient(to bottom, rgb(2 63 119 / 0.05) 1px, transparent 1px);
     background-size: 32px 32px;
   }
-
-  /* ─── Formularios ─── */
-  .field-label {
-    @apply mb-1.5 block text-sm font-semibold text-navy;
-  }
-  .field-input {
-    @apply block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 placeholder:text-gray-500 transition-[border-color,box-shadow];
-  }
-  .field-input:hover {
-    @apply border-gray-400;
-  }
-  .field-input:focus {
-    @apply border-primary outline-none;
-    box-shadow: 0 0 0 4px rgb(10 92 181 / 0.15);
-  }
-  .field-input[aria-invalid='true'] {
-    @apply border-red-600;
-    box-shadow: 0 0 0 4px rgb(220 38 38 / 0.1);
-  }
 }
 
 /* ─── Animaciones al hacer scroll (IntersectionObserver en BaseLayout) ───

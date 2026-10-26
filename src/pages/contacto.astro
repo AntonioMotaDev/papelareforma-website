@@ -1,6 +1,5 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
-import ContactForm from '@/components/ContactForm.astro';
 import OpenStatus from '@/components/OpenStatus.astro';
 import Icon, { type NombreIcono } from '@/components/Icon.astro';
 import { negocio } from '@/lib/negocio';
@@ -38,14 +37,14 @@ const canales: { icono: NombreIcono; titulo: string; valor: string; href: string
   title="Contacto"
   eyebrow="Contacto"
   encabezado="Hablemos"
-  lead="Escríbenos por WhatsApp o déjanos un mensaje. Te respondemos en horario de atención."
-  description={`Contacta a ${negocio.nombre} en San Luis Potosí: WhatsApp ${negocio.contacto.telefono}, correo ${negocio.contacto.correo} o formulario en línea.`}
+  lead="Escríbenos por WhatsApp: es la forma más rápida de pedir precios, mandar tus archivos o tu lista escolar."
+  description={`Contacta a ${negocio.nombre} en San Luis Potosí: WhatsApp ${negocio.contacto.telefono}, correo ${negocio.contacto.correo}.`}
   sinWhatsAppFlotante
 >
   <section class="py-16 sm:py-24">
-    <div class="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
+    <div class="container-page">
       <!-- Canales directos -->
-      <div class="lg:col-span-5">
+      <div class="mx-auto max-w-2xl">
         <h2 class="text-2xl font-bold" data-reveal>Contacto directo</h2>
         <ul class="mt-6 grid gap-4">
           {
@@ -82,15 +81,6 @@ const canales: { icono: NombreIcono; titulo: string; valor: string; href: string
         </ul>
         <div class="mt-6" data-reveal>
           <OpenStatus variante="card" />
-        </div>
-      </div>
-
-      <!-- Formulario -->
-      <div class="lg:col-span-7" id="formulario">
-        <div data-reveal class="card p-6 sm:p-10">
-          <h2 class="text-2xl font-bold">Envíanos un mensaje</h2>
-          <p class="mt-2 mb-8 text-gray-600">Cuéntanos qué necesitas y te respondemos por correo o WhatsApp.</p>
-          <ContactForm />
         </div>
       </div>
     </div>

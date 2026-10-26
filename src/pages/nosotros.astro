@@ -45,13 +45,13 @@ const cifras = [
           id="historia-titulo"
           alineacion="left"
           eyebrow="Quiénes somos"
-          titulo="Una papelería de barrio, con estándares de primera"
+          titulo="Calidad, buen precio y atención de primera"
         />
         {/* TODO(Datos): reemplazar con la historia real del negocio (fundadores, anécdotas, hitos). */}
         <div class="mt-6 space-y-4 text-lg leading-relaxed text-gray-600" data-reveal>
           <p>
             {anioFundacion ? `Desde ${anioFundacion}` : `Desde hace más de ${anios} años`}, {negocio.nombre} abre sus puertas en
-            {negocio.ubicacion.calle}, {negocio.ubicacion.colonia}. Empezamos con lo esencial y, cliente a cliente, fuimos
+            {negocio.ubicacion.ciudad}. Empezamos con lo esencial y, cliente a cliente, fuimos
             sumando los servicios que nuestros vecinos nos pedían.
           </p>
           <p>
@@ -116,8 +116,8 @@ const cifras = [
         <div>
           <h2 id="compromiso-titulo" class="text-3xl font-bold">Comprometidos con {negocio.ubicacion.ciudad}</h2>
           <p class="mt-4 max-w-3xl text-lg leading-relaxed text-gray-600">
-            Cada temporada escolar surtimos las listas de familias potosinas y ofrecemos descuentos para que el
-            regreso a clases pese menos en el bolsillo. Creemos en el comercio local: cuando compras con nosotros, el
+            Cada temporada escolar surtimos las listas de familias potosinas para que el regreso a clases
+            sea más fácil. Creemos en el comercio local: cuando compras con nosotros, el
             beneficio se queda en la colonia.
           </p>
           <p class="mt-5 text-sm font-semibold text-primary">{negocio.seo.hashtags.join(' ')}</p>

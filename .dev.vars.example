@@ -1,6 +1,0 @@
-# Variables para la función /api/contacto (Cloudflare Pages Functions).
-# Copia este archivo a .dev.vars para probar localmente con `npm run pages:dev`.
-# En producción: Cloudflare Dashboard → Pages → proyecto → Settings → Variables and Secrets.
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx
-CONTACTO_DESTINO=info@papeleriareforma.mx
-CONTACTO_REMITENTE="Sitio web La Reforma <sitio@papeleriareforma.mx>"

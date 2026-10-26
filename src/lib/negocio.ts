@@ -141,8 +141,7 @@ export const negocio = {
     telefonoE164: '+524444505433',
     /** Número internacional sin "+" para enlaces wa.me. */
     whatsapp: '524444505433',
-    // TODO(Datos): confirmar el correo oficial del negocio.
-    correo: 'info@papeleriareforma.mx',
+    correo: 'pape.lareforma1@gmail.com',
     mensajeWhatsAppGeneral:
       '¡Hola, Papelería La Reforma! Me gustaría pedir información / una cotización.',
   },
@@ -154,8 +153,7 @@ export const negocio = {
     estado: 'S.L.P.',
     estadoCompleto: 'San Luis Potosí',
     pais: 'MX',
-    // TODO(Datos): agregar el código postal (p. ej. '78000').
-    codigoPostal: null as string | null,
+    codigoPostal: '78398' as string | null,
     /**
      * TODO(Datos): pegar coordenadas exactas desde Google Maps
      * (clic derecho sobre el local → copiar "lat, lng").
@@ -182,7 +180,7 @@ export const negocio = {
       nombre: 'Fotocopias',
       descripcion: 'Copias en blanco y negro y a color, nítidas y al momento.',
       icono: 'copy',
-      precio: { monto: 1.5, unidad: 'por hoja B/N', nota: 'Color: consulta en tienda' },
+      precio: { monto: 1.5, desde: true, unidad: 'por hoja', nota: 'El precio baja en volumen. Color: consulta en tienda' },
       destacado: true,
       mensajeWhatsApp: 'Hola, quiero cotizar fotocopias.',
     },
@@ -191,7 +189,7 @@ export const negocio = {
       nombre: 'Impresión digital',
       descripcion: 'Imprime tareas, documentos y trabajos a color o en blanco y negro.',
       icono: 'printer',
-      precio: { monto: 3, desde: true, unidad: 'a color' },
+      precio: { monto: 1.5, desde: true, unidad: 'por hoja', nota: 'El precio baja en volumen' },
       destacado: true,
       mensajeWhatsApp: 'Hola, quiero cotizar una impresión.',
     },
@@ -322,7 +320,7 @@ export const negocio = {
   promociones: [
     {
       id: 'listas-escolares',
-      activa: true,
+      activa: false,
       titulo: 'Listas escolares completas',
       descuento: 10,
       descripcion:
@@ -346,12 +344,19 @@ export const negocio = {
     moneda: 'MXN',
   },
 
-  /**
-   * TODO(Datos): agregar redes sociales cuando existan. Ejemplo:
-   * { nombre: 'Facebook', url: 'https://facebook.com/papeleriareforma', usuario: '@papeleriareforma' }
-   * El pie de página y los datos estructurados las muestran automáticamente.
-   */
-  redes: [] as RedSocial[],
+  /** El pie de página y los datos estructurados las muestran automáticamente. */
+  redes: [
+    {
+      nombre: 'Facebook',
+      url: 'https://www.facebook.com/share/18ppE6eHEb/',
+      usuario: 'Papelería La Reforma',
+    },
+    {
+      nombre: 'Instagram',
+      url: 'https://www.instagram.com/papelareforma',
+      usuario: '@papelareforma',
+    },
+  ] satisfies RedSocial[] as RedSocial[],
 
   valores: [
     {

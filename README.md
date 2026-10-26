@@ -3,7 +3,7 @@
 Sitio oficial de **Papelería La Reforma**, Reforma Agraria 640, Col. Nuestra Señora de la Salud, San Luis Potosí, S.L.P.
 
 - **Stack:** Astro 5 + Vite · Tailwind CSS v4 (plugin de Vite) · TypeScript estricto
-- **Hosting:** Cloudflare Pages (estático + una Pages Function para el formulario)
+- **Hosting:** Cloudflare Pages (sitio 100 % estático; el contacto es por WhatsApp)
 - **CI/CD:** GitHub → Cloudflare Pages (despliegue automático en cada push a `main`)
 - **Lighthouse (móvil, local):** Rendimiento 99 · Accesibilidad 100 · Buenas prácticas 100 · SEO 100
 
@@ -16,8 +16,8 @@ npm install
 npm run dev          # http://localhost:4321
 npm run build        # genera dist/
 npm run preview      # sirve dist/ localmente
-npm run check        # verificación de tipos (Astro + Functions)
-npm run pages:dev    # build + entorno Cloudflare local (headers + /api/contacto) en :8788
+npm run check        # verificación de tipos (Astro)
+npm run pages:dev    # build + entorno Cloudflare local (aplica _headers) en :8788
 ```
 
 Requiere Node 18.20.8 o superior (el proyecto fija Node 22 en `.node-version`).
@@ -49,11 +49,11 @@ La tabla de horarios, el widget **"¿Abierto ahora?"**, el pie de página, los m
 
 Busca `TODO(Datos)` en el código:
 
-- [ ] Correo oficial (hoy: `info@papeleriareforma.mx`)
-- [ ] Coordenadas exactas del local (el mapa usa la dirección mientras tanto)
-- [ ] Código postal
+- [x] Correo: `pape.lareforma1@gmail.com`
+- [x] Código postal: 78398
+- [x] Redes: Facebook e Instagram
+- [ ] Coordenadas exactas del local (opcional; el mapa usa la dirección mientras tanto)
 - [ ] Año de fundación e historia real (página *Nosotros*)
-- [ ] Redes sociales
 - [x] Dominio: `lapapeslp.com` (`sitio.url` en `negocio.ts` y la variable `SITE_URL`)
 
 ### Logos y fotos
@@ -79,20 +79,11 @@ Cada espacio de foto (`src/components/Foto.astro`) busca `src/assets/images/<nom
 
 Los nombres son el `id` de cada categoría y producto en `negocio.ts` (`categorias`, `productosDestacados`): si agregas uno, su foto lleva su `id`.
 
----------------------------------------------- | ---------------------------------- |
-| `src/assets/logos/Logo_Horizontal_Bco_SinFondo.png` | Header y footer (fondo navy)  |
-| `src/assets/logos/isotipo.png`                 | Versión compacta del logo          |
-| `src/assets/images/fachada.jpg`                | Hero de inicio (mín. 1600 px)      |
-| `src/assets/images/equipo.jpg`                 | Página *Nosotros* (mín. 1200 px)   |
-
-Mientras no existan, se muestran un logotipo tipográfico y composiciones de marca en su lugar. Con el isotipo en su lugar, regenera favicons e íconos con `node scripts/generar-iconos.mjs`. La imagen para redes (`public/og-image.png`, 1200×630) se puede reemplazar directamente.
-
 ---
 
 ## Estructura
 
 ```
-├── functions/api/contacto.ts   # Pages Function: formulario → correo (Resend)
 ├── public/
 │   ├── _headers                # caché + cabeceras de seguridad (Cloudflare)
 │   ├── favicon.svg / .ico, apple-touch-icon.png, icons/, site.webmanifest
@@ -100,7 +91,7 @@ Mientras no existan, se muestran un logotipo tipográfico y composiciones de mar
 ├── scripts/generar-iconos.mjs
 ├── src/
 │   ├── assets/{logos,images}/  # logos y fotos optimizados por Astro
-│   ├── components/             # Header, Footer, Hero, ServiceCard, ContactForm, MapEmbed,
+│   ├── components/             # Header, Footer, Hero, ServiceCard, MapEmbed,
 │   │                           # OpenStatus, ScheduleTable, PromoBanner, CopyAddress, Icon…
 │   ├── layouts/                # BaseLayout (SEO, JSON-LD) y PageLayout (páginas internas + migas)
 │   ├── lib/
@@ -145,15 +136,10 @@ El verde de marca `#71B637` no alcanza contraste AA como texto sobre blanco, por
    | Variable            | Tipo    | Para qué                                                    |
    | ------------------- | ------- | ----------------------------------------------------------- |
    | `SITE_URL`          | texto   | Dominio público (canonical, sitemap, OG). Ej. `https://lapapeslp.com` |
-   | `RESEND_API_KEY`    | secreto | Envío de correos del formulario ([resend.com](https://resend.com)) |
-   | `CONTACTO_DESTINO`  | texto   | Correo(s) que reciben los mensajes (separados por coma)     |
-   | `CONTACTO_REMITENTE`| texto   | Remitente verificado en Resend. Ej. `Sitio web <sitio@papeleriareforma.mx>` |
    | `PUBLIC_API_URL`    | texto   | (Futuro) URL del backend del sistema interno                |
 
 4. Guarda y despliega. Cada push a `main` publica producción; cada PR genera una URL de vista previa.
 5. **Dominio propio:** Custom domains → agrega `lapapeslp.com` (y `www.lapapeslp.com`).
-
-**Formulario sin configurar:** si falta `RESEND_API_KEY`, `/api/contacto` responde 503 y el sitio ofrece WhatsApp con el mensaje ya escrito, así que nunca se pierde un cliente. Para probarlo en local, copia `.dev.vars.example` a `.dev.vars` y ejecuta `npm run pages:dev`.
 
 Además, GitHub Actions (`.github/workflows/ci.yml`) verifica tipos y build en cada push y PR.
 
@@ -180,7 +166,7 @@ Busca `TODO(Carrito)`, `TODO(API)` y `TODO(Crédito)`.
 
 ## ✅ Calidad
 
-- **Accesibilidad (WCAG 2.1 AA):** 0 violaciones de axe-core en todas las páginas (móvil y escritorio). Incluye enlace "Saltar al contenido", foco visible, menú operable con teclado (Esc cierra), `aria-current`, errores de formulario anunciados, `prefers-reduced-motion` y textos alternativos.
+- **Accesibilidad (WCAG 2.1 AA):** 0 violaciones de axe-core en todas las páginas (móvil y escritorio). Incluye enlace "Saltar al contenido", foco visible, menú operable con teclado (Esc cierra), `aria-current`, `prefers-reduced-motion` y textos alternativos.
 - **Animaciones:** aparición al hacer scroll (IntersectionObserver, solo con JS activo) y parallax ligero con *scroll-driven animations* de CSS, sin JavaScript. Los navegadores sin soporte muestran la versión estática.
 - **SEO local:** meta y Open Graph por página, JSON-LD `Store` con horarios y catálogo, `BreadcrumbList`, `sitemap-index.xml`, `robots.txt` y `geo.region = MX-SLP`.
 - **Rendimiento:** fuente autoalojada (Nunito variable, la del manual de marca) con `preload` y métricas de respaldo (sin CLS), cero frameworks de JS (menos de 10 KB de JS en total) y mapa en diferido.

@@ -11,7 +11,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check && tsc -p functions/tsconfig.json",
+    "check": "astro check",
     "pages:dev": "npm run build && wrangler pages dev dist",
     "astro": "astro"
   },
@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@cloudflare/workers-types": "^5.20260923.1",
     "@tailwindcss/vite": "^4.3.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
