@@ -5,10 +5,13 @@ import { urlWhatsApp } from '@/lib/utils';
 interface Props {
   titulo?: string;
   descripcion?: string;
+  /** Mensaje prellenado de WhatsApp; por defecto el general. */
+  mensaje?: string;
 }
 const {
   titulo = '¿Buscas algo en particular?',
   descripcion = 'Pregúntanos por WhatsApp si lo tenemos y cuánto cuesta. Te contestamos en horario de atención.',
+  mensaje,
 } = Astro.props;
 ---
 
@@ -23,7 +26,7 @@ const {
     <div>
       <h2 id="cta-titulo" class="text-3xl font-extrabold sm:text-4xl">{titulo}</h2>
       <p class="mx-auto mt-3 max-w-md text-lg text-gray-600">{descripcion}</p>
-      <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-whatsapp mt-7 h-14 px-7 text-base">
+      <a href={urlWhatsApp(mensaje)} target="_blank" rel="noopener" class="btn btn-whatsapp mt-7 h-14 px-7 text-base">
         <Icon name="whatsapp" size={22} />
         Escríbenos por WhatsApp
       </a>

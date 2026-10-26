@@ -2,15 +2,26 @@
 /**
  * Preguntas frecuentes (acordeón nativo con <details>, sin JavaScript) y su JSON-LD FAQPage.
  * Las respuestas se arman con los datos de negocio.ts para que nunca se contradigan.
+ * Sin `preguntas` muestra las generales del negocio.
  */
 import Icon from './Icon.astro';
 import { negocio } from '@/lib/negocio';
 import { direccionCompleta, formatearPrecio, resumenHorarios } from '@/lib/utils';
 
+interface Pregunta {
+  pregunta: string;
+  respuesta: string;
+}
+interface Props {
+  titulo?: string;
+  preguntas?: Pregunta[];
+}
+const { titulo = '¿Tienes alguna duda?', preguntas: propias } = Astro.props;
+
 const promoListas = negocio.promociones.find((p) => p.id === 'listas-escolares' && p.activa);
 const tarjeta = negocio.pagos.metodos.find((m) => m.id === 'tarjeta');
 
-const preguntas = [
+const generales: Pregunta[] = [
   {
     pregunta: '¿Cómo puedo saber si tienen un producto?',
     respuesta: `Escríbenos por WhatsApp al ${negocio.contacto.telefono} con el nombre o una foto de lo que buscas y te decimos si lo tenemos.`,
@@ -33,6 +44,8 @@ const preguntas = [
   },
 ];
 
+const preguntas = propias ?? generales;
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -45,7 +58,7 @@ const jsonLd = {
 ---
 
 <section class="container-page pb-20 sm:pb-24" aria-labelledby="faq-titulo">
-  <h2 id="faq-titulo" class="text-center text-3xl font-extrabold sm:text-4xl" data-reveal>¿Tienes alguna duda?</h2>
+  <h2 id="faq-titulo" class="text-center text-3xl font-extrabold sm:text-4xl" data-reveal>{titulo}</h2>
   <div class="mx-auto mt-10 grid max-w-3xl gap-3">
     {
       preguntas.map((p, i) => (

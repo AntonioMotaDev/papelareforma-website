@@ -6,7 +6,11 @@ import { direccionCompleta, resumenHorarios, urlGoogleMaps, urlWhatsApp } from '
 
 const anio = new Date().getFullYear();
 const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram: 'instagram', TikTok: 'tiktok' };
-const enlaces = [...negocio.sitio.navegacion, { etiqueta: 'Contacto', href: '/contacto' }];
+const enlaces = [
+  ...negocio.sitio.navegacion,
+  { etiqueta: 'Lista escolar', href: '/lista-escolar' },
+  { etiqueta: 'Contacto', href: '/contacto' },
+];
 ---
 
 <footer class="on-dark bg-navy text-white/80">

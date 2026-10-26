@@ -38,6 +38,11 @@ Despliegue: push a `main` → Cloudflare Pages publica solo. Node 22 (`.node-ver
   (`urlWhatsApp()` con mensaje prellenado). Se quitó el formulario de contacto a propósito; el
   correo (`pape.lareforma1@gmail.com`) solo se muestra en `/contacto`. El futuro carrito debe
   terminar armando un mensaje de WhatsApp.
+- **Pedidos por WhatsApp**: `Cotizador.astro` (en `/productos#cotizador`) suma cantidades × precio base de los
+  servicios listados en `negocio.cotizador` y arma el mensaje con un script pequeño (sin JS se oculta y queda
+  un `<noscript>`). `/lista-escolar` usa `negocio.listaEscolar.niveles`; si la promoción `listas-escolares`
+  está activa, la página muestra el `PromoBanner`. Para agregar un renglón a la calculadora, basta añadirlo a
+  `negocio.cotizador` con el `id` de un servicio con precio.
 - **Layouts**: `BaseLayout` (meta, OG, JSON-LD) → `PageLayout` (páginas internas + migas).
 - **Tailwind v4 sin `tailwind.config.js`**: tema (colores, fuentes, breakpoints) en `@theme` de
   `src/styles/global.css`. Alias `@/*` → `src/*`.

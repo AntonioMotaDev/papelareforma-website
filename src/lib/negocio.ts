@@ -90,6 +90,28 @@ export interface ArticuloCatalogo {
   mensajeWhatsApp: string;
 }
 
+/** Renglón de la calculadora de cotización; el precio sale del servicio con ese `id`. */
+export interface ConceptoCotizador {
+  servicioId: string;
+  /** Título del renglón: "Fotocopias". */
+  etiqueta: string;
+  /** Qué se cuenta: "hojas", "piezas". */
+  unidad: string;
+  /** Para armar el mensaje de WhatsApp: "1 fotocopia" / "50 fotocopias". */
+  singular: string;
+  plural: string;
+}
+
+export type IconoNivel = 'palette' | 'backpack' | 'notebook' | 'graduation-cap';
+
+export interface NivelEscolar {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  icono: IconoNivel;
+  mensajeWhatsApp: string;
+}
+
 export interface Promocion {
   id: string;
   activa: boolean;
@@ -316,6 +338,48 @@ export const negocio = {
       mensajeWhatsApp: 'Hola, ¿tienen notas adhesivas? ¿Qué precio tienen?',
     },
   ] satisfies ArticuloCatalogo[] as ArticuloCatalogo[],
+
+  /** Calculadora de /productos#cotizador: arma un mensaje de WhatsApp con el estimado. */
+  cotizador: [
+    { servicioId: 'fotocopias', etiqueta: 'Fotocopias', unidad: 'hojas', singular: 'fotocopia', plural: 'fotocopias' },
+    { servicioId: 'impresion', etiqueta: 'Impresiones', unidad: 'hojas', singular: 'impresión', plural: 'impresiones' },
+    { servicioId: 'encuadernacion', etiqueta: 'Engargolados', unidad: 'trabajos', singular: 'engargolado', plural: 'engargolados' },
+    { servicioId: 'plastificado', etiqueta: 'Enmicados', unidad: 'piezas', singular: 'enmicado', plural: 'enmicados' },
+  ] satisfies ConceptoCotizador[] as ConceptoCotizador[],
+
+  /** Niveles de la página /lista-escolar. */
+  listaEscolar: {
+    niveles: [
+      {
+        id: 'preescolar',
+        nombre: 'Preescolar',
+        descripcion: 'Cuadernos, colores, pegamento, tijeras y el material para las manualidades de clase.',
+        icono: 'palette',
+        mensajeWhatsApp: 'Hola, quiero surtir la lista escolar de preescolar. Les mando la foto de la lista por aquí.',
+      },
+      {
+        id: 'primaria',
+        nombre: 'Primaria',
+        descripcion: 'Cuadernos, lápices, colores, juego de geometría y lo que pida tu maestro.',
+        icono: 'backpack',
+        mensajeWhatsApp: 'Hola, quiero surtir la lista escolar de primaria. Les mando la foto de la lista por aquí.',
+      },
+      {
+        id: 'secundaria',
+        nombre: 'Secundaria',
+        descripcion: 'Cuadernos, plumas, marcatextos, juego de geometría y lo que pida cada materia.',
+        icono: 'notebook',
+        mensajeWhatsApp: 'Hola, quiero surtir la lista escolar de secundaria. Les mando la foto de la lista por aquí.',
+      },
+      {
+        id: 'bachillerato-universidad',
+        nombre: 'Bachillerato y universidad',
+        descripcion: 'Cuadernos, plumas, folders y, si los necesitas, copias, impresiones y engargolado de tus trabajos.',
+        icono: 'graduation-cap',
+        mensajeWhatsApp: 'Hola, quiero surtir mi lista de útiles de bachillerato o universidad. Les mando la foto por aquí.',
+      },
+    ] satisfies NivelEscolar[] as NivelEscolar[],
+  },
 
   promociones: [
     {

@@ -47,6 +47,55 @@ const grupos = agruparHorarios();
     </div>
   </section>
 
+  <!-- Pedidos desde el celular -->
+  <section class="container-page pb-16 sm:pb-24" aria-labelledby="pedidos-titulo">
+    <SectionHeading
+      id="pedidos-titulo"
+      eyebrow="Desde tu celular"
+      titulo="Adelanta tu pedido por WhatsApp."
+      descripcion="Mándanos lo que necesitas y pasa cuando esté listo."
+    />
+    <div class="mt-10 grid gap-5 md:grid-cols-2">
+      {
+        [
+          {
+            href: '/lista-escolar',
+            icono: 'clipboard-list',
+            titulo: 'Surtimos tu lista escolar',
+            texto: 'Mándanos la foto de tu lista y nosotros la surtimos. Tú solo pasas por ella.',
+            cta: 'Ver cómo funciona',
+          },
+          {
+            href: '/productos#cotizador',
+            icono: 'calculator',
+            titulo: 'Calcula tu cotización',
+            texto: 'Copias, impresiones, engargolados y enmicados: elige cantidades y pídelo ya armado.',
+            cta: 'Abrir calculadora',
+          },
+        ].map((c, i) => (
+          <a
+            href={c.href}
+            data-reveal
+            style={`--reveal-delay:${i * 80}ms`}
+            class="group flex items-start gap-5 rounded-2xl border border-gray-200 bg-white p-6 shadow-soft transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lift sm:p-8"
+          >
+            <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-navy/5 text-primary transition-colors duration-300 group-hover:bg-navy group-hover:text-yellow">
+              <Icon name={c.icono as 'calculator'} size={26} />
+            </span>
+            <span>
+              <span class="block text-xl font-bold text-navy">{c.titulo}</span>
+              <span class="mt-1.5 block leading-relaxed text-gray-600">{c.texto}</span>
+              <span class="mt-4 inline-flex items-center gap-2 font-semibold text-primary">
+                {c.cta}
+                <Icon name="arrow-right" size={16} class="transition-transform group-hover:translate-x-1" />
+              </span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
   <!-- Valores -->
   <section class="bg-celeste-50/70 py-16 sm:py-20" aria-labelledby="valores-titulo">
     <div class="container-page">

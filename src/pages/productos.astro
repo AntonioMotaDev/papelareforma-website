@@ -3,6 +3,7 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import ServiceCard from '@/components/ServiceCard.astro';
 import CategoriaCard from '@/components/CategoriaCard.astro';
 import ProductoCard from '@/components/ProductoCard.astro';
+import Cotizador from '@/components/Cotizador.astro';
 import PromoBanner from '@/components/PromoBanner.astro';
 import PaymentMethods from '@/components/PaymentMethods.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
@@ -91,6 +92,8 @@ const jsonLdServicios = {
       </p>
     </div>
   </section>
+
+  <Cotizador />
 
   {
     promociones.length > 0 && (

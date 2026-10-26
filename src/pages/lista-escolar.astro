@@ -1,0 +1,214 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import PromoBanner from '@/components/PromoBanner.astro';
+import PaymentMethods from '@/components/PaymentMethods.astro';
+import Faq from '@/components/Faq.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { negocio } from '@/lib/negocio';
+import { obtenerPromociones } from '@/lib/api';
+import { formatearPrecio, resumenHorarios, urlWhatsApp } from '@/lib/utils';
+
+const promo = (await obtenerPromociones()).find((p) => p.id === 'listas-escolares');
+const tarjeta = negocio.pagos.metodos.find((m) => m.id === 'tarjeta');
+const mensajeLista = 'Hola, quiero que me surtan mi lista escolar. Les mando la foto de la lista por aquí.';
+
+const pasos = [
+  {
+    icono: 'whatsapp',
+    titulo: 'Mándanos tu lista',
+    texto: `Por WhatsApp al ${negocio.contacto.telefono}: una foto, un PDF o la lista escrita. Dinos el grado y la escuela.`,
+  },
+  {
+    icono: 'clipboard-list',
+    titulo: 'Te confirmamos todo',
+    texto: 'Te decimos qué artículos tenemos, cuáles no y cuánto es el total, antes de que vengas.',
+  },
+  {
+    icono: 'store',
+    titulo: 'Pasa por ella',
+    texto: `Te avisamos cuándo pasar por tu pedido. ${resumenHorarios()}`,
+  },
+] as const;
+
+const consejos = [
+  'Toma la foto de frente, con buena luz y que se lean todos los renglones.',
+  'Si la lista tiene varias hojas, mándalas todas en el mismo mensaje.',
+  'Escribe el grado, la escuela y si tienes alguna marca preferida.',
+  'Si algo ya lo tienes del año pasado, dinos cuál para no incluirlo.',
+];
+
+const preguntas = [
+  {
+    pregunta: '¿Cómo les mando mi lista?',
+    respuesta: `Por WhatsApp al ${negocio.contacto.telefono}. Puede ser una foto, un PDF o la lista escrita; agrega el grado y la escuela.`,
+  },
+  {
+    pregunta: '¿Y si no tienen algo de la lista?',
+    respuesta: 'Te avisamos por WhatsApp qué artículos tenemos y cuáles no antes de que vengas, para que decidas con calma.',
+  },
+  {
+    pregunta: '¿Cuánto me va a costar?',
+    respuesta: `Te pasamos el total por WhatsApp antes de que vengas.${promo ? ` Mientras dure la promoción, surtir la lista completa tiene ${promo.descuento} % de descuento.` : ''}`,
+  },
+  {
+    pregunta: '¿Cuándo puedo pasar por mi pedido?',
+    respuesta: `Al confirmarte tu lista te decimos cuándo pasar. ${resumenHorarios()}`,
+  },
+  {
+    pregunta: '¿Qué formas de pago aceptan?',
+    respuesta: `${negocio.pagos.metodos.map((m) => m.nombre).join(', ')}.${tarjeta?.minimo ? ` Con tarjeta, la compra mínima es de ${formatearPrecio(tarjeta.minimo)}.` : ''}`,
+  },
+];
+
+const jsonLdServicio = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Surtido de listas escolares',
+  description: 'Mándanos tu lista de útiles por WhatsApp y te la surtimos para que pases por ella.',
+  serviceType: 'Venta de útiles escolares',
+  provider: { '@id': `${negocio.sitio.url}/#negocio` },
+  areaServed: `${negocio.ubicacion.ciudad}, ${negocio.ubicacion.estado}`,
+};
+---
+
+<PageLayout
+  title="Lista escolar"
+  eyebrow="Regreso a clases"
+  encabezado="Surtimos tu lista escolar"
+  lead="Mándanos la foto de tu lista por WhatsApp y nosotros la surtimos. Tú solo pasas por ella."
+  description={`Surtimos tu lista de útiles escolares en ${negocio.ubicacion.ciudad}: mándanos la foto por WhatsApp, te confirmamos el total y pasas por tu pedido. ${negocio.nombre}.`}
+  jsonLd={[jsonLdServicio]}
+>
+  <Fragment slot="hero">
+    <div class="animate-fade-up mt-8 flex flex-col gap-3 [animation-delay:180ms] sm:flex-row">
+      <a href={urlWhatsApp(mensajeLista)} target="_blank" rel="noopener" class="btn btn-whatsapp h-13 px-6 text-base">
+        <Icon name="whatsapp" size={20} />
+        Enviar mi lista por WhatsApp
+      </a>
+      <a href="#como-funciona" class="btn btn-outline h-13 px-6 text-base">Ver cómo funciona</a>
+    </div>
+  </Fragment>
+
+  {
+    promo && (
+      <div class="container-page pt-16 sm:pt-20">
+        <PromoBanner promo={promo} />
+      </div>
+    )
+  }
+
+  <!-- Cómo funciona -->
+  <section class="container-page py-16 sm:py-24" aria-labelledby="como-funciona-titulo" id="como-funciona">
+    <SectionHeading id="como-funciona-titulo" titulo="Así de fácil" descripcion="Tres pasos y tu lista queda lista para recoger." />
+    <ol class="mt-12 grid gap-6 md:grid-cols-3">
+      {
+        pasos.map((p, i) => (
+          <li data-reveal style={`--reveal-delay:${i * 80}ms`} class="card relative p-7">
+            <span class="absolute -top-4 left-7 grid size-9 place-items-center rounded-full bg-yellow text-lg font-extrabold text-navy shadow-soft">
+              {i + 1}
+            </span>
+            <span class="grid size-14 place-items-center rounded-2xl bg-navy/5 text-primary">
+              <Icon name={p.icono} size={26} />
+            </span>
+            <h3 class="mt-5 text-xl font-bold">{p.titulo}</h3>
+            <p class="mt-2 leading-relaxed text-gray-600">{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- Niveles -->
+  <section class="bg-celeste-50/70 py-16 sm:py-24" aria-labelledby="niveles-titulo">
+    <div class="container-page">
+      <SectionHeading
+        id="niveles-titulo"
+        eyebrow="Para todos los grados"
+        titulo="¿De qué nivel es tu lista?"
+        descripcion="Elige el tuyo y te abrimos el chat con el mensaje ya escrito. Solo falta adjuntar la foto."
+      />
+      <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          negocio.listaEscolar.niveles.map((n, i) => (
+            <li data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <a
+                href={urlWhatsApp(n.mensajeWhatsApp)}
+                target="_blank"
+                rel="noopener"
+                class="group flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-soft transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lift"
+              >
+                <span class="grid size-14 place-items-center rounded-2xl bg-navy/5 text-primary transition-colors duration-300 group-hover:bg-navy group-hover:text-yellow">
+                  <Icon name={n.icono} size={26} />
+                </span>
+                <h3 class="mt-5 text-xl font-bold">{n.nombre}</h3>
+                <p class="mt-2 flex-1 leading-relaxed text-gray-600">{n.descripcion}</p>
+                <span class="mt-5 inline-flex items-center gap-2 font-semibold text-green-700">
+                  <Icon name="whatsapp" size={18} />
+                  Enviar mi lista
+                  <Icon name="arrow-right" size={16} class="transition-transform group-hover:translate-x-1" />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Consejos + extras -->
+  <section class="container-page py-16 sm:py-24" aria-labelledby="consejos-titulo">
+    <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div data-reveal>
+        <h2 id="consejos-titulo" class="text-3xl font-extrabold sm:text-4xl">Para atenderte más rápido</h2>
+        <ul class="mt-6 space-y-4">
+          {
+            consejos.map((c) => (
+              <li class="flex gap-3 text-lg leading-relaxed text-gray-600">
+                <span class="mt-1 grid size-6 shrink-0 place-items-center rounded-full bg-green-50 text-green-700">
+                  <Icon name="check" size={16} />
+                </span>
+                {c}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div data-reveal style="--reveal-delay:80ms" class="rounded-3xl bg-celeste-50 p-8 ring-1 ring-celeste sm:p-10">
+        <h2 class="text-2xl font-extrabold">Y de una vez, resuelve lo demás</h2>
+        <p class="mt-3 leading-relaxed text-gray-600">
+          Aprovecha el viaje: aquí mismo hacemos copias, impresiones de tareas, engargolado y enmicado de credenciales.
+        </p>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a href="/productos#cotizador" class="btn btn-primary">
+            <Icon name="calculator" size={18} />
+            Calcula tu cotización
+          </a>
+          <a href="/productos" class="btn btn-outline">Ver productos y servicios</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formas de pago -->
+  <section class="bg-celeste-50/70 py-16 sm:py-20" aria-labelledby="pagos-titulo">
+    <div class="container-page">
+      <SectionHeading id="pagos-titulo" titulo="Paga como prefieras" />
+      <div class="mx-auto mt-10 max-w-4xl">
+        <PaymentMethods />
+      </div>
+    </div>
+  </section>
+
+  <div class="pt-16 sm:pt-24">
+    <Faq titulo="Preguntas sobre tu lista" preguntas={preguntas} />
+  </div>
+
+  <CtaBand
+    titulo="Manda tu lista hoy"
+    descripcion="Escríbenos por WhatsApp con la foto de tu lista y te confirmamos qué tenemos y cuánto es."
+    mensaje={mensajeLista}
+  />
+</PageLayout>

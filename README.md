@@ -40,6 +40,8 @@ Requiere Node 18.20.8 o superior (el proyecto fija Node 22 en `.node-version`).
 | Redes sociales             | `redes` (aparecen solas en el pie de página y en el JSON-LD) |
 | Títulos y descripciones SEO | `seo`                                     |
 | Menú de navegación         | `sitio.navegacion`                         |
+| Calculadora de cotización  | `cotizador` (renglones; el precio sale de `servicios`) |
+| Niveles de la lista escolar | `listaEscolar.niveles`                    |
 
 Después: `git commit` + `git push` a `main` y Cloudflare publica el cambio en ~1 minuto.
 
