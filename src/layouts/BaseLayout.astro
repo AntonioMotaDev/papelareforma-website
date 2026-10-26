@@ -3,11 +3,9 @@
  * Layout raíz: <head> con SEO/Open Graph/JSON-LD, fuentes, header, footer y
  * el botón flotante de WhatsApp. Todos los metadatos salen de negocio.ts.
  */
-import '@fontsource-variable/inter/wght.css';
-import '@fontsource-variable/geist/wght.css';
+import '@fontsource-variable/nunito/wght.css';
 import '@/styles/global.css';
-import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
-import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import nunitoLatin from '@fontsource-variable/nunito/files/nunito-latin-wght-normal.woff2?url';
 
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
@@ -58,8 +56,7 @@ const esquemas = [jsonLdNegocio(), ...jsonLd];
     <meta name="geo.region" content="MX-SLP" />
     <meta name="geo.placename" content={`${negocio.ubicacion.ciudad}, ${negocio.ubicacion.estado}`} />
 
-    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={nunitoLatin} as="font" type="font/woff2" crossorigin />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />

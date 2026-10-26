@@ -283,7 +283,7 @@ export const negocio = {
     url: 'https://papeleriareforma.mx',
     idioma: 'es-MX',
     locale: 'es_MX',
-    colorTema: '#023F76',
+    colorTema: '#023F77',
     navegacion: [
       { etiqueta: 'Inicio', href: '/' },
       { etiqueta: 'Servicios', href: '/servicios' },

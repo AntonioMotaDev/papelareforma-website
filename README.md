@@ -101,8 +101,8 @@ Mientras no existan, se muestran un logotipo tipográfico y composiciones de mar
 
 | Token        | Hex       | Uso                                     |
 | ------------ | --------- | --------------------------------------- |
-| `navy`       | `#023F76` | Primario, fondos de marca, títulos      |
-| `primary`    | `#0051A3` | Enlaces, acentos, hover                 |
+| `navy`       | `#023F77` | Primario, fondos de marca, títulos      |
+| `primary`    | `#0A5CB5` | Enlaces, acentos, hover                 |
 | `yellow`     | `#FEC513` | CTA principal, énfasis                  |
 | `green`      | `#71B637` | Acentos decorativos e íconos            |
 | `green-700`  | `#3F7A1C` | Verde para texto o botones con texto blanco (contraste AA) |
@@ -164,7 +164,7 @@ Busca `TODO(Carrito)`, `TODO(API)` y `TODO(Crédito)`.
 - **Accesibilidad (WCAG 2.1 AA):** 0 violaciones de axe-core en todas las páginas (móvil y escritorio). Incluye enlace "Saltar al contenido", foco visible, menú operable con teclado (Esc cierra), `aria-current`, errores de formulario anunciados, `prefers-reduced-motion` y textos alternativos.
 - **Animaciones:** aparición al hacer scroll (IntersectionObserver, solo con JS activo) y parallax ligero con *scroll-driven animations* de CSS, sin JavaScript. Los navegadores sin soporte muestran la versión estática.
 - **SEO local:** meta y Open Graph por página, JSON-LD `Store` con horarios y catálogo, `BreadcrumbList`, `sitemap-index.xml`, `robots.txt` y `geo.region = MX-SLP`.
-- **Rendimiento:** fuentes autoalojadas (Inter y Geist variables) con `preload` y métricas de respaldo (sin CLS), cero frameworks de JS (menos de 10 KB de JS en total) y mapa en diferido.
+- **Rendimiento:** fuente autoalojada (Nunito variable, la del manual de marca) con `preload` y métricas de respaldo (sin CLS), cero frameworks de JS (menos de 10 KB de JS en total) y mapa en diferido.
 
 ### Nota sobre versiones
 

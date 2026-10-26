@@ -6,12 +6,12 @@
  */
 @theme {
   /* Marca */
-  --color-navy: #023f76;
+  --color-navy: #023f77;
   --color-navy-950: #011a31;
   --color-navy-900: #012a50;
   --color-navy-800: #03355f;
-  --color-primary: #0051a3;
-  --color-primary-700: #00438a;
+  --color-primary: #0a5cb5;
+  --color-primary-700: #084c96;
   --color-yellow: #fec513;
   --color-yellow-300: #ffd95c;
   --color-yellow-50: #fff8e1;
@@ -34,8 +34,9 @@
   --color-gray-900: #111827;
 
   /* Tipografía */
-  --font-sans: 'Inter Variable', 'Inter Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Geist Variable', 'Geist Fallback', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  /* Nunito es la única fuente del manual de marca; font-display se conserva como alias. */
+  --font-sans: 'Nunito Variable', 'Nunito Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--font-sans);
 
   /* Breakpoints del proyecto (sm 640 · lg 1024 · xl 1280; md se conserva) */
   --breakpoint-sm: 40rem;
@@ -44,8 +45,8 @@
   --breakpoint-xl: 80rem;
 
   /* Sombras con tinte navy: se ven más "premium" que las grises */
-  --shadow-soft: 0 1px 2px rgb(2 63 118 / 0.04), 0 4px 16px -4px rgb(2 63 118 / 0.08);
-  --shadow-lift: 0 2px 4px rgb(2 63 118 / 0.04), 0 18px 40px -12px rgb(2 63 118 / 0.22);
+  --shadow-soft: 0 1px 2px rgb(2 63 119 / 0.04), 0 4px 16px -4px rgb(2 63 119 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(2 63 119 / 0.04), 0 18px 40px -12px rgb(2 63 119 / 0.22);
   --shadow-glow: 0 10px 30px -8px rgb(254 197 19 / 0.55);
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
@@ -77,20 +78,12 @@
 
 /* Métricas de respaldo: evitan saltos de diseño (CLS) mientras cargan las fuentes. */
 @font-face {
-  font-family: 'Inter Fallback';
+  font-family: 'Nunito Fallback';
   src: local('Arial');
-  ascent-override: 90.2%;
-  descent-override: 22.48%;
+  ascent-override: 99.39%;
+  descent-override: 34.7%;
   line-gap-override: 0%;
-  size-adjust: 107.4%;
-}
-@font-face {
-  font-family: 'Geist Fallback';
-  src: local('Arial');
-  ascent-override: 95.94%;
-  descent-override: 28.16%;
-  line-gap-override: 0%;
-  size-adjust: 104.76%;
+  size-adjust: 101.72%;
 }
 
 @layer base {
@@ -231,8 +224,8 @@
   }
   .bg-grid-light {
     background-image:
-      linear-gradient(to right, rgb(2 63 118 / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(2 63 118 / 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgb(2 63 119 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(2 63 119 / 0.05) 1px, transparent 1px);
     background-size: 32px 32px;
   }
 

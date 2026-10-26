@@ -15,7 +15,7 @@ const png = (size, pad = 0, fondo = { r: 0, g: 0, b: 0, alpha: 0 }) =>
     .png()
     .toBuffer();
 
-const navy = { r: 2, g: 63, b: 118, alpha: 1 };
+const navy = { r: 2, g: 63, b: 119, alpha: 1 };
 await writeFile('public/apple-touch-icon.png', await png(180, 18, navy));
 await writeFile('public/icons/icon-192.png', await png(192));
 await writeFile('public/icons/icon-512.png', await png(512));
