@@ -34,6 +34,7 @@ Requiere Node 18.20.8 o superior (el proyecto fija Node 22 en `.node-version`).
 | Dirección, C.P., coordenadas | `ubicacion`                              |
 | Horarios                   | `horarios` (varios `turnos` en un día = hay receso) |
 | Servicios y precios        | `servicios` (`precio.monto: null` = "Consulta en tienda") |
+| Categorías y destacados    | `categorias`, `productosDestacados` (fotos: ver "Fotos") |
 | Promociones                | `promociones` (`activa: false` para ocultarla) |
 | Formas de pago             | `pagos.metodos`                            |
 | Redes sociales             | `redes` (aparecen solas en el pie de página y en el JSON-LD) |
@@ -65,7 +66,18 @@ Los archivos de marca salen de `PAPE/Branding/Oficial/`:
 | `public/favicon.svg` | `isotipo_Vector.svg` sin fondo y recortado | Favicon; fuente de `node scripts/generar-iconos.mjs` |
 | `public/og-image.png` | `Logo_Horizontal_Bco_SinFondo.png` sobre blanco, 1200×630 | Imagen al compartir en redes |
 
-Fotos opcionales: `src/assets/images/fachada.jpg` (hero, mín. 1600 px) y `equipo.jpg` (Nosotros, mín. 1200 px). Mientras no existan se muestran composiciones de marca.
+### Fotos
+
+Cada espacio de foto (`src/components/Foto.astro`) busca `src/assets/images/<nombre>.jpg` (o `.png`/`.webp`). Si el archivo existe, se publica optimizado; si no, se ve un relleno de colores de marca con un ícono. Solo hay que copiar la foto con el nombre exacto y publicar.
+
+| Archivo | Dónde sale | Formato sugerido |
+| --- | --- | --- |
+| `hero.jpg` | Portada de inicio | Horizontal 4:3, mín. 1600 px |
+| `utiles-escolares.jpg`, `papeleria-oficina.jpg`, `escritura-dibujo.jpg`, `manualidades.jpg`, `regalos-envolturas.jpg`, `mas-productos.jpg` | Tarjetas de categoría (inicio y Productos) | Horizontal 16:9, mín. 1200 px |
+| `cuaderno-profesional.jpg`, `boligrafos-colores.jpg`, `marcadores-escolares.jpg`, `notas-adhesivas.jpg` | Productos destacados | Cuadrada, mín. 800 px, fondo claro |
+| `equipo.jpg` | Nosotros | Horizontal 4:3, mín. 1200 px |
+
+Los nombres son el `id` de cada categoría y producto en `negocio.ts` (`categorias`, `productosDestacados`): si agregas uno, su foto lleva su `id`.
 
 ---------------------------------------------- | ---------------------------------- |
 | `src/assets/logos/Logo_Horizontal_Bco_SinFondo.png` | Header y footer (fondo navy)  |

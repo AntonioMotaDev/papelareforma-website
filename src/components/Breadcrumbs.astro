@@ -9,19 +9,19 @@ const { migas } = Astro.props;
 ---
 
 <nav aria-label="Ruta de navegación">
-  <ol class="flex flex-wrap items-center gap-1.5 text-sm text-white/70">
+  <ol class="flex flex-wrap items-center gap-1.5 text-sm text-gray-500">
     {
       migas.map((m, i) => {
         const ultima = i === migas.length - 1;
         return (
           <li class="flex items-center gap-1.5">
-            {i > 0 && <Icon name="chevron-right" size={14} class="text-white/40" />}
+            {i > 0 && <Icon name="chevron-right" size={14} class="text-gray-400" />}
             {ultima ? (
-              <span aria-current="page" class="font-medium text-white">
+              <span aria-current="page" class="font-medium text-navy">
                 {m.nombre}
               </span>
             ) : (
-              <a href={m.href} class="inline-flex items-center gap-1 transition-colors hover:text-yellow">
+              <a href={m.href} class="inline-flex items-center gap-1 transition-colors hover:text-primary">
                 {i === 0 && <Icon name="home" size={14} />}
                 {m.nombre}
               </a>

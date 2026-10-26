@@ -1,0 +1,41 @@
+---
+import Icon from './Icon.astro';
+import Foto from './Foto.astro';
+import type { ArticuloCatalogo } from '@/lib/negocio';
+import { urlWhatsApp } from '@/lib/utils';
+
+interface Props {
+  producto: ArticuloCatalogo;
+  tono?: 'azul' | 'verde' | 'amarillo' | 'coral';
+  retraso?: number;
+}
+const { producto, tono, retraso = 0 } = Astro.props;
+---
+
+<article
+  data-reveal
+  style={`--reveal-delay:${retraso}ms`}
+  class="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-lift"
+>
+  <Foto
+    nombre={producto.id}
+    alt={producto.nombre}
+    icono={producto.icono}
+    {tono}
+    sizes="(min-width: 1024px) 25vw, 50vw"
+    class="aspect-square w-full"
+  />
+  <div class="flex flex-1 flex-col px-5 py-4">
+    <h3 class="text-base font-bold sm:text-lg">{producto.nombre}</h3>
+    <p class="mt-1 flex-1 text-sm text-gray-600">{producto.descripcion}</p>
+    <a
+      href={urlWhatsApp(producto.mensajeWhatsApp)}
+      target="_blank"
+      rel="noopener"
+      class="mt-4 inline-flex min-h-11 items-center gap-1.5 self-start text-sm font-bold text-primary hover:text-primary-700"
+    >
+      Consultar producto<span class="sr-only">: {producto.nombre} (WhatsApp)</span>
+      <Icon name="arrow-right" size={16} class="transition-transform group-hover:translate-x-1" />
+    </a>
+  </div>
+</article>

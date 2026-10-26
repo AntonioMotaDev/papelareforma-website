@@ -1,6 +1,8 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
 import ServiceCard from '@/components/ServiceCard.astro';
+import CategoriaCard from '@/components/CategoriaCard.astro';
+import ProductoCard from '@/components/ProductoCard.astro';
 import PromoBanner from '@/components/PromoBanner.astro';
 import PaymentMethods from '@/components/PaymentMethods.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
@@ -8,12 +10,13 @@ import CtaBand from '@/components/CtaBand.astro';
 import Icon from '@/components/Icon.astro';
 import { negocio } from '@/lib/negocio';
 import { obtenerPromociones, obtenerServicios } from '@/lib/api';
-import { formatearPrecio, textoPrecio } from '@/lib/utils';
+import { formatearPrecio, textoPrecio, urlWhatsApp } from '@/lib/utils';
 
 // Hoy vienen de negocio.ts; cuando exista la API, de ahí (ver src/lib/api.ts).
 const servicios = await obtenerServicios();
 const promociones = await obtenerPromociones();
 const tarjeta = negocio.pagos.metodos.find((m) => m.id === 'tarjeta');
+const tonos = ['azul', 'verde', 'amarillo', 'coral'] as const;
 
 const jsonLdServicios = {
   '@context': 'https://schema.org',
@@ -34,18 +37,51 @@ const jsonLdServicios = {
 ---
 
 <PageLayout
-  title="Servicios y precios"
-  eyebrow="Servicios"
-  encabezado="Servicios y precios base"
-  lead={`Fotocopias, impresión, engargolado, enmicado y más en ${negocio.ubicacion.ciudad}. Precios claros, trabajo al momento.`}
-  description={`Servicios de ${negocio.nombre} en San Luis Potosí: fotocopias, impresión digital, engargolado, enmicado, pago de servicios, envoltura de regalos y recargas. Consulta precios.`}
+  title="Productos y servicios"
+  eyebrow="Productos"
+  encabezado="Productos y servicios"
+  lead={`Papelería, útiles escolares y oficina, más copias, impresiones y engargolados en ${negocio.ubicacion.ciudad}. Pregunta por lo que buscas.`}
+  description={`Productos y servicios de ${negocio.nombre} en San Luis Potosí: útiles escolares, oficina, manualidades, regalos, fotocopias, impresión, engargolado y enmicado. Consulta precios.`}
   jsonLd={[jsonLdServicios]}
 >
-  <section class="py-16 sm:py-24" aria-labelledby="lista-servicios">
-    <h2 id="lista-servicios" class="sr-only">Todos los servicios</h2>
+  <section class="container-page py-16 sm:py-20" aria-labelledby="categorias-titulo">
+    <SectionHeading
+      id="categorias-titulo"
+      titulo="Lo que encuentras en la tienda"
+      descripcion="Toca una categoría para preguntarnos por WhatsApp si tenemos lo que buscas."
+    />
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        negocio.categorias.map((c, i) => (
+          <CategoriaCard
+            categoria={c}
+            href={urlWhatsApp(c.mensajeWhatsApp)}
+            tono={tonos[i % 4]}
+            retraso={(i % 3) * 70}
+            conDescripcion
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container-page pb-16 sm:pb-20" aria-labelledby="destacados-titulo">
+    <SectionHeading id="destacados-titulo" titulo="Lo que más nos piden" />
+    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+      {negocio.productosDestacados.map((p, i) => <ProductoCard producto={p} tono={tonos[i % 4]} retraso={i * 70} />)}
+    </div>
+  </section>
+
+  <section class="bg-celeste-50/70 py-16 sm:py-20" aria-labelledby="servicios-titulo">
     <div class="container-page">
+      <SectionHeading
+        id="servicios-titulo"
+        eyebrow="Servicios"
+        titulo="Copias, impresiones y más"
+        descripcion="Trabajo al momento, con precios base publicados."
+      />
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <!-- TODO(Carrito): Integración future con API — filtros por categoría y "Agregar a cotización" -->
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {servicios.map((s, i) => <ServiceCard servicio={s} retraso={(i % 3) * 80} />)}
       </div>
       <p class="mt-8 flex items-start gap-2 text-sm text-gray-500" data-reveal>
@@ -58,7 +94,7 @@ const jsonLdServicios = {
 
   {
     promociones.length > 0 && (
-      <div class="container-page grid gap-8 pb-16 sm:pb-24">
+      <div class="container-page grid gap-8 pt-16 sm:pt-24">
         {promociones.map((p) => (
           <PromoBanner promo={p} />
         ))}
@@ -67,7 +103,7 @@ const jsonLdServicios = {
   }
 
   <!-- Tabla resumen de precios -->
-  <section class="bg-gray-50 py-16 sm:py-24" aria-labelledby="precios-titulo">
+  <section class="py-16 sm:py-24" aria-labelledby="precios-titulo">
     <div class="container-page grid gap-12 lg:grid-cols-12">
       <div class="lg:col-span-5">
         <SectionHeading
@@ -112,7 +148,7 @@ const jsonLdServicios = {
     </div>
   </section>
 
-  <section class="py-16 sm:py-24" aria-labelledby="pagos-titulo">
+  <section class="bg-celeste-50/70 py-16 sm:py-24" aria-labelledby="pagos-titulo">
     <div class="container-page">
       <SectionHeading
         id="pagos-titulo"

@@ -1,0 +1,56 @@
+---
+/**
+ * Espacio para una foto real del negocio. Si existe `src/assets/images/<nombre>.jpg`
+ * (o .jpeg/.png/.webp) se muestra optimizada; si no, un relleno de marca con ícono,
+ * para que el diseño se vea completo mientras llegan las fotos.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon, { type NombreIcono } from './Icon.astro';
+import { cx } from '@/lib/utils';
+
+interface Props {
+  /** Nombre del archivo sin extensión, p. ej. `hero` o el `id` de una categoría. */
+  nombre: string;
+  alt: string;
+  icono: NombreIcono;
+  tono?: 'azul' | 'verde' | 'amarillo' | 'coral';
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+
+const { nombre, alt, icono, tono = 'azul', sizes = '(min-width: 1024px) 33vw, 100vw', eager = false, class: clase } =
+  Astro.props;
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/images/*.{jpg,jpeg,png,webp}', { eager: true });
+const foto = Object.entries(fotos).find(([ruta]) => ruta.replace(/\.\w+$/, '').endsWith(`/${nombre}`))?.[1].default;
+
+const tonos = {
+  azul: 'bg-celeste-50 text-primary [--mancha:var(--color-celeste)]',
+  verde: 'bg-green-50 text-green-700 [--mancha:#d6ecc4]',
+  amarillo: 'bg-yellow-50 text-navy [--mancha:var(--color-yellow-300)]',
+  coral: 'bg-coral-50 text-navy [--mancha:#ffd0d3]',
+} as const;
+---
+
+{
+  foto ? (
+    <Picture
+      src={foto}
+      formats={['webp']}
+      widths={[400, 800, 1200]}
+      sizes={sizes}
+      alt={alt}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      class={cx('object-cover', clase)}
+    />
+  ) : (
+    <div class={cx('relative grid place-items-center overflow-hidden', tonos[tono], clase)} aria-hidden="true">
+      <span class="absolute -top-6 -right-6 size-28 rounded-full bg-(--mancha) opacity-70" />
+      <span class="absolute -bottom-8 -left-4 size-20 rounded-full bg-(--mancha) opacity-50" />
+      <Icon name={icono} size={44} stroke-width={1.6} class="relative" />
+    </div>
+  )
+}

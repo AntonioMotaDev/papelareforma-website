@@ -28,9 +28,9 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
                 aria-current={esActiva(item.href) ? 'page' : undefined}
                 class={cx(
                   'relative rounded-full px-3.5 py-2 text-[0.93rem] font-medium transition-colors',
-                  'after:absolute after:inset-x-3.5 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-yellow after:transition-transform after:duration-300',
-                  'hover:text-navy hover:after:scale-x-100',
-                  esActiva(item.href) ? 'text-navy after:scale-x-100' : 'text-gray-600',
+                  'after:absolute after:inset-x-3.5 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:transition-transform after:duration-300',
+                  'hover:text-primary hover:after:scale-x-100',
+                  esActiva(item.href) ? 'font-bold text-primary after:scale-x-100' : 'text-navy',
                 )}
               >
                 {item.etiqueta}
@@ -57,7 +57,7 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
         class="btn btn-primary hidden min-h-11 px-5 text-sm sm:inline-flex"
       >
         <Icon name="whatsapp" size={18} />
-        Cotiza por WhatsApp
+        Consultar por WhatsApp
       </a>
 
       <button
@@ -105,7 +105,7 @@ const esActiva = (href: string) => (href === '/' ? rutaActual === '/' : rutaActu
           <OpenStatus variante="pill-light" />
           <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-primary w-full">
             <Icon name="whatsapp" size={18} />
-            Cotiza por WhatsApp
+            Consultar por WhatsApp
           </a>
         </div>
       </nav>

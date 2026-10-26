@@ -66,6 +66,30 @@ export interface Servicio {
   mensajeWhatsApp: string;
 }
 
+export type IconoCatalogo =
+  | 'backpack'
+  | 'briefcase'
+  | 'palette'
+  | 'scissors'
+  | 'gift'
+  | 'package'
+  | 'notebook'
+  | 'pen'
+  | 'highlighter'
+  | 'sticky-note';
+
+/**
+ * Categoría o producto del catálogo. La foto se toma de `src/assets/images/<id>.jpg`
+ * (o .png/.webp) si existe; si no, se muestra un relleno de marca con el ícono.
+ */
+export interface ArticuloCatalogo {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  icono: IconoCatalogo;
+  mensajeWhatsApp: string;
+}
+
 export interface Promocion {
   id: string;
   activa: boolean;
@@ -217,6 +241,84 @@ export const negocio = {
     },
   ] satisfies Servicio[] as Servicio[],
 
+  // TODO(Datos): confirmar que las descripciones reflejan lo que de verdad se vende.
+  categorias: [
+    {
+      id: 'utiles-escolares',
+      nombre: 'Útiles escolares',
+      descripcion: 'Cuadernos, lápices, colores, juegos de geometría y todo lo de la lista.',
+      icono: 'backpack',
+      mensajeWhatsApp: 'Hola, quiero consultar útiles escolares.',
+    },
+    {
+      id: 'papeleria-oficina',
+      nombre: 'Papelería y oficina',
+      descripcion: 'Hojas, folders, carpetas, clips, engrapadoras y lo del archivo.',
+      icono: 'briefcase',
+      mensajeWhatsApp: 'Hola, quiero consultar artículos de oficina.',
+    },
+    {
+      id: 'escritura-dibujo',
+      nombre: 'Escritura y dibujo',
+      descripcion: 'Plumas, marcadores, plumones, colores y blocks de dibujo.',
+      icono: 'palette',
+      mensajeWhatsApp: 'Hola, quiero consultar artículos de escritura y dibujo.',
+    },
+    {
+      id: 'manualidades',
+      nombre: 'Manualidades',
+      descripcion: 'Foami, cartulinas, papel de colores, pegamento y tijeras.',
+      icono: 'scissors',
+      mensajeWhatsApp: 'Hola, quiero consultar material para manualidades.',
+    },
+    {
+      id: 'regalos-envolturas',
+      nombre: 'Regalos y envolturas',
+      descripcion: 'Papel para regalo, bolsas, moños y tarjetas. Y si quieres, lo envolvemos.',
+      icono: 'gift',
+      mensajeWhatsApp: 'Hola, quiero consultar regalos y envolturas.',
+    },
+    {
+      id: 'mas-productos',
+      nombre: 'Más productos',
+      descripcion: '¿Buscas algo que no ves aquí? Pregúntanos: si no lo tenemos, lo conseguimos.',
+      icono: 'package',
+      mensajeWhatsApp: 'Hola, ¿tienen…?',
+    },
+  ] satisfies ArticuloCatalogo[] as ArticuloCatalogo[],
+
+  // TODO(Datos): cambiar por los productos que más se venden.
+  productosDestacados: [
+    {
+      id: 'cuaderno-profesional',
+      nombre: 'Cuaderno profesional',
+      descripcion: 'Raya, cuadro chico o grande; espiral o cosido.',
+      icono: 'notebook',
+      mensajeWhatsApp: 'Hola, ¿tienen cuaderno profesional? ¿Qué precio tiene?',
+    },
+    {
+      id: 'boligrafos-colores',
+      nombre: 'Juego de bolígrafos de colores',
+      descripcion: 'Para apuntes, mapas mentales y subrayar.',
+      icono: 'pen',
+      mensajeWhatsApp: 'Hola, ¿tienen juegos de bolígrafos de colores? ¿Qué precio tienen?',
+    },
+    {
+      id: 'marcadores-escolares',
+      nombre: 'Marcadores escolares',
+      descripcion: 'Plumones y marcatextos de varios colores.',
+      icono: 'highlighter',
+      mensajeWhatsApp: 'Hola, ¿tienen marcadores escolares? ¿Qué precio tienen?',
+    },
+    {
+      id: 'notas-adhesivas',
+      nombre: 'Notas adhesivas',
+      descripcion: 'Post-it en varios tamaños y colores.',
+      icono: 'sticky-note',
+      mensajeWhatsApp: 'Hola, ¿tienen notas adhesivas? ¿Qué precio tienen?',
+    },
+  ] satisfies ArticuloCatalogo[] as ArticuloCatalogo[],
+
   promociones: [
     {
       id: 'listas-escolares',
@@ -281,10 +383,9 @@ export const negocio = {
     colorTema: '#023F77',
     navegacion: [
       { etiqueta: 'Inicio', href: '/' },
-      { etiqueta: 'Servicios', href: '/servicios' },
-      { etiqueta: 'Horarios y ubicación', href: '/ubicacion' },
+      { etiqueta: 'Productos', href: '/productos' },
       { etiqueta: 'Nosotros', href: '/nosotros' },
-      { etiqueta: 'Contacto', href: '/contacto' },
+      { etiqueta: 'Ubicación', href: '/ubicacion' },
     ],
   },
 

@@ -17,21 +17,18 @@ const { eyebrow, titulo, descripcion, alineacion = 'center', id, oscuro = false,
 <div data-reveal class={cx('max-w-2xl', alineacion === 'center' && 'mx-auto text-center')}>
   {
     eyebrow && (
-      <p class={cx('eyebrow', oscuro && 'text-yellow', alineacion === 'center' && 'justify-center')}>
-        <span class={cx('h-px w-6', oscuro ? 'bg-yellow' : 'bg-primary')} aria-hidden="true" />
-        {eyebrow}
-      </p>
+      <p class="eyebrow mb-2">{eyebrow}</p>
     )
   }
   <Titulo
     id={id}
-    class={cx('mt-3 text-3xl leading-tight font-bold sm:text-4xl lg:text-[2.75rem]', oscuro && 'text-white')}
+    class={cx('mt-1 text-3xl leading-tight font-extrabold sm:text-4xl', oscuro && 'text-white')}
   >
     {titulo}
   </Titulo>
   {
     descripcion && (
-      <p class={cx('mt-4 text-lg leading-relaxed', oscuro ? 'text-white/75' : 'text-gray-600')}>{descripcion}</p>
+      <p class={cx('mt-3 text-lg leading-relaxed', oscuro ? 'text-white/75' : 'text-gray-600')}>{descripcion}</p>
     )
   }
   <slot />

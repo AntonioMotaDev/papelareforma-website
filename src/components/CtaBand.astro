@@ -7,27 +7,36 @@ interface Props {
   descripcion?: string;
 }
 const {
-  titulo = '¿Necesitas una cotización rápida?',
-  descripcion = 'Mándanos tu archivo o tu lista por WhatsApp y te respondemos con precio y tiempo de entrega.',
+  titulo = '¿Buscas algo en particular?',
+  descripcion = 'Pregúntanos por WhatsApp si lo tenemos y cuánto cuesta. Te contestamos en horario de atención.',
 } = Astro.props;
 ---
 
-<section class="container-page py-16 sm:py-24" aria-labelledby="cta-titulo">
+<section class="container-page py-14 sm:py-20" aria-labelledby="cta-titulo">
   <div
     data-reveal
-    class="relative isolate overflow-hidden rounded-[2rem] bg-yellow px-6 py-12 text-center sm:px-12 sm:py-16"
+    class="relative isolate grid items-center gap-8 overflow-hidden rounded-3xl bg-celeste-50 px-6 py-10 text-center ring-1 ring-celeste sm:px-10 lg:grid-cols-[1fr_2fr_1fr] lg:py-12"
   >
-    <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-      <div class="bg-grid-light absolute inset-0"></div>
-      <div class="absolute -top-24 left-1/2 size-96 -translate-x-1/2 rounded-full bg-white/40 blur-3xl"></div>
-    </div>
-    <h2 id="cta-titulo" class="mx-auto max-w-2xl text-3xl font-bold sm:text-4xl">{titulo}</h2>
-    <p class="mx-auto mt-4 max-w-xl text-lg text-navy/80">{descripcion}</p>
-    <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-      <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-navy h-14 px-7 text-base">
-        <Icon name="whatsapp" size={20} />
-        Escribir por WhatsApp
+    <!-- Isotipo oficial (public/favicon.svg) como ilustración -->
+    <img src="/favicon.svg" alt="" width="180" height="172" loading="lazy" class="mx-auto hidden w-40 lg:block" />
+
+    <div>
+      <h2 id="cta-titulo" class="text-3xl font-extrabold sm:text-4xl">{titulo}</h2>
+      <p class="mx-auto mt-3 max-w-md text-lg text-gray-600">{descripcion}</p>
+      <a href={urlWhatsApp()} target="_blank" rel="noopener" class="btn btn-whatsapp mt-7 h-14 px-7 text-base">
+        <Icon name="whatsapp" size={22} />
+        Escríbenos por WhatsApp
       </a>
+    </div>
+
+    <div class="relative mx-auto hidden size-36 lg:block" aria-hidden="true">
+      <span class="absolute inset-0 rotate-6 rounded-[2rem] border-4 border-navy bg-white"></span>
+      <span class="absolute inset-0 grid place-items-center text-green-700">
+        <Icon name="whatsapp" size={64} />
+      </span>
+      <span class="absolute -top-3 -right-4 h-8 w-2 rotate-45 rounded-full bg-yellow"></span>
+      <span class="absolute top-6 -right-6 h-2 w-7 rounded-full bg-green"></span>
+      <span class="absolute -bottom-2 -left-5 h-2 w-6 -rotate-12 rounded-full bg-coral"></span>
     </div>
   </div>
 </section>

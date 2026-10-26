@@ -2,63 +2,31 @@
 import Logo from './Logo.astro';
 import Icon, { type NombreIcono } from './Icon.astro';
 import { negocio } from '@/lib/negocio';
-import {
-  agruparHorarios,
-  direccionCompleta,
-  formatearTurnos,
-  urlCorreo,
-  urlGoogleMaps,
-  urlWhatsApp,
-} from '@/lib/utils';
+import { direccionCompleta, resumenHorarios, urlGoogleMaps, urlWhatsApp } from '@/lib/utils';
 
-const grupos = agruparHorarios();
 const anio = new Date().getFullYear();
 const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram: 'instagram', TikTok: 'tiktok' };
+const enlaces = [...negocio.sitio.navegacion, { etiqueta: 'Contacto', href: '/contacto' }];
 ---
 
-<footer class="on-dark relative overflow-hidden bg-navy-950 text-white/75">
-  <div class="bg-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden="true"></div>
+<footer class="on-dark bg-navy text-white/80">
   <div
-    class="pointer-events-none absolute -top-32 -right-24 size-80 rounded-full bg-primary/30 blur-3xl"
-    aria-hidden="true"
+    class="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[auto_1fr_auto_auto] lg:items-start lg:gap-0 lg:divide-x lg:divide-white/15"
   >
-  </div>
-
-  <div class="container-page relative grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:py-20">
-    <div class="lg:col-span-4">
-      <a href="/" class="inline-block rounded-2xl bg-white px-4 py-3" aria-label={`${negocio.nombre} — Inicio`}>
-        <Logo alto={56} />
+    <div class="flex flex-col gap-5 sm:flex-row sm:items-center lg:pr-10">
+      <a href="/" class="inline-block self-start rounded-2xl bg-white px-4 py-3" aria-label={`${negocio.nombre} — Inicio`}>
+        <Logo alto={52} />
       </a>
-      <p class="mt-5 max-w-sm text-[0.95rem] leading-relaxed">
-        {negocio.eslogan}. Más de {negocio.experiencia.anios} años atendiendo a familias, estudiantes y
-        negocios de {negocio.ubicacion.ciudad}.
+      <p class="max-w-56 text-sm leading-relaxed">
+        <strong class="block text-base text-white">{negocio.nombre}</strong>
+        Útiles, papelería y artículos para tu día a día.
       </p>
-      {
-        negocio.redes.length > 0 && (
-          <ul class="mt-6 flex gap-2" aria-label="Redes sociales">
-            {negocio.redes.map((red) => (
-              <li>
-                <a
-                  href={red.url}
-                  target="_blank"
-                  rel="noopener"
-                  class="inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:-translate-y-0.5 hover:bg-yellow hover:text-navy"
-                  aria-label={`${red.nombre} (${red.usuario})`}
-                >
-                  <Icon name={iconoRed[red.nombre] ?? 'external-link'} size={20} />
-                </a>
-              </li>
-            ))}
-          </ul>
-        )
-      }
     </div>
 
-    <nav aria-label="Pie de página" class="lg:col-span-2">
-      <h2 class="font-display text-sm font-semibold tracking-[0.14em] text-white uppercase">Explora</h2>
-      <ul class="mt-5 space-y-3 text-[0.95rem]">
+    <nav aria-label="Pie de página" class="lg:px-10">
+      <ul class="flex flex-wrap gap-x-6 gap-y-3 text-[0.95rem] lg:justify-center lg:pt-4">
         {
-          negocio.sitio.navegacion.map((item) => (
+          enlaces.map((item) => (
             <li>
               <a href={item.href} class="transition-colors hover:text-yellow">
                 {item.etiqueta}
@@ -69,53 +37,57 @@ const iconoRed: Record<string, NombreIcono> = { Facebook: 'facebook', Instagram:
       </ul>
     </nav>
 
-    <div class="lg:col-span-3">
-      <h2 class="font-display text-sm font-semibold tracking-[0.14em] text-white uppercase">Contacto</h2>
-      <ul class="mt-5 space-y-4 text-[0.95rem]">
-        <li>
-          <a href={urlGoogleMaps()} target="_blank" rel="noopener" class="group flex gap-3 hover:text-yellow">
-            <Icon name="map-pin" size={18} class="mt-0.5 shrink-0 text-yellow" />
-            <address class="not-italic">{direccionCompleta()}</address>
-          </a>
-        </li>
-        <li>
-          <a href={urlWhatsApp()} target="_blank" rel="noopener" class="flex gap-3 hover:text-yellow">
-            <Icon name="whatsapp" size={18} class="mt-0.5 shrink-0 text-yellow" />
-            WhatsApp {negocio.contacto.telefono}
-          </a>
-        </li>
-        <li>
-          <a href={urlCorreo()} class="flex gap-3 break-all hover:text-yellow">
-            <Icon name="mail" size={18} class="mt-0.5 shrink-0 text-yellow" />
-            {negocio.contacto.correo}
-          </a>
-        </li>
-      </ul>
+    <div class="space-y-3 text-sm lg:px-10">
+      <h2 class="font-bold text-white">Contacto</h2>
+      <a href={urlWhatsApp()} target="_blank" rel="noopener" class="flex gap-2.5 hover:text-yellow">
+        <Icon name="whatsapp" size={18} class="shrink-0 text-yellow" />
+        WhatsApp {negocio.contacto.telefono}
+      </a>
+      <a href={urlGoogleMaps()} target="_blank" rel="noopener" class="flex max-w-64 gap-2.5 hover:text-yellow">
+        <Icon name="map-pin" size={18} class="shrink-0 text-yellow" />
+        <address class="not-italic">{direccionCompleta()}</address>
+      </a>
+      <p class="flex max-w-64 gap-2.5">
+        <Icon name="clock" size={18} class="shrink-0 text-yellow" />
+        {resumenHorarios()}
+      </p>
     </div>
 
-    <div class="lg:col-span-3">
-      <h2 class="font-display text-sm font-semibold tracking-[0.14em] text-white uppercase">Horario</h2>
-      <dl class="mt-5 space-y-4 text-[0.95rem]">
-        {
-          grupos.map((g) => (
-            <div>
-              <dt class="font-semibold text-white">{g.etiqueta}</dt>
-              <dd>{formatearTurnos(g.turnos)}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
+    {
+      negocio.redes.length > 0 && (
+        <div class="space-y-3 text-sm lg:pl-10">
+          <h2 class="font-bold text-white">Redes sociales</h2>
+          <ul class="flex gap-2">
+            {negocio.redes.map((red) => (
+              <li>
+                <a
+                  href={red.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-yellow hover:text-navy"
+                  aria-label={`${red.nombre} (${red.usuario})`}
+                >
+                  <Icon name={iconoRed[red.nombre] ?? 'external-link'} size={20} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
   </div>
 
-  <div class="relative border-t border-white/10">
-    <div
-      class="container-page flex flex-col gap-2 py-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between"
-    >
+  <div class="border-t border-white/10">
+    <div class="container-page flex flex-col gap-2 py-5 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
       <p>© {anio} {negocio.nombre}. Todos los derechos reservados.</p>
       <p>
         Sitio desarrollado por{' '}
-        <a href="https://forma01.net" target="_blank" rel="noopener" class="font-semibold text-white/80 underline-offset-4 hover:text-yellow hover:underline">FORMA/01</a>
+        <a
+          href="https://forma01.net"
+          target="_blank"
+          rel="noopener"
+          class="font-semibold text-white/80 underline-offset-4 hover:text-yellow hover:underline">FORMA/01</a
+        >
       </p>
     </div>
   </div>

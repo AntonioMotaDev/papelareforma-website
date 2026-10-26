@@ -42,6 +42,13 @@ Despliegue: push a `main` → Cloudflare Pages publica solo. Node 22 (`.node-ver
 - **Layouts**: `BaseLayout` (meta, OG, JSON-LD) → `PageLayout` (páginas internas + migas).
 - **Tailwind v4 sin `tailwind.config.js`**: tema (colores, fuentes, breakpoints) en `@theme` de
   `src/styles/global.css`. Alias `@/*` → `src/*`.
+- **Diseño** (rediseño 2026-10-26 sobre un mockup de Antonio): fondos blancos y `celeste-50`, botón
+  principal azul (`btn-primary`), WhatsApp en verde (`btn-whatsapp`), badges `.eyebrow`, manchas
+  amarillo/coral del manual como decoración. Menú: Inicio · Productos · Nosotros · Ubicación
+  (`/servicios` redirige a `/productos` vía `public/_redirects`; Contacto solo en el footer).
+- **Fotos**: `Foto.astro` toma `src/assets/images/<nombre>.jpg` si existe y si no muestra un relleno
+  de marca. Los nombres esperados están en la sección "Fotos" del README; se usan fotos reales del
+  negocio, no generadas.
 - **Logos**: `Logo.astro` usa el logo oficial a color tal cual (`src/assets/logos/logo-horizontal.png`),
   siempre sobre blanco: el header es blanco y en el footer (azul marino) va en un recuadro blanco.
   No recolorear ni generar variantes del logo. Origen y regeneración de favicon/OG: sección "Logos y fotos" del README.

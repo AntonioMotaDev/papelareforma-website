@@ -19,6 +19,11 @@
   /* Verde oscuro para texto/fondos con texto blanco (contraste AA ≥ 4.5:1) */
   --color-green-700: #3f7a1c;
   --color-green-50: #f0f8e9;
+  /* Apoyo del manual: celeste (renglones de la libreta) y coral (goma del lápiz). Solo fondos y detalles. */
+  --color-celeste: #c0d7ed;
+  --color-celeste-50: #f3f8fd;
+  --color-coral: #fd646d;
+  --color-coral-50: #fff1f2;
   --color-white: #ffffff;
 
   /* Neutros (valores exactos de la guía de marca) */
@@ -141,12 +146,12 @@
   }
 
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold tracking-[0.16em] text-primary uppercase;
+    @apply inline-flex items-center gap-2 rounded-full bg-celeste-50 px-3.5 py-1.5 text-xs font-bold tracking-[0.12em] text-primary uppercase ring-1 ring-celeste;
   }
 
   /* ─── Botones ─── */
   .btn {
-    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 py-3 text-[0.95rem] font-semibold whitespace-nowrap select-none;
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-6 py-3 text-[0.95rem] font-semibold whitespace-nowrap select-none;
     transition:
       transform 0.2s var(--ease-out-soft),
       box-shadow 0.25s var(--ease-out-soft),
@@ -165,9 +170,19 @@
   }
 
   .btn-primary {
-    @apply bg-yellow text-navy shadow-[0_1px_0_rgb(255_255_255/0.4)_inset];
+    @apply bg-primary text-white;
   }
   .btn-primary:hover {
+    @apply bg-primary-700;
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-2px);
+  }
+
+  /* Amarillo: para CTAs sobre azul marino (el azul medio no contrasta ahí). */
+  .btn-yellow {
+    @apply bg-yellow text-navy;
+  }
+  .btn-yellow:hover {
     @apply bg-yellow-300;
     box-shadow: var(--shadow-glow);
     transform: translateY(-2px);
@@ -191,10 +206,10 @@
   }
 
   .btn-outline {
-    @apply border border-gray-200 bg-white text-navy;
+    @apply border border-primary/40 bg-white text-primary;
   }
   .btn-outline:hover {
-    @apply border-navy/30 bg-gray-50;
+    @apply border-primary bg-celeste-50;
     transform: translateY(-2px);
   }
 
@@ -212,7 +227,7 @@
   }
 
   .card {
-    @apply rounded-3xl border border-gray-200/80 bg-white shadow-soft;
+    @apply rounded-2xl border border-gray-200/80 bg-white shadow-soft;
   }
 
   /* Textura sutil de papel cuadriculado para secciones de marca */
@@ -241,7 +256,7 @@
   }
   .field-input:focus {
     @apply border-primary outline-none;
-    box-shadow: 0 0 0 4px rgb(0 81 163 / 0.15);
+    box-shadow: 0 0 0 4px rgb(10 92 181 / 0.15);
   }
   .field-input[aria-invalid='true'] {
     @apply border-red-600;
