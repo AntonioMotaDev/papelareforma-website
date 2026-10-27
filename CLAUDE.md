@@ -51,8 +51,9 @@ Despliegue: push a `main` → Cloudflare Pages publica solo. Node 22 (`.node-ver
   amarillo/coral del manual como decoración. Menú: Inicio · Productos · Nosotros · Ubicación
   (`/servicios` redirige a `/productos` vía `public/_redirects`; Contacto solo en el footer).
 - **Fotos**: `Foto.astro` toma `src/assets/images/<nombre>.jpg` si existe y si no muestra un relleno
-  de marca. Los nombres esperados están en la sección "Fotos" del README; se usan fotos reales del
-  negocio, no generadas.
+  de marca. Los nombres esperados están en la sección "Fotos" del README; las actuales (2026-10-26)
+  son generadas con IA y Antonio las aprobó así. Guardarlas como `.jpg` (~calidad 82), no PNG: Astro
+  las optimiza al publicar, pero el original es lo que pesa en el repo.
 - **Logos**: `Logo.astro` usa el logo oficial a color tal cual (`src/assets/logos/logo-horizontal.png`),
   siempre sobre blanco: el header es blanco y en el footer (azul marino) va en un recuadro blanco.
   No recolorear ni generar variantes del logo. Origen y regeneración de favicon/OG: sección "Logos y fotos" del README.

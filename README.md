@@ -65,7 +65,8 @@ Los archivos de marca salen de `PAPE/Branding/Oficial/`:
 | Archivo | Origen | Se usa en |
 | --- | --- | --- |
 | `src/assets/logos/logo-horizontal.png` | `Logo_Horizontal_Bco_SinFondo.png` recortado, a color, tal cual | Header (blanco) y footer (sobre recuadro blanco) |
-| `public/favicon.svg` | `isotipo_Vector.svg` sin fondo y recortado | Favicon; fuente de `node scripts/generar-iconos.mjs` |
+| `src/assets/logos/isotipo.png` | Ícono circular azul marino (1080×1080) | Fuente de `node scripts/generar-iconos.mjs` → favicon.ico, apple-touch-icon, íconos PWA |
+| `public/favicon.svg` | `isotipo_Vector.svg` sin fondo y recortado | Isotipo decorativo en `CtaBand`; ya no es el favicon |
 | `public/og-image.png` | `Logo_Horizontal_Bco_SinFondo.png` sobre blanco, 1200×630 | Imagen al compartir en redes |
 
 ### Fotos
