@@ -140,9 +140,20 @@ export interface RedSocial {
   usuario: string;
 }
 
+/** Reseña copiada tal cual del perfil de Google (sin editar el texto). */
+export interface Resena {
+  autor: string;
+  /** De 1 a 5. */
+  estrellas: number;
+  texto: string;
+  /** Como se quiera mostrar, p. ej. "Agosto 2026". */
+  fecha: string;
+}
+
 // ─── Datos ───────────────────────────────────────────────────────────────────
 
 const turnoCorrido: Turno = { abre: '09:00', cierra: '21:00' };
+const anioFundacion = 2005;
 
 export const negocio = {
   nombre: 'Papelería La Reforma',
@@ -150,10 +161,22 @@ export const negocio = {
   eslogan: 'Tu papelería de confianza en San Luis Potosí',
 
   experiencia: {
-    /** Años operando (se muestra como "Más de 20 años"). */
-    anios: 20,
-    // TODO(Datos): confirmar año de fundación para mostrarlo en "Nosotros".
-    anioFundacion: null as number | null,
+    anioFundacion,
+    /** Años completos seguros (se muestra como "Más de N años"); se recalcula en cada build. */
+    anios: new Date().getFullYear() - anioFundacion - 1,
+  },
+
+  /**
+   * Reseñas de Google: datos fijos, sin widgets ni APIs externas. Actualizar a mano
+   * la calificación y el total de vez en cuando desde el perfil de Google Business.
+   */
+  resenas: {
+    calificacion: 4.9,
+    total: 44,
+    urlPerfil: 'https://maps.app.goo.gl/Y8M3JQ3N5UcLM5818',
+    // TODO(Datos): copiar 3 o 4 reseñas reales del perfil (texto, nombre y fecha tal cual aparecen).
+    // Mientras la lista esté vacía, la sección muestra solo la calificación y el enlace al perfil.
+    destacadas: [] as Resena[],
   },
 
   contacto: {

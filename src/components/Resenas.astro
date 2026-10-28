@@ -1,0 +1,59 @@
+---
+/**
+ * Reseñas de Google con datos fijos de `negocio.resenas` (sin widgets ni APIs
+ * externas). Sin reseñas destacadas, se muestra solo la calificación y el
+ * enlace al perfil.
+ */
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { negocio } from '@/lib/negocio';
+
+const { calificacion, total, urlPerfil, destacadas } = negocio.resenas;
+---
+
+<section class="container-page py-16 sm:py-24" aria-labelledby="resenas-titulo">
+  <SectionHeading id="resenas-titulo" titulo="Lo que dicen nuestros clientes." />
+
+  <div data-reveal class="mt-8 flex flex-col items-center gap-5 text-center">
+    <div class="flex items-center gap-4">
+      <p class="font-display text-6xl leading-none font-extrabold text-navy">
+        <span class="sr-only">Calificación de </span>{calificacion.toFixed(1)}<span class="sr-only"> de 5</span>
+      </p>
+      <div class="flex flex-col items-start gap-1.5">
+        <span class="flex text-yellow" aria-hidden="true">
+          {Array.from({ length: 5 }, () => <Icon name="star" size={22} />)}
+        </span>
+        <p class="font-semibold text-gray-600">{total} reseñas en Google</p>
+      </div>
+    </div>
+    <a href={urlPerfil} target="_blank" rel="noopener" class="btn btn-outline">
+      Ver reseñas en Google
+      <Icon name="external-link" size={16} />
+      <span class="sr-only">(se abre en Google Maps)</span>
+    </a>
+  </div>
+
+  {
+    destacadas.length > 0 && (
+      <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {destacadas.map((r, i) => (
+          <li data-reveal style={`--reveal-delay:${i * 70}ms`} class="card flex flex-col p-6">
+            <span class="flex text-yellow" aria-hidden="true">
+              {Array.from({ length: r.estrellas }, () => (
+                <Icon name="star" size={16} />
+              ))}
+            </span>
+            <span class="sr-only">{r.estrellas} de 5 estrellas</span>
+            <blockquote class="mt-3 flex-1 leading-relaxed text-gray-700">
+              <p>“{r.texto}”</p>
+            </blockquote>
+            <p class="mt-4 text-sm">
+              <span class="font-bold text-navy">{r.autor}</span>
+              <span class="text-gray-500"> · {r.fecha}</span>
+            </p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>

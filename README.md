@@ -38,6 +38,8 @@ Requiere Node 18.20.8 o superior (el proyecto fija Node 22 en `.node-version`).
 | Promociones                | `promociones` (`activa: false` para ocultarla) |
 | Formas de pago             | `pagos.metodos`                            |
 | Redes sociales             | `redes` (aparecen solas en el pie de página y en el JSON-LD) |
+| Reseñas de Google          | `resenas` (calificación, total y reseñas fijas copiadas a mano del perfil) |
+| Año de fundación           | `experiencia.anioFundacion` ("Más de N años" se calcula en cada build) |
 | Títulos y descripciones SEO | `seo`                                     |
 | Menú de navegación         | `sitio.navegacion`                         |
 | Calculadora de cotización  | `cotizador` (renglones; el precio sale de `servicios`) |
@@ -55,7 +57,9 @@ Busca `TODO(Datos)` en el código:
 - [x] Código postal: 78398
 - [x] Redes: Facebook e Instagram
 - [ ] Coordenadas exactas del local (opcional; el mapa usa la dirección mientras tanto)
-- [ ] Año de fundación e historia real (página *Nosotros*)
+- [x] Año de fundación: 2005
+- [ ] Historia real (página *Nosotros*)
+- [ ] 3 o 4 reseñas reales para `resenas.destacadas` (hoy solo se muestra la calificación)
 - [x] Dominio: `lapapeslp.com` (`sitio.url` en `negocio.ts` y la variable `SITE_URL`)
 
 ### Logos y fotos

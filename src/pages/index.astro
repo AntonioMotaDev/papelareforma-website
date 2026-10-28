@@ -8,6 +8,7 @@ import CtaBand from '@/components/CtaBand.astro';
 import MapEmbed from '@/components/MapEmbed.astro';
 import OpenStatus from '@/components/OpenStatus.astro';
 import Faq from '@/components/Faq.astro';
+import Resenas from '@/components/Resenas.astro';
 import Icon from '@/components/Icon.astro';
 import { negocio } from '@/lib/negocio';
 import { agruparHorarios, direccionCompleta, formatearTurnos, urlComoLlegar, urlWhatsApp } from '@/lib/utils';
@@ -99,7 +100,7 @@ const grupos = agruparHorarios();
   <!-- Valores -->
   <section class="bg-celeste-50/70 py-16 sm:py-20" aria-labelledby="valores-titulo">
     <div class="container-page">
-      <SectionHeading id="valores-titulo" titulo={`Más de ${negocio.experiencia.anios} años siendo tu papelería en ${negocio.ubicacion.ciudad}.`} />
+      <SectionHeading id="valores-titulo" titulo={`Desde ${negocio.experiencia.anioFundacion}, tu papelería en ${negocio.ubicacion.ciudad}.`} />
       <ul class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-celeste">
         {
           negocio.valores.map((v, i) => (
@@ -115,6 +116,8 @@ const grupos = agruparHorarios();
       </ul>
     </div>
   </section>
+
+  <Resenas />
 
   <CtaBand />
 
