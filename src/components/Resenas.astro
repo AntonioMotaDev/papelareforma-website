@@ -35,43 +35,51 @@ const { calificacion, total, urlPerfil, destacadas } = negocio.resenas;
 
   {
     destacadas.length > 0 && (
-      <ul class="mt-12 gap-5 sm:columns-2 lg:columns-3">
-        {destacadas.map((r, i) => (
-          <li
-            data-reveal
-            style={`--reveal-delay:${(i % 3) * 70}ms`}
-            class="card mb-5 flex break-inside-avoid flex-col p-6"
-          >
-            <span class="flex text-yellow" aria-hidden="true">
-              {Array.from({ length: r.estrellas }, () => (
-                <Icon name="star" size={16} />
-              ))}
-            </span>
-            <span class="sr-only">{r.estrellas} de 5 estrellas</span>
-            <blockquote class="mt-3 leading-relaxed text-gray-700">
-              <p>“{r.texto}”</p>
-            </blockquote>
-            <div class="mt-5 flex items-center gap-3">
-              <span
-                class="grid size-10 shrink-0 place-items-center rounded-full bg-celeste-50 font-bold text-primary uppercase ring-1 ring-celeste"
-                aria-hidden="true"
-              >
-                {r.autor.charAt(0)}
+      <>
+        {/* Móvil: carrusel horizontal con scroll-snap (sin JS) y la siguiente tarjeta asomándose.
+            Desde sm: mosaico en columnas. */}
+        <ul
+          data-reveal
+          aria-label="Reseñas de clientes"
+          class="relative -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:mt-12 sm:block sm:columns-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:columns-3 [&::-webkit-scrollbar]:hidden"
+        >
+          {destacadas.map((r) => (
+            <li class="card flex w-[85%] shrink-0 snap-start flex-col p-6 sm:mb-5 sm:w-auto sm:break-inside-avoid">
+              <span class="flex text-yellow" aria-hidden="true">
+                {Array.from({ length: r.estrellas }, () => (
+                  <Icon name="star" size={16} />
+                ))}
               </span>
-              <p class="text-sm leading-snug">
-                <span class="block font-bold text-navy">{r.autor}</span>
-                <span class="text-gray-600">
-                  {r.guiaLocal && 'Local Guide · '}
-                  {r.fecha} ·{' '}
-                  <a href={r.url} target="_blank" rel="noopener" class="link font-semibold">
-                    Ver en Google<span class="sr-only"> la reseña de {r.autor} (se abre en Google Maps)</span>
-                  </a>
+              <span class="sr-only">{r.estrellas} de 5 estrellas</span>
+              <blockquote class="mt-3 flex-1 leading-relaxed text-gray-700">
+                <p class="line-clamp-6 sm:line-clamp-none">“{r.texto}”</p>
+              </blockquote>
+              <div class="mt-5 flex items-center gap-3">
+                <span
+                  class="grid size-10 shrink-0 place-items-center rounded-full bg-celeste-50 font-bold text-primary uppercase ring-1 ring-celeste"
+                  aria-hidden="true"
+                >
+                  {r.autor.charAt(0)}
                 </span>
-              </p>
-            </div>
-          </li>
-        ))}
-      </ul>
+                <p class="text-sm leading-snug">
+                  <span class="block font-bold text-navy">{r.autor}</span>
+                  <span class="text-gray-600">
+                    {r.guiaLocal && 'Local Guide · '}
+                    {r.fecha} ·{' '}
+                    <a href={r.url} target="_blank" rel="noopener" class="link font-semibold">
+                      Ver en Google<span class="sr-only"> la reseña de {r.autor} (se abre en Google Maps)</span>
+                    </a>
+                  </span>
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-3 flex items-center justify-center gap-1.5 text-sm font-semibold text-gray-600 sm:hidden" aria-hidden="true">
+          Desliza para ver las {destacadas.length} reseñas
+          <Icon name="arrow-right" size={16} />
+        </p>
+      </>
     )
   }
 </section>
