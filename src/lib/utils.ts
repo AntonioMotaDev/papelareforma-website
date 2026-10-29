@@ -3,7 +3,7 @@
  * Toda la lógica de horarios vive aquí para que la tabla, el widget
  * "¿Abierto ahora?" y los datos estructurados nunca se contradigan.
  */
-import { negocio, type DiaSemana, type HorarioDia, type Precio, type Turno } from './negocio';
+import { negocio, type DiaSemana, type HorarioDia, type Turno } from './negocio';
 
 // ─── Formato ─────────────────────────────────────────────────────────────────
 
@@ -16,13 +16,6 @@ const formatoMoneda = new Intl.NumberFormat('es-MX', {
 /** 1.5 → "$1.50" */
 export function formatearPrecio(monto: number): string {
   return formatoMoneda.format(monto);
-}
-
-/** Texto completo de un precio: "$1.50", "Desde $20.00" o "Consulta en tienda". */
-export function textoPrecio(precio: Precio): string {
-  if (precio.monto === null) return 'Consulta en tienda';
-  const monto = formatearPrecio(precio.monto);
-  return precio.desde ? `Desde ${monto}` : monto;
 }
 
 /** "09:00" → "9:00" */

@@ -3,7 +3,6 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import ServiceCard from '@/components/ServiceCard.astro';
 import CategoriaCard from '@/components/CategoriaCard.astro';
 import ProductoCard from '@/components/ProductoCard.astro';
-import Cotizador from '@/components/Cotizador.astro';
 import PromoBanner from '@/components/PromoBanner.astro';
 import PaymentMethods from '@/components/PaymentMethods.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
@@ -11,7 +10,7 @@ import CtaBand from '@/components/CtaBand.astro';
 import Icon from '@/components/Icon.astro';
 import { negocio } from '@/lib/negocio';
 import { obtenerPromociones, obtenerServicios } from '@/lib/api';
-import { formatearPrecio, textoPrecio, urlWhatsApp } from '@/lib/utils';
+import { formatearPrecio, urlWhatsApp } from '@/lib/utils';
 
 // Hoy vienen de negocio.ts; cuando exista la API, de ahí (ver src/lib/api.ts).
 const servicios = await obtenerServicios();
@@ -73,7 +72,7 @@ const jsonLdServicios = {
     </div>
   </section>
 
-  <section class="bg-celeste-50/70 py-16 sm:py-20" aria-labelledby="servicios-titulo">
+  <section id="servicios" class="scroll-mt-20 bg-celeste-50/70 py-16 sm:py-20" aria-labelledby="servicios-titulo">
     <div class="container-page">
       <SectionHeading
         id="servicios-titulo"
@@ -93,8 +92,6 @@ const jsonLdServicios = {
     </div>
   </section>
 
-  <Cotizador />
-
   {
     promociones.length > 0 && (
       <div class="container-page grid gap-8 pt-16 sm:pt-24">
@@ -104,52 +101,6 @@ const jsonLdServicios = {
       </div>
     )
   }
-
-  <!-- Tabla resumen de precios -->
-  <section class="py-16 sm:py-24" aria-labelledby="precios-titulo">
-    <div class="container-page grid gap-12 lg:grid-cols-12">
-      <div class="lg:col-span-5">
-        <SectionHeading
-          id="precios-titulo"
-          alineacion="left"
-          eyebrow="Lista de precios"
-          titulo="Precios base de un vistazo"
-          descripcion="Para trabajos grandes o especiales, pídenos una cotización sin compromiso."
-        />
-      </div>
-      <div class="lg:col-span-7" data-reveal>
-        <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-soft">
-          <table class="w-full text-left">
-            <caption class="sr-only">Precios base de los servicios</caption>
-            <thead class="bg-navy text-sm text-white">
-              <tr>
-                <th scope="col" class="px-5 py-4 font-semibold">Servicio</th>
-                <th scope="col" class="px-5 py-4 text-right font-semibold">Precio base</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100">
-              {
-                servicios.map((s) => (
-                  <tr class="transition-colors hover:bg-gray-50">
-                    <th scope="row" class="px-5 py-4 font-medium text-navy">
-                      <a href={`#${s.id}`} class="hover:text-primary">
-                        {s.nombre}
-                        {s.alias && <span class="font-normal text-gray-500"> ({s.alias.toLowerCase()})</span>}
-                      </a>
-                      {s.precio.unidad && <span class="block text-sm font-normal text-gray-500">{s.precio.unidad}</span>}
-                    </th>
-                    <td class="px-5 py-4 text-right font-semibold whitespace-nowrap text-navy tabular-nums">
-                      {textoPrecio(s.precio)}
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <section class="bg-celeste-50/70 py-16 sm:py-24" aria-labelledby="pagos-titulo">
     <div class="container-page">

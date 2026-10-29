@@ -91,17 +91,6 @@ export interface ArticuloCatalogo {
 }
 
 /** Renglón de la calculadora de cotización; el precio sale del servicio con ese `id`. */
-export interface ConceptoCotizador {
-  servicioId: string;
-  /** Título del renglón: "Fotocopias". */
-  etiqueta: string;
-  /** Qué se cuenta: "hojas", "piezas". */
-  unidad: string;
-  /** Para armar el mensaje de WhatsApp: "1 fotocopia" / "50 fotocopias". */
-  singular: string;
-  plural: string;
-}
-
 export type IconoNivel = 'palette' | 'backpack' | 'notebook' | 'graduation-cap';
 
 export interface NivelEscolar {
@@ -426,14 +415,6 @@ export const negocio = {
       mensajeWhatsApp: 'Hola, ¿tienen notas adhesivas? ¿Qué precio tienen?',
     },
   ] satisfies ArticuloCatalogo[] as ArticuloCatalogo[],
-
-  /** Calculadora de /productos#cotizador: arma un mensaje de WhatsApp con el estimado. */
-  cotizador: [
-    { servicioId: 'fotocopias', etiqueta: 'Fotocopias', unidad: 'hojas', singular: 'fotocopia', plural: 'fotocopias' },
-    { servicioId: 'impresion', etiqueta: 'Impresiones', unidad: 'hojas', singular: 'impresión', plural: 'impresiones' },
-    { servicioId: 'encuadernacion', etiqueta: 'Engargolados', unidad: 'trabajos', singular: 'engargolado', plural: 'engargolados' },
-    { servicioId: 'plastificado', etiqueta: 'Enmicados', unidad: 'piezas', singular: 'enmicado', plural: 'enmicados' },
-  ] satisfies ConceptoCotizador[] as ConceptoCotizador[],
 
   /** Niveles de la página /lista-escolar. */
   listaEscolar: {
