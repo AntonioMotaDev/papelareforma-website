@@ -3,11 +3,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import CategoriaCard from '@/components/CategoriaCard.astro';
-import ProductoCard from '@/components/ProductoCard.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import MapEmbed from '@/components/MapEmbed.astro';
 import OpenStatus from '@/components/OpenStatus.astro';
 import Faq from '@/components/Faq.astro';
+import Resenas from '@/components/Resenas.astro';
 import Icon from '@/components/Icon.astro';
 import { negocio } from '@/lib/negocio';
 import { agruparHorarios, direccionCompleta, formatearTurnos, urlComoLlegar, urlWhatsApp } from '@/lib/utils';
@@ -35,25 +35,13 @@ const grupos = agruparHorarios();
     </div>
   </section>
 
-  <!-- Productos destacados -->
-  <section class="container-page pb-16 sm:pb-24" aria-labelledby="destacados-titulo">
-    <SectionHeading
-      id="destacados-titulo"
-      titulo="Pequeñas cosas que hacen grandes ideas."
-      descripcion="Algunos de los artículos que más nos piden."
-    />
-    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
-      {negocio.productosDestacados.map((p, i) => <ProductoCard producto={p} tono={tonos[i % 4]} retraso={i * 70} />)}
-    </div>
-  </section>
-
   <!-- Pedidos desde el celular -->
   <section class="container-page pb-16 sm:pb-24" aria-labelledby="pedidos-titulo">
     <SectionHeading
       id="pedidos-titulo"
-      eyebrow="Desde tu celular"
-      titulo="Adelanta tu pedido por WhatsApp."
-      descripcion="Mándanos lo que necesitas y pasa cuando esté listo."
+      eyebrow="Además"
+      titulo="Más que una papelería."
+      descripcion="Surtimos tu lista escolar y hacemos copias, impresiones y mucho más."
     />
     <div class="mt-10 grid gap-5 md:grid-cols-2">
       {
@@ -66,11 +54,11 @@ const grupos = agruparHorarios();
             cta: 'Ver cómo funciona',
           },
           {
-            href: '/productos#cotizador',
-            icono: 'calculator',
-            titulo: 'Calcula tu cotización',
-            texto: 'Copias, impresiones, engargolados y enmicados: elige cantidades y pídelo ya armado.',
-            cta: 'Abrir calculadora',
+            href: '/productos#servicios',
+            icono: 'printer',
+            titulo: 'Copias, impresiones y más',
+            texto: 'Engargolados, enmicados, CURP, actas de nacimiento, pago de servicios y recargas, en el mismo lugar.',
+            cta: 'Ver todos los servicios',
           },
         ].map((c, i) => (
           <a
@@ -99,7 +87,7 @@ const grupos = agruparHorarios();
   <!-- Valores -->
   <section class="bg-celeste-50/70 py-16 sm:py-20" aria-labelledby="valores-titulo">
     <div class="container-page">
-      <SectionHeading id="valores-titulo" titulo={`Más de ${negocio.experiencia.anios} años siendo tu papelería en ${negocio.ubicacion.ciudad}.`} />
+      <SectionHeading id="valores-titulo" titulo={`Desde ${negocio.experiencia.anioFundacion}, tu papelería en ${negocio.ubicacion.ciudad}.`} />
       <ul class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-celeste">
         {
           negocio.valores.map((v, i) => (
@@ -115,6 +103,8 @@ const grupos = agruparHorarios();
       </ul>
     </div>
   </section>
+
+  <Resenas />
 
   <CtaBand />
 

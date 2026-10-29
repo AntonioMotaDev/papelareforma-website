@@ -33,14 +33,15 @@ Requiere Node 18.20.8 o superior (el proyecto fija Node 22 en `.node-version`).
 | Teléfono / WhatsApp / correo | `contacto`                               |
 | Dirección, C.P., coordenadas | `ubicacion`                              |
 | Horarios                   | `horarios` (varios `turnos` en un día = hay receso) |
-| Servicios y precios        | `servicios` (`precio.monto: null` = "Consulta en tienda") |
-| Categorías y destacados    | `categorias`, `productosDestacados` (fotos: ver "Fotos") |
+| Servicios y precios        | `servicios` (`grupo`: impresión o trámites; `precio.monto: null` = "Consulta en tienda") |
+| Categorías                 | `categorias` (con foto: ver "Fotos") y `masProductos` (grupos de texto, sin foto) |
 | Promociones                | `promociones` (`activa: false` para ocultarla) |
 | Formas de pago             | `pagos.metodos`                            |
 | Redes sociales             | `redes` (aparecen solas en el pie de página y en el JSON-LD) |
+| Reseñas de Google          | `resenas` (calificación, total y reseñas fijas copiadas a mano del perfil) |
+| Año de fundación           | `experiencia.anioFundacion` ("Más de N años" se calcula en cada build) |
 | Títulos y descripciones SEO | `seo`                                     |
 | Menú de navegación         | `sitio.navegacion`                         |
-| Calculadora de cotización  | `cotizador` (renglones; el precio sale de `servicios`) |
 | Niveles de la lista escolar | `listaEscolar.niveles`                    |
 
 Después: `git commit` + `git push` a `main` y Cloudflare publica el cambio en ~1 minuto.
@@ -55,7 +56,9 @@ Busca `TODO(Datos)` en el código:
 - [x] Código postal: 78398
 - [x] Redes: Facebook e Instagram
 - [ ] Coordenadas exactas del local (opcional; el mapa usa la dirección mientras tanto)
-- [ ] Año de fundación e historia real (página *Nosotros*)
+- [x] Año de fundación: 2005
+- [ ] Historia real (página *Nosotros*)
+- [x] Reseñas de Google en `resenas.destacadas` (7, copiadas el 2026-10-29)
 - [x] Dominio: `lapapeslp.com` (`sitio.url` en `negocio.ts` y la variable `SITE_URL`)
 
 ### Logos y fotos
@@ -77,10 +80,9 @@ Cada espacio de foto (`src/components/Foto.astro`) busca `src/assets/images/<nom
 | --- | --- | --- |
 | `hero.jpg` | Portada de inicio | Horizontal 4:3, mín. 1600 px |
 | `utiles-escolares.jpg`, `papeleria-oficina.jpg`, `escritura-dibujo.jpg`, `manualidades.jpg`, `regalos-envolturas.jpg`, `mas-productos.jpg` | Tarjetas de categoría (inicio y Productos) | Horizontal 16:9, mín. 1200 px |
-| `cuaderno-profesional.jpg`, `boligrafos-colores.jpg`, `marcadores-escolares.jpg`, `notas-adhesivas.jpg` | Productos destacados | Cuadrada, mín. 800 px, fondo claro |
 | `equipo.jpg` | Nosotros | Horizontal 4:3, mín. 1200 px |
 
-Los nombres son el `id` de cada categoría y producto en `negocio.ts` (`categorias`, `productosDestacados`): si agregas uno, su foto lleva su `id`.
+Los nombres son el `id` de cada categoría en `negocio.ts` (`categorias`): si agregas una, su foto lleva su `id`.
 
 ---
 

@@ -7,7 +7,7 @@ interface Props {
   servicio: Servicio;
   /** Retraso de la animación de entrada (ms), para escalonar la cuadrícula. */
   retraso?: number;
-  headingLevel?: 'h2' | 'h3';
+  headingLevel?: 'h2' | 'h3' | 'h4';
 }
 
 const { servicio, retraso = 0, headingLevel: Titulo = 'h3' } = Astro.props;
@@ -43,8 +43,8 @@ const { precio } = servicio;
   <Titulo class="mt-6 text-xl font-semibold">{servicio.nombre}</Titulo>
   <p class="mt-2 flex-1 leading-relaxed text-gray-600">{servicio.descripcion}</p>
 
-  <div class="mt-6 flex items-end justify-between gap-4 border-t border-gray-100 pt-5">
-    <div class="min-w-0">
+  <div class="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-gray-100 pt-5">
+    <div class="min-w-0 grow basis-36">
       {
         precio.monto !== null ? (
           <>

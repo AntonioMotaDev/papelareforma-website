@@ -16,12 +16,22 @@ interface Props {
   icono: NombreIcono;
   tono?: 'azul' | 'verde' | 'amarillo' | 'coral';
   sizes?: string;
+  /** Anchos a generar; no pasar de la resolución del original (Astro no amplía). */
+  widths?: number[];
   eager?: boolean;
   class?: string;
 }
 
-const { nombre, alt, icono, tono = 'azul', sizes = '(min-width: 1024px) 33vw, 100vw', eager = false, class: clase } =
-  Astro.props;
+const {
+  nombre,
+  alt,
+  icono,
+  tono = 'azul',
+  sizes = '(min-width: 1024px) 33vw, 100vw',
+  widths = [400, 800, 1200],
+  eager = false,
+  class: clase,
+} = Astro.props;
 
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/images/*.{jpg,jpeg,png,webp}', { eager: true });
 const foto = Object.entries(fotos).find(([ruta]) => ruta.replace(/\.\w+$/, '').endsWith(`/${nombre}`))?.[1].default;
@@ -39,7 +49,7 @@ const tonos = {
     <Picture
       src={foto}
       formats={['webp']}
-      widths={[400, 800, 1200]}
+      {widths}
       sizes={sizes}
       alt={alt}
       loading={eager ? 'eager' : 'lazy'}
