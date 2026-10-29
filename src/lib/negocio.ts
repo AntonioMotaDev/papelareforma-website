@@ -452,7 +452,7 @@ export const negocio = {
     },
     {
       id: 'electronica',
-      nombre: 'Electrónica y pilas',
+      nombre: 'Electrónica y tecnología',
       icono: 'headphones',
       articulos: ['Cargadores', 'Audífonos', 'Bocinas', 'Pilas Duracell', 'Pilas para reloj'],
     },
@@ -478,7 +478,7 @@ export const negocio = {
       id: 'merceria',
       nombre: 'Mercería',
       icono: 'scissors',
-      articulos: ['Artículos de mercería'],
+      articulos: ['Hilos y estambres', 'Botones', 'Listones', 'Agujas'],
     },
   ] satisfies GrupoProductos[] as GrupoProductos[],
 
