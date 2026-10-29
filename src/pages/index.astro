@@ -3,7 +3,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import CategoriaCard from '@/components/CategoriaCard.astro';
-import ProductoCard from '@/components/ProductoCard.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import MapEmbed from '@/components/MapEmbed.astro';
 import OpenStatus from '@/components/OpenStatus.astro';
@@ -36,18 +35,6 @@ const grupos = agruparHorarios();
     </div>
   </section>
 
-  <!-- Productos destacados -->
-  <section class="container-page pb-16 sm:pb-24" aria-labelledby="destacados-titulo">
-    <SectionHeading
-      id="destacados-titulo"
-      titulo="Pequeñas cosas que hacen grandes ideas."
-      descripcion="Algunos de los artículos que más nos piden."
-    />
-    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
-      {negocio.productosDestacados.map((p, i) => <ProductoCard producto={p} tono={tonos[i % 4]} retraso={i * 70} />)}
-    </div>
-  </section>
-
   <!-- Pedidos desde el celular -->
   <section class="container-page pb-16 sm:pb-24" aria-labelledby="pedidos-titulo">
     <SectionHeading
@@ -70,7 +57,7 @@ const grupos = agruparHorarios();
             href: '/productos#servicios',
             icono: 'printer',
             titulo: 'Copias, impresiones y más',
-            texto: 'Engargolados, enmicados, pago de servicios, recargas y envoltura de regalos, en el mismo lugar.',
+            texto: 'Engargolados, enmicados, CURP, actas de nacimiento, pago de servicios y recargas, en el mismo lugar.',
             cta: 'Ver todos los servicios',
           },
         ].map((c, i) => (

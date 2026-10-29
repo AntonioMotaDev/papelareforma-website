@@ -35,6 +35,11 @@ const generales: Pregunta[] = [
     respuesta: `Sí. Mándanos la lista por WhatsApp y te la armamos.${promoListas ? ` Con la lista completa tienes ${promoListas.descuento} % de descuento (${promoListas.vigencia.toLowerCase()}).` : ''}`,
   },
   {
+    pregunta: '¿Imprimen CURP y actas de nacimiento?',
+    respuesta:
+      'Sí. Sacamos e imprimimos tu CURP, tu acta de nacimiento y tu constancia de no derechohabiencia al momento. Si tienes dudas sobre lo que necesitas, escríbenos por WhatsApp.',
+  },
+  {
     pregunta: '¿Qué formas de pago aceptan?',
     respuesta: `${negocio.pagos.metodos.map((m) => m.nombre).join(', ')}.${tarjeta?.minimo ? ` Con tarjeta, la compra mínima es de ${formatearPrecio(tarjeta.minimo)}.` : ''}`,
   },

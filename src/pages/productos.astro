@@ -2,7 +2,6 @@
 import PageLayout from '@/layouts/PageLayout.astro';
 import ServiceCard from '@/components/ServiceCard.astro';
 import CategoriaCard from '@/components/CategoriaCard.astro';
-import ProductoCard from '@/components/ProductoCard.astro';
 import PromoBanner from '@/components/PromoBanner.astro';
 import PaymentMethods from '@/components/PaymentMethods.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
@@ -15,6 +14,8 @@ import { formatearPrecio, urlWhatsApp } from '@/lib/utils';
 // Hoy vienen de negocio.ts; cuando exista la API, de ahí (ver src/lib/api.ts).
 const servicios = await obtenerServicios();
 const promociones = await obtenerPromociones();
+const impresion = servicios.filter((s) => s.grupo === 'impresion');
+const tramites = servicios.filter((s) => s.grupo === 'tramites');
 const tarjeta = negocio.pagos.metodos.find((m) => m.id === 'tarjeta');
 const tonos = ['azul', 'verde', 'amarillo', 'coral'] as const;
 
@@ -40,8 +41,8 @@ const jsonLdServicios = {
   title="Productos y servicios"
   eyebrow="Productos"
   encabezado="Productos y servicios"
-  lead={`Papelería, útiles escolares y oficina, más copias, impresiones y engargolados en ${negocio.ubicacion.ciudad}. Pregunta por lo que buscas.`}
-  description={`Productos y servicios de ${negocio.nombre} en San Luis Potosí: útiles escolares, oficina, manualidades, regalos, fotocopias, impresión, engargolado y enmicado. Consulta precios.`}
+  lead={`Papelería, útiles escolares y oficina, regalos y mucho más, además de copias, impresiones y trámites en ${negocio.ubicacion.ciudad}. Pregunta por lo que buscas.`}
+  description={`Productos y servicios de ${negocio.nombre} en San Luis Potosí: útiles escolares, oficina, regalos, maquillaje, electrónica, fotocopias, impresión, engargolado, enmicado, CURP y actas de nacimiento.`}
   jsonLd={[jsonLdServicios]}
 >
   <section class="container-page py-16 sm:py-20" aria-labelledby="categorias-titulo">
@@ -65,10 +66,39 @@ const jsonLdServicios = {
     </div>
   </section>
 
-  <section class="container-page pb-16 sm:pb-20" aria-labelledby="destacados-titulo">
-    <SectionHeading id="destacados-titulo" titulo="Lo que más nos piden" />
-    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
-      {negocio.productosDestacados.map((p, i) => <ProductoCard producto={p} tono={tonos[i % 4]} retraso={i * 70} />)}
+  <section class="container-page pb-16 sm:pb-20" aria-labelledby="mas-titulo">
+    <SectionHeading
+      id="mas-titulo"
+      eyebrow="Y mucho más"
+      titulo="No solo papelería"
+      descripcion="También tenemos regalos, belleza, electrónica, dulces y productos de temporada. Si no ves lo que buscas, pregúntanos."
+    />
+    <ul class="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+      {
+        negocio.masProductos.map((g, i) => (
+          <li data-reveal style={`--reveal-delay:${(i % 4) * 70}ms`} class="card p-4 sm:p-6">
+            <div class="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
+              <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-navy/5 text-primary sm:size-11">
+                <Icon name={g.icono} size={22} />
+              </span>
+              <h3 class="leading-snug font-bold sm:text-lg">{g.nombre}</h3>
+            </div>
+            <ul class="mt-3 flex flex-wrap gap-1.5 sm:mt-4 sm:gap-2">
+              {g.articulos.map((a) => (
+                <li class="rounded-full bg-celeste-50 px-2.5 py-0.5 text-xs text-navy ring-1 ring-celeste sm:px-3 sm:py-1 sm:text-sm">
+                  {a}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-8 text-center" data-reveal>
+      <a href={urlWhatsApp('Hola, ¿tienen…?')} target="_blank" rel="noopener" class="btn btn-whatsapp">
+        <Icon name="whatsapp" size={18} />
+        Pregunta por lo que buscas
+      </a>
     </div>
   </section>
 
@@ -77,18 +107,51 @@ const jsonLdServicios = {
       <SectionHeading
         id="servicios-titulo"
         eyebrow="Servicios"
-        titulo="Copias, impresiones y más"
-        descripcion="Trabajo al momento, con precios base publicados."
+        titulo="Copias, trámites y más"
+        descripcion="Trabajo al momento, aquí mismo."
       />
-      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <!-- TODO(Carrito): Integración future con API — filtros por categoría y "Agregar a cotización" -->
-        {servicios.map((s, i) => <ServiceCard servicio={s} retraso={(i % 3) * 80} />)}
+
+      <h3 class="mt-12 text-xl font-bold" data-reveal>Impresión y copiado</h3>
+      <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- TODO(Carrito): Integración future con API — filtros por categoría y "Agregar a cotización" -->
+        {
+          impresion.map((s, i) => (
+            <ServiceCard servicio={s} headingLevel="h4" retraso={(i % 4) * 80} />
+          ))
+        }
       </div>
-      <p class="mt-8 flex items-start gap-2 text-sm text-gray-500" data-reveal>
+      <p class="mt-6 flex items-start gap-2 text-sm text-gray-500" data-reveal>
         <Icon name="alert-circle" size={16} class="mt-0.5 shrink-0" />
         Precios base en pesos mexicanos (MXN), sujetos a cambio sin previo aviso. El precio final depende del tamaño,
         tipo de papel y cantidad.
       </p>
+
+      <h3 class="mt-14 text-xl font-bold" data-reveal>Trámites, pagos y más</h3>
+      <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          tramites.map((s, i) => (
+            <a
+              id={s.id}
+              href={urlWhatsApp(s.mensajeWhatsApp)}
+              target="_blank"
+              rel="noopener"
+              data-reveal
+              style={`--reveal-delay:${(i % 3) * 70}ms`}
+              class="group card flex scroll-mt-28 items-center gap-4 p-4 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lift sm:p-5"
+            >
+              <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-navy/5 text-primary">
+                <Icon name={s.icono} size={22} />
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block font-bold text-navy">{s.nombre}</span>
+                <span class="mt-0.5 block text-sm leading-snug text-gray-600">{s.descripcion}</span>
+              </span>
+              <Icon name="arrow-right" size={18} class="shrink-0 text-primary transition-transform group-hover:translate-x-1" />
+              <span class="sr-only">(preguntar por WhatsApp)</span>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </section>
 

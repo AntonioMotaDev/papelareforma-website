@@ -39,7 +39,10 @@ export type IconoServicio =
   | 'id-card'
   | 'receipt'
   | 'gift'
-  | 'smartphone';
+  | 'smartphone'
+  | 'user'
+  | 'file-text'
+  | 'file-check';
 
 export interface Precio {
   /** `null` = "Consulta en tienda". */
@@ -59,6 +62,8 @@ export interface Servicio {
   alias?: string;
   descripcion: string;
   icono: IconoServicio;
+  /** Sección de /productos donde aparece. */
+  grupo: 'impresion' | 'tramites';
   precio: Precio;
   /** Aparece en la página de inicio. */
   destacado?: boolean;
@@ -90,7 +95,14 @@ export interface ArticuloCatalogo {
   mensajeWhatsApp: string;
 }
 
-/** Renglón de la calculadora de cotización; el precio sale del servicio con ese `id`. */
+/** Grupo de "Y mucho más" en /productos: productos sin foto, como lista de texto. */
+export interface GrupoProductos {
+  id: string;
+  nombre: string;
+  icono: 'gift' | 'shopping-bag' | 'sparkles' | 'headphones' | 'candy' | 'book-open' | 'calendar' | 'scissors';
+  articulos: string[];
+}
+
 export type IconoNivel = 'palette' | 'backpack' | 'notebook' | 'graduation-cap';
 
 export interface NivelEscolar {
@@ -279,6 +291,7 @@ export const negocio = {
       nombre: 'Fotocopias',
       descripcion: 'Copias en blanco y negro y a color, nítidas y al momento.',
       icono: 'copy',
+      grupo: 'impresion',
       precio: { monto: 1.5, desde: true, unidad: 'por hoja', nota: 'El precio baja en volumen. Color: consulta en tienda' },
       destacado: true,
       mensajeWhatsApp: 'Hola, quiero cotizar fotocopias.',
@@ -288,6 +301,7 @@ export const negocio = {
       nombre: 'Impresión digital',
       descripcion: 'Imprime tareas, documentos y trabajos a color o en blanco y negro.',
       icono: 'printer',
+      grupo: 'impresion',
       precio: { monto: 1.5, desde: true, unidad: 'por hoja', nota: 'El precio baja en volumen' },
       destacado: true,
       mensajeWhatsApp: 'Hola, quiero cotizar una impresión.',
@@ -298,6 +312,7 @@ export const negocio = {
       alias: 'Engargolado',
       descripcion: 'Engargolado para tesis, reportes, manuales y presentaciones.',
       icono: 'notebook',
+      grupo: 'impresion',
       precio: { monto: 20, desde: true },
       destacado: true,
       mensajeWhatsApp: 'Hola, quiero cotizar un engargolado.',
@@ -308,15 +323,44 @@ export const negocio = {
       alias: 'Enmicado',
       descripcion: 'Protege credenciales, actas, certificados y documentos importantes.',
       icono: 'id-card',
+      grupo: 'impresion',
       precio: { monto: 10, desde: true },
       destacado: true,
       mensajeWhatsApp: 'Hola, quiero cotizar un enmicado.',
+    },
+    {
+      id: 'curp',
+      nombre: 'CURP',
+      descripcion: 'La consultamos e imprimimos al momento, lista para tu trámite.',
+      icono: 'user',
+      grupo: 'tramites',
+      precio: { monto: null },
+      mensajeWhatsApp: 'Hola, quiero sacar mi CURP impresa.',
+    },
+    {
+      id: 'acta-nacimiento',
+      nombre: 'Acta de nacimiento',
+      descripcion: 'Te ayudamos a sacar e imprimir tu acta de nacimiento.',
+      icono: 'file-text',
+      grupo: 'tramites',
+      precio: { monto: null },
+      mensajeWhatsApp: 'Hola, quiero sacar mi acta de nacimiento. ¿Qué necesito?',
+    },
+    {
+      id: 'constancia-no-derechohabiencia',
+      nombre: 'Constancia de no derechohabiencia',
+      descripcion: 'La sacamos e imprimimos por ti, sin complicaciones.',
+      icono: 'file-check',
+      grupo: 'tramites',
+      precio: { monto: null },
+      mensajeWhatsApp: 'Hola, quiero sacar mi constancia de no derechohabiencia. ¿Qué necesito?',
     },
     {
       id: 'pago-servicios',
       nombre: 'Pago de servicios',
       descripcion: 'Paga tus recibos en un solo lugar, cerca de casa y sin filas largas.',
       icono: 'receipt',
+      grupo: 'tramites',
       precio: { monto: null },
       mensajeWhatsApp: 'Hola, ¿qué servicios puedo pagar con ustedes?',
     },
@@ -325,6 +369,7 @@ export const negocio = {
       nombre: 'Envoltorio de regalos',
       descripcion: 'Envolvemos tus regalos con cuidado para cualquier ocasión.',
       icono: 'gift',
+      grupo: 'tramites',
       precio: { monto: null },
       mensajeWhatsApp: 'Hola, quiero información sobre envoltura de regalos.',
     },
@@ -333,6 +378,7 @@ export const negocio = {
       nombre: 'Recarga de tiempo aire',
       descripcion: 'Recarga saldo a tu celular en segundos mientras haces tus compras.',
       icono: 'smartphone',
+      grupo: 'tramites',
       precio: { monto: null },
       mensajeWhatsApp: 'Hola, quiero información sobre recargas de tiempo aire.',
     },
@@ -384,37 +430,57 @@ export const negocio = {
     },
   ] satisfies ArticuloCatalogo[] as ArticuloCatalogo[],
 
-  // TODO(Datos): cambiar por los productos que más se venden.
-  productosDestacados: [
+  /** Lo que se vende además de papelería (sección "Y mucho más" de /productos). */
+  masProductos: [
     {
-      id: 'cuaderno-profesional',
-      nombre: 'Cuaderno profesional',
-      descripcion: 'Raya, cuadro chico o grande; espiral o cosido.',
-      icono: 'notebook',
-      mensajeWhatsApp: 'Hola, ¿tienen cuaderno profesional? ¿Qué precio tiene?',
+      id: 'regalos',
+      nombre: 'Regalos',
+      icono: 'gift',
+      articulos: ['Perfumes', 'Joyería', 'Velas aromáticas'],
     },
     {
-      id: 'boligrafos-colores',
-      nombre: 'Juego de bolígrafos de colores',
-      descripcion: 'Para apuntes, mapas mentales y subrayar.',
-      icono: 'pen',
-      mensajeWhatsApp: 'Hola, ¿tienen juegos de bolígrafos de colores? ¿Qué precio tienen?',
+      id: 'bolsas-accesorios',
+      nombre: 'Bolsas y accesorios',
+      icono: 'shopping-bag',
+      articulos: ['Bolsas de mujer', 'Accesorios para cabello'],
     },
     {
-      id: 'marcadores-escolares',
-      nombre: 'Marcadores escolares',
-      descripcion: 'Plumones y marcatextos de varios colores.',
-      icono: 'highlighter',
-      mensajeWhatsApp: 'Hola, ¿tienen marcadores escolares? ¿Qué precio tienen?',
+      id: 'belleza',
+      nombre: 'Belleza y cuidado personal',
+      icono: 'sparkles',
+      articulos: ['Maquillaje', 'Tintes para cabello', 'Productos de higiene personal'],
     },
     {
-      id: 'notas-adhesivas',
-      nombre: 'Notas adhesivas',
-      descripcion: 'Post-it en varios tamaños y colores.',
-      icono: 'sticky-note',
-      mensajeWhatsApp: 'Hola, ¿tienen notas adhesivas? ¿Qué precio tienen?',
+      id: 'electronica',
+      nombre: 'Electrónica y pilas',
+      icono: 'headphones',
+      articulos: ['Cargadores', 'Audífonos', 'Bocinas', 'Pilas Duracell', 'Pilas para reloj'],
     },
-  ] satisfies ArticuloCatalogo[] as ArticuloCatalogo[],
+    {
+      id: 'dulces-bebidas',
+      nombre: 'Dulces, botanas y bebidas',
+      icono: 'candy',
+      articulos: ['Dulces', 'Chocolates', 'Botanas', 'Refrescos'],
+    },
+    {
+      id: 'libros-juegos',
+      nombre: 'Libros y juegos',
+      icono: 'book-open',
+      articulos: ['Libros para colorear', 'Cuentos', 'Juegos de mesa'],
+    },
+    {
+      id: 'temporada',
+      nombre: 'De temporada',
+      icono: 'calendar',
+      articulos: ['Disfraces y máscaras', 'Maquillaje y adornos de Halloween', 'Ropa para el frío'],
+    },
+    {
+      id: 'merceria',
+      nombre: 'Mercería',
+      icono: 'scissors',
+      articulos: ['Artículos de mercería'],
+    },
+  ] satisfies GrupoProductos[] as GrupoProductos[],
 
   /** Niveles de la página /lista-escolar. */
   listaEscolar: {
@@ -539,6 +605,9 @@ export const negocio = {
       'engargolado San Luis Potosí',
       'enmicado SLP',
       'listas escolares San Luis Potosí',
+      'imprimir CURP San Luis Potosí',
+      'acta de nacimiento San Luis Potosí',
+      'constancia de no derechohabiencia SLP',
     ],
     hashtags: ['#PapeleríaLaReforma', '#SanLuisPotosí', '#SLP', '#PapeleríaSLP'],
     imagenOg: '/og-image.png',
