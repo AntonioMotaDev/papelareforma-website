@@ -146,8 +146,15 @@ export interface Resena {
   /** De 1 a 5. */
   estrellas: number;
   texto: string;
-  /** Como se quiera mostrar, p. ej. "Agosto 2026". */
+  /**
+   * Año aproximado. Google muestra fechas relativas ("Hace 3 meses") que en un
+   * sitio estático se vuelven falsas con el tiempo; el año no.
+   */
   fecha: string;
+  /** Si Google le muestra la insignia de Local Guide. */
+  guiaLocal?: boolean;
+  /** Enlace a la reseña en Google Maps. */
+  url: string;
 }
 
 // ─── Datos ───────────────────────────────────────────────────────────────────
@@ -174,9 +181,67 @@ export const negocio = {
     calificacion: 4.9,
     total: 44,
     urlPerfil: 'https://maps.app.goo.gl/Y8M3JQ3N5UcLM5818',
-    // TODO(Datos): copiar 3 o 4 reseñas reales del perfil (texto, nombre y fecha tal cual aparecen).
-    // Mientras la lista esté vacía, la sección muestra solo la calificación y el enlace al perfil.
-    destacadas: [] as Resena[],
+    // Copiadas tal cual del perfil (2026-10-29), sin corregir el texto. Fechas tomadas de
+    // "Hace N meses/años" a esa fecha. Si la lista queda vacía, la sección muestra solo la calificación.
+    destacadas: [
+      {
+        autor: 'Samuel Galicia Ortiz',
+        estrellas: 5,
+        texto:
+          'Excelente servicio, son muy amables, está muy bien surtida y son muy rápidos. Definitivamente la mejor papelería de San Luis!!',
+        fecha: '2026',
+        url: 'https://maps.app.goo.gl/eEoCzLojXfkY8xT18',
+      },
+      {
+        autor: 'Mar',
+        estrellas: 5,
+        texto:
+          'papelería super completa, no solo hay productos de papelería,hay regalos, impresiones,mercería, bebidas,chucherías, maquillajes etc, si buscas algo puedes preguntar y las posibilidades de que tengan son muchas. También hay pago con tarjeta,y tener horario establecido super bien.',
+        fecha: '2025',
+        guiaLocal: true,
+        url: 'https://maps.app.goo.gl/jfiXNYNyH4SsNGwr7',
+      },
+      {
+        autor: 'Hector Davila',
+        estrellas: 5,
+        texto:
+          'Sus precios son adecuados, incluso más económicos que la competencia cercana. Personal muy amable y paciente. Muy buen surtido',
+        fecha: '2021',
+        guiaLocal: true,
+        url: 'https://maps.app.goo.gl/TEkbDrXD69odteMb6',
+      },
+      {
+        autor: 'Lizeth Navarro',
+        estrellas: 5,
+        texto: 'Trato muy agradable, encuentras de todo en cada temporada.',
+        fecha: '2025',
+        guiaLocal: true,
+        url: 'https://maps.app.goo.gl/qHKRAPfxNdYbMNQe8',
+      },
+      {
+        autor: 'nanita bernal',
+        estrellas: 5,
+        texto:
+          'Siempre encuentras lo q buscas, los empleados son muy amables y tienen muy amplio surtido en regalos y novedades',
+        fecha: '2024',
+        url: 'https://maps.app.goo.gl/AcH61JiKR9KPubZY6',
+      },
+      {
+        autor: 'Elizaberh Banda',
+        estrellas: 5,
+        texto: 'Muy buen lugar con un amplio surtido en todo referente a productos escolares y de oficina',
+        fecha: '2026',
+        url: 'https://maps.app.goo.gl/cEqYyPzGqsKAGmTD9',
+      },
+      {
+        autor: 'Lara Vega',
+        estrellas: 5,
+        texto: 'Muy surtida y muy rápido el servicio',
+        fecha: '2026',
+        guiaLocal: true,
+        url: 'https://maps.app.goo.gl/5bAa6JgnTxQsiNF57',
+      },
+    ] satisfies Resena[] as Resena[],
   },
 
   contacto: {

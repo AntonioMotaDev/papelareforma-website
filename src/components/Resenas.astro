@@ -35,22 +35,40 @@ const { calificacion, total, urlPerfil, destacadas } = negocio.resenas;
 
   {
     destacadas.length > 0 && (
-      <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <ul class="mt-12 gap-5 sm:columns-2 lg:columns-3">
         {destacadas.map((r, i) => (
-          <li data-reveal style={`--reveal-delay:${i * 70}ms`} class="card flex flex-col p-6">
+          <li
+            data-reveal
+            style={`--reveal-delay:${(i % 3) * 70}ms`}
+            class="card mb-5 flex break-inside-avoid flex-col p-6"
+          >
             <span class="flex text-yellow" aria-hidden="true">
               {Array.from({ length: r.estrellas }, () => (
                 <Icon name="star" size={16} />
               ))}
             </span>
             <span class="sr-only">{r.estrellas} de 5 estrellas</span>
-            <blockquote class="mt-3 flex-1 leading-relaxed text-gray-700">
+            <blockquote class="mt-3 leading-relaxed text-gray-700">
               <p>“{r.texto}”</p>
             </blockquote>
-            <p class="mt-4 text-sm">
-              <span class="font-bold text-navy">{r.autor}</span>
-              <span class="text-gray-500"> · {r.fecha}</span>
-            </p>
+            <div class="mt-5 flex items-center gap-3">
+              <span
+                class="grid size-10 shrink-0 place-items-center rounded-full bg-celeste-50 font-bold text-primary uppercase ring-1 ring-celeste"
+                aria-hidden="true"
+              >
+                {r.autor.charAt(0)}
+              </span>
+              <p class="text-sm leading-snug">
+                <span class="block font-bold text-navy">{r.autor}</span>
+                <span class="text-gray-600">
+                  {r.guiaLocal && 'Local Guide · '}
+                  {r.fecha} ·{' '}
+                  <a href={r.url} target="_blank" rel="noopener" class="link font-semibold">
+                    Ver en Google<span class="sr-only"> la reseña de {r.autor} (se abre en Google Maps)</span>
+                  </a>
+                </span>
+              </p>
+            </div>
           </li>
         ))}
       </ul>

@@ -59,7 +59,7 @@ Busca `TODO(Datos)` en el código:
 - [ ] Coordenadas exactas del local (opcional; el mapa usa la dirección mientras tanto)
 - [x] Año de fundación: 2005
 - [ ] Historia real (página *Nosotros*)
-- [ ] 3 o 4 reseñas reales para `resenas.destacadas` (hoy solo se muestra la calificación)
+- [x] Reseñas de Google en `resenas.destacadas` (7, copiadas el 2026-10-29)
 - [x] Dominio: `lapapeslp.com` (`sitio.url` en `negocio.ts` y la variable `SITE_URL`)
 
 ### Logos y fotos
